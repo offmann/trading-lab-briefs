@@ -1,7 +1,7 @@
-# Sticky SMA vs Fast SMA 5/20 — BTC
+# Sticky SMA vs Fast SMA 5/20 — BTC core sleeve
 
 **Date:** 2026-09-06 (PT)  
-**Paper only.** No live trades.  
+**Paper only.** No live orders.  
 **Main SHA:** `10bb811` (PR #4 merged — `sma_sticky` + `time_in_market` / `ending_units`)  
 **Cash:** $1,000 start · fees 10 bps + slippage 5 bps  
 **Runs:**
@@ -83,15 +83,15 @@ Sticky’s rolling edge is **thin** — barely coin-flip vs hold, and clearly be
 
 ---
 
-## Keep / Tweak / Drop (BTC stay-invested style)
+## Keep / Tweak / Drop (BTC core sleeve)
 
 | Item | Call | Why |
 |------|------|-----|
 | Sticky **defaults** as live / core rule | **DROP** | Loses to fast SMA on $ & units; ≈B&H $ while out ~44% of bars |
 | Sticky **idea family** (confirm + exit gap) | **TWEAK** | Grid search before killing family (RESEARCH rule) |
-| Fast SMA 5/20 paper baseline | **KEEP** (research) / **TWEAK** (live-style) | Still best of the three on paper $; sells too often vs stay-invested style |
+| Fast SMA 5/20 paper baseline | **KEEP** (research) / **TWEAK** (live core) | Still best of the three on paper $; sells too often for stay-invested style |
 | Buy & hold BTC | **KEEP** as core reference | 100% time-in-market; deepest DD |
-| Go live with any of these now | **DROP** | Paper only; no explicit OK |
+| Go live | **DROP** | Paper only; no explicit OK |
 
 ---
 
@@ -100,7 +100,7 @@ Sticky’s rolling edge is **thin** — barely coin-flip vs hold, and clearly be
 1. **Sticky ≠ more BTC here.** Time-in-market 56% vs fast 54%, but ending units **0.127 vs 0.612** — confirmation lag costs early trend capture.
 2. **Dollar lens:** full-sample sticky ~$10.2k ≈ buy&hold ~$10.6k; fast ~$48.8k dominates on this path.
 3. **Truth serum:** sticky year-split only **3/7** beat hold (fast **6/7**); WF mean **+2%** vs fast **+12%**.
-4. **Crash softness alone isn’t enough** for a stay-invested BTC rule if you miss most of the bull (2020/2023/2024).
+4. **Crash softness alone isn’t enough** for the core sleeve if you miss most of the bull (2020/2023/2024).
 5. **Next:** run `configs/grids/sma_sticky.yaml` (and maybe shorter fast windows with sticky exits) — score **ending_units** and time-in-market, not just Sharpe.
 
 ---
