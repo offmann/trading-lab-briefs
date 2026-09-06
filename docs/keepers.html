@@ -109,8 +109,10 @@
     padding: 0 0 .55rem;
   }
   nav.tabs a {
+    display: flex; align-items: center; justify-content: center;
     text-align: center; text-decoration: none; color: var(--ink-muted);
-    font-size: .8125rem; font-weight: 650; padding: .45rem .2rem; border-radius: .65rem;
+    font-size: .8125rem; font-weight: 650; padding: .45rem .2rem;
+    min-height: 2.75rem; border-radius: .65rem;
   }
   nav.tabs a[aria-current="page"] { color: var(--teal-ink); background: var(--teal-soft); }
   nav.tabs a:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }

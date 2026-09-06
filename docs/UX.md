@@ -28,7 +28,7 @@ Hub pages use a three-tab nav (Overview / Progress / Keepers). Briefs get a “�
 - **Keep** — keep as a *paper baseline or reference*. Never “go live.”
 - **Tweak** — idea has a pulse; do not crown it; change the question or the knobs.
 - **Drop** — this config or this use is done. Say what was dropped (defaults vs whole family).
-- **Parked** — knobs were searched; stop the spiral; keep the write-up. Not a Drop.
+- **Parked** — knobs were searched; stop the spiral; keep the write-up. Not a Drop. Use `.chip.park` / "Parked" everywhere — briefs included (copy `--chip-park` tokens from a hub page if the brief lacks them).
 
 When a new brief lands, update:
 
