@@ -50,6 +50,8 @@
     min-height: 100dvh;
   }
   .wrap { width: min(100% - 1.5rem, var(--max)); margin-inline: auto; padding: 1.25rem 0 2.5rem; }
+  .lab-back { margin: 0 0 .85rem; }
+  .lab-back a { color: var(--teal); font-weight: 650; text-decoration: none; font-size: .875rem; }
   header.top { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.25rem; }
   .logo {
     width: 2.5rem; height: 2.5rem; border-radius: 10px; flex-shrink: 0;
@@ -96,6 +98,7 @@
 </head>
 <body>
 <div class="wrap">
+  <p class="lab-back"><a href="../index.html">← Lab overview</a></p>
   <header class="top">
     <div class="logo" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none"><path d="M4 17 L9 9 L13 14 L20 5" stroke="#99f6e4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="5" r="1.6" fill="#fbbf24"/></svg>
@@ -110,12 +113,12 @@
   <div class="chips">
     <span class="chip paper">Paper only</span>
     <span class="chip tweak">Tweak → Drop</span>
-    <span class="chip drop">Not BTC core</span>
+    <span class="chip drop">Not stay-invested BTC</span>
   </div>
 
   <div class="card">
     <p style="margin-top:0"><strong>Verdict:</strong> Grid found sticky configs that clearly beat <em>defaults</em> on ending BTC units and soften year-split drawdowns. <strong>None</strong> beat fast SMA <strong>5/20</strong> on ending_units. Year-split vs buy&amp;hold stays <strong>3/7</strong> (fast is <strong>6/7</strong>). Soft DD ≠ good BTC accumulation rule.</p>
-    <div class="callout"><strong>Next:</strong> (1) BTC exit-only-on-deep-DD / Fear&amp;Greed, stay long otherwise — or (2) try sticky on an <em>alts</em> sleeve, not core BTC.</div>
+    <div class="callout"><strong>Next:</strong> (1) BTC exit-only-on-deep-DD / Fear&amp;Greed, stay long otherwise — or (2) try sticky on other assets, not as a Bitcoin stay-invested rule.</div>
   </div>
 
   <h2>Top 5 sticky by ending units (= by return)</h2>

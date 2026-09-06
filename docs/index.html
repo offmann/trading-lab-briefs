@@ -3,184 +3,417 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Trading Lab — Experiment Briefs</title>
-<meta name="description" content="Browse paper-only experiment HTML briefs from trading-lab.">
+<title>Trading Lab — Where research stands</title>
+<meta name="description" content="Paper-only crypto experiment lab. What survived, what was dropped, and how a hypothetical $1,000 compared with just holding Bitcoin.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Cpath d='M8 22 L14 12 L18 18 L24 8' fill='none' stroke='%2399f6e4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='8' r='2' fill='%23fbbf24'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
+  :root, html[data-theme="light"] {
+    --bg: #f1f5f9; --bg-elev: #ffffff; --bg-soft: #e2e8f0;
+    --ink: #0f172a; --ink-muted: #475569; --ink-faint: #64748b; --line: #cbd5e1;
+    --teal: #0f766e; --teal-soft: #ccfbf1; --teal-ink: #115e59;
+    --amber: #b45309; --amber-soft: #fef3c7;
+    --green: #047857; --green-soft: #d1fae5;
+    --red: #b91c1c; --red-soft: #fee2e2;
+    --sky: #0369a1; --sky-soft: #e0f2fe;
+    --chip-keep: #047857; --chip-keep-bg: #d1fae5;
+    --chip-tweak: #b45309; --chip-tweak-bg: #fef3c7;
+    --chip-drop: #b91c1c; --chip-drop-bg: #fee2e2;
+    --chip-park: #0369a1; --chip-park-bg: #e0f2fe;
+    --shadow: 0 1px 2px rgba(15,23,42,.06), 0 8px 24px rgba(15,23,42,.06);
+    --logo-stroke: #99f6e4;
+    --head-bg: color-mix(in srgb, var(--bg) 86%, transparent);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0b1220; --bg-elev: #111827; --bg-soft: #1e293b;
+      --ink: #e2e8f0; --ink-muted: #94a3b8; --ink-faint: #64748b; --line: #334155;
+      --teal: #2dd4bf; --teal-soft: #134e4a; --teal-ink: #99f6e4;
+      --amber: #fbbf24; --amber-soft: #422006;
+      --green: #34d399; --green-soft: #064e3b;
+      --red: #f87171; --red-soft: #450a0a;
+      --sky: #7dd3fc; --sky-soft: #0c4a6e;
+      --chip-keep: #34d399; --chip-keep-bg: #064e3b;
+      --chip-tweak: #fbbf24; --chip-tweak-bg: #422006;
+      --chip-drop: #f87171; --chip-drop-bg: #450a0a;
+      --chip-park: #7dd3fc; --chip-park-bg: #0c4a6e;
+      --shadow: 0 1px 2px rgba(0,0,0,.35), 0 12px 28px rgba(0,0,0,.35);
+    }
+  }
+  html[data-theme="dark"] {
     --bg: #0b1220; --bg-elev: #111827; --bg-soft: #1e293b;
     --ink: #e2e8f0; --ink-muted: #94a3b8; --ink-faint: #64748b; --line: #334155;
     --teal: #2dd4bf; --teal-soft: #134e4a; --teal-ink: #99f6e4;
     --amber: #fbbf24; --amber-soft: #422006;
     --green: #34d399; --green-soft: #064e3b;
     --red: #f87171; --red-soft: #450a0a;
+    --sky: #7dd3fc; --sky-soft: #0c4a6e;
     --chip-keep: #34d399; --chip-keep-bg: #064e3b;
     --chip-tweak: #fbbf24; --chip-tweak-bg: #422006;
     --chip-drop: #f87171; --chip-drop-bg: #450a0a;
+    --chip-park: #7dd3fc; --chip-park-bg: #0c4a6e;
     --shadow: 0 1px 2px rgba(0,0,0,.35), 0 12px 28px rgba(0,0,0,.35);
-    --radius: 14px; --radius-sm: 10px;
-    --font: "DM Sans", system-ui, -apple-system, sans-serif;
-    --mono: "JetBrains Mono", ui-monospace, monospace;
-    --max: 44rem;
   }
   *, *::before, *::after { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
   body {
-    margin: 0; font-family: var(--font); font-size: 1rem; line-height: 1.55;
-    color: var(--ink);
+    margin: 0; font-family: "DM Sans", system-ui, -apple-system, sans-serif;
+    font-size: 1rem; line-height: 1.55; color: var(--ink);
     background:
       radial-gradient(1200px 600px at 10% -10%, color-mix(in srgb, var(--teal) 18%, transparent), transparent 55%),
       radial-gradient(900px 500px at 100% 0%, color-mix(in srgb, var(--amber) 10%, transparent), transparent 50%),
       var(--bg);
     min-height: 100dvh;
   }
-  .wrap { width: min(100% - 1.5rem, var(--max)); margin-inline: auto; padding: 1.25rem 0 2.75rem; }
-  header.top { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.35rem; }
+  .skip {
+    position: absolute; left: .75rem; top: -3rem; z-index: 40;
+    background: var(--teal); color: #042f2e; padding: .4rem .7rem; border-radius: .5rem;
+    font-weight: 700; text-decoration: none;
+  }
+  .skip:focus { top: .75rem; }
+  .wrap { width: min(100% - 1.5rem, 42rem); margin-inline: auto; }
+  .site-head {
+    position: sticky; top: 0; z-index: 20;
+    background: var(--head-bg); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+  .head-row {
+    display: flex; align-items: center; gap: .7rem;
+    padding: .7rem 0 .55rem;
+  }
   .logo {
-    width: 2.5rem; height: 2.5rem; border-radius: 10px; flex-shrink: 0;
+    width: 2.25rem; height: 2.25rem; border-radius: .65rem; flex-shrink: 0;
     background: linear-gradient(145deg, #0f766e, #134e4a);
     display: grid; place-items: center; box-shadow: var(--shadow);
   }
-  .logo svg { width: 1.35rem; height: 1.35rem; }
+  .logo svg { width: 1.25rem; height: 1.25rem; }
   .brand { font-weight: 700; font-size: .95rem; letter-spacing: -.01em; }
-  .sub { font-size: .8rem; color: var(--ink-faint); }
-  .hero {
-    background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius);
-    box-shadow: var(--shadow); padding: 1.15rem 1.2rem; margin-bottom: 1.15rem;
+  .sub { font-size: .75rem; color: var(--ink-faint); }
+  .theme-btn {
+    margin-left: auto; width: 2.75rem; height: 2.75rem; border-radius: .75rem;
+    border: 1px solid var(--line); background: var(--bg-elev); color: var(--ink);
+    display: grid; place-items: center; cursor: pointer; box-shadow: var(--shadow);
   }
-  h1 { font-size: 1.4rem; line-height: 1.25; margin: 0 0 .45rem; letter-spacing: -.02em; }
-  .lede { margin: 0; color: var(--ink-muted); font-size: 1.02rem; }
-  .meta { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .85rem; }
-  .pill {
-    font-family: var(--mono); font-size: .7rem; color: var(--ink-muted);
-    background: var(--bg-soft); border-radius: 999px; padding: .25rem .55rem;
+  .theme-btn:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+  .theme-btn svg { width: 1.15rem; height: 1.15rem; }
+  .icon-sun { display: none; }
+  .icon-moon { display: block; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .icon-sun { display: block; }
+    :root:not([data-theme="light"]) .icon-moon { display: none; }
   }
-  .grid { display: grid; gap: .85rem; }
-  a.card {
-    display: block; text-decoration: none; color: inherit;
-    background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius);
-    box-shadow: var(--shadow); padding: 1rem 1.1rem;
-    transition: border-color .15s ease, transform .15s ease;
+  html[data-theme="dark"] .icon-sun { display: block; }
+  html[data-theme="dark"] .icon-moon { display: none; }
+  html[data-theme="light"] .icon-sun { display: none; }
+  html[data-theme="light"] .icon-moon { display: block; }
+  nav.tabs {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .25rem;
+    padding: 0 0 .55rem;
   }
-  a.card:hover, a.card:focus-visible {
-    border-color: color-mix(in srgb, var(--teal) 55%, var(--line));
-    transform: translateY(-1px); outline: none;
+  nav.tabs a {
+    text-align: center; text-decoration: none; color: var(--ink-muted);
+    font-size: .8125rem; font-weight: 650; padding: .45rem .2rem;
+    border-radius: .65rem;
   }
-  .card-top { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; margin-bottom: .45rem; }
-  .date {
-    font-family: var(--mono); font-size: .72rem; color: var(--ink-faint);
-    background: var(--bg-soft); border-radius: 999px; padding: .22rem .5rem;
+  nav.tabs a[aria-current="page"] {
+    color: var(--teal-ink); background: var(--teal-soft);
   }
+  nav.tabs a:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+  main { padding: 1.15rem 0 2.75rem; }
+  .kicker {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: .6875rem; font-weight: 600; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--teal-ink); margin: 0 0 .4rem;
+  }
+  h1 {
+    font-size: 1.625rem; line-height: 1.15; letter-spacing: -.03em;
+    margin: 0 0 .55rem; font-weight: 700;
+  }
+  .lede { margin: 0 0 1.1rem; color: var(--ink-muted); font-size: 1.02rem; }
+  .lede strong { color: var(--ink); font-weight: 650; }
+  .counts {
+    display: grid; grid-template-columns: 1fr 1fr; gap: .55rem;
+    margin-bottom: 1.1rem;
+  }
+  .count {
+    background: var(--bg-elev); border: 1px solid var(--line); border-radius: .9rem;
+    padding: .7rem .8rem; box-shadow: var(--shadow);
+  }
+  .count b {
+    display: block; font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 1.25rem; letter-spacing: -.02em;
+  }
+  .count span { font-size: .75rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+  .count.keep b, .count.keep span { color: var(--chip-keep); }
+  .count.tweak b, .count.tweak span { color: var(--chip-tweak); }
+  .count.drop b, .count.drop span { color: var(--chip-drop); }
+  .count.park b, .count.park span { color: var(--chip-park); }
+  .card {
+    background: var(--bg-elev); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow); padding: 1rem 1.1rem; margin-bottom: .85rem;
+  }
+  .card.hero {
+    background:
+      linear-gradient(145deg, color-mix(in srgb, var(--teal) 12%, var(--bg-elev)), var(--bg-elev) 58%);
+    border-color: color-mix(in srgb, var(--teal) 40%, var(--line));
+  }
+  h2 { font-size: 1.125rem; margin: 0 0 .55rem; letter-spacing: -.02em; }
+  h3 { font-size: 1rem; margin: 0 0 .3rem; letter-spacing: -.015em; }
+  p { margin: 0 0 .7rem; color: var(--ink-muted); }
+  p:last-child { margin-bottom: 0; }
+  .metrics {
+    display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; margin-top: .75rem;
+  }
+  .metric { background: var(--bg-soft); border-radius: .65rem; padding: .55rem .65rem; }
+  .metric span {
+    display: block; font-size: .6875rem; color: var(--ink-faint);
+    text-transform: uppercase; letter-spacing: .03em; font-weight: 600;
+  }
+  .metric b {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: .875rem; font-weight: 600; color: var(--ink);
+  }
+  .gain { color: var(--green); }
+  .loss { color: var(--red); }
   .chip {
-    display: inline-flex; align-items: center; gap: .35rem;
-    font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+    display: inline-flex; align-items: center;
+    font-size: .6875rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
     padding: .22rem .5rem; border-radius: 999px;
   }
   .chip.keep { color: var(--chip-keep); background: var(--chip-keep-bg); }
   .chip.tweak { color: var(--chip-tweak); background: var(--chip-tweak-bg); }
   .chip.drop { color: var(--chip-drop); background: var(--chip-drop-bg); }
-  h2 { font-size: 1.08rem; margin: 0 0 .35rem; letter-spacing: -.015em; }
-  .file { margin: 0 0 .55rem; }
-  .file code {
-    font-family: var(--mono); font-size: .72rem; color: var(--ink-faint);
-    word-break: break-all;
+  .chip.park { color: var(--chip-park); background: var(--chip-park-bg); }
+  .family {
+    display: grid; gap: .65rem;
   }
-  .open { font-size: .85rem; font-weight: 600; color: var(--teal-ink); }
-  .empty { color: var(--ink-muted); }
-  footer {
-    margin-top: 1.5rem; font-size: .78rem; color: var(--ink-faint); text-align: center;
+  .fam {
+    background: var(--bg-elev); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow); padding: .85rem 1rem .9rem;
+    border-left: 4px solid var(--line);
   }
-  footer a { color: var(--teal); }
+  .fam.keep { border-left-color: var(--chip-keep); }
+  .fam.tweak { border-left-color: var(--chip-tweak); }
+  .fam.drop { border-left-color: var(--chip-drop); }
+  .fam.park { border-left-color: var(--chip-park); }
+  .fam-top { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; margin-bottom: .35rem; }
+  .fam p { margin: 0; font-size: .9rem; }
+  .paths { display: grid; gap: .65rem; }
+  a.path {
+    display: block; text-decoration: none; color: inherit;
+    background: var(--bg-elev); border: 1px solid var(--line); border-radius: 12px;
+    box-shadow: var(--shadow); padding: .9rem 1rem;
+  }
+  a.path:hover, a.path:focus-visible {
+    border-color: color-mix(in srgb, var(--teal) 55%, var(--line));
+    outline: none;
+  }
+  a.path:focus-visible { box-shadow: 0 0 0 3px color-mix(in srgb, var(--teal) 28%, transparent); }
+  .path .go { font-size: .85rem; font-weight: 650; color: var(--teal-ink); }
+  .briefs { display: grid; gap: .55rem; }
+  a.brief {
+    display: block; text-decoration: none; color: inherit;
+    background: var(--bg-elev); border: 1px solid var(--line); border-radius: 12px;
+    padding: .8rem .9rem; box-shadow: var(--shadow);
+  }
+  a.brief:hover, a.brief:focus-visible {
+    border-color: color-mix(in srgb, var(--teal) 55%, var(--line)); outline: none;
+  }
+  .brief-top { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; margin-bottom: .25rem; }
+  .date {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: .6875rem; color: var(--ink-faint);
+    background: var(--bg-soft); border-radius: 999px; padding: .18rem .45rem;
+  }
+  .brief h3 { font-size: .95rem; }
+  footer.site {
+    width: min(100% - 1.5rem, 42rem); margin: 0 auto;
+    padding: 0 0 2rem; font-size: .75rem; color: var(--ink-faint);
+    text-align: center; line-height: 1.5;
+  }
+  footer.site a { color: var(--teal); }
+  @media (min-width: 480px) {
+    h1 { font-size: 1.875rem; }
+    .counts { grid-template-columns: repeat(4, 1fr); }
+  }
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <header class="top">
-      <div class="logo" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M4 17 L9 9 L13 14 L19 5" stroke="#99f6e4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="19" cy="5" r="1.6" fill="#fbbf24"/>
-        </svg>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-head">
+    <div class="wrap">
+      <div class="head-row">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 17 L9 9 L13 14 L20 5" stroke="#99f6e4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="5" r="1.8" fill="#fbbf24"/></svg>
+        </div>
+        <div>
+          <div class="brand">Trading Lab</div>
+          <div class="sub">Paper experiments · not advice</div>
+        </div>
+        <button type="button" class="theme-btn" id="themeBtn" aria-label="Switch color theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4 7 7 0 0 0 20 14.5z"/></svg>
+        </button>
       </div>
-      <div>
-        <div class="brand">Trading Lab</div>
-        <div class="sub">Paper-only experiment briefs</div>
-      </div>
-    </header>
+      <nav class="tabs" aria-label="Lab sections">
+        <a href="index.html" aria-current="page">Overview</a>
+        <a href="progress.html">Progress</a>
+        <a href="keepers.html">Keepers</a>
+      </nav>
+    </div>
+  </header>
 
-    <section class="hero">
-      <h1>Experiment briefs</h1>
-      <p class="lede">Mobile-friendly gallery of HTML research briefs. Paper only — not financial advice, no live trading.</p>
-      <div class="meta">
-        <span class="pill">6 briefs</span>
-        <span class="pill">synced 2026-09-06</span>
+  <main id="main" class="wrap">
+    <p class="kicker">Updated 6 Sep 2026 · hypothetical $1,000</p>
+    <h1>What you should care about</h1>
+    <p class="lede">This is a <strong>paper-only</strong> research lab. Pretend money, daily prices, fees already subtracted. Spot-style ideas, no leverage. One idea is clearly ahead. <strong>Nothing here is ready for real money.</strong></p>
+
+    <div class="counts" role="list" aria-label="Verdict counts">
+      <div class="count keep" role="listitem"><b>2</b><span>Keep</span></div>
+      <div class="count tweak" role="listitem"><b>2</b><span>Tweak</span></div>
+      <div class="count drop" role="listitem"><b>3</b><span>Drop</span></div>
+      <div class="count park" role="listitem"><b>1</b><span>Parked</span></div>
+    </div>
+
+    <section class="card hero" aria-labelledby="now-title">
+      <h2 id="now-title">Right now</h2>
+      <p>The standout paper idea is a simple Bitcoin trend rule: be invested when the <strong>5-day average price</strong> is above the <strong>20-day average</strong>, otherwise sit in cash.</p>
+      <p>On a first screen (Jan 2023 → Sep 2026), a hypothetical <strong>$1,000</strong> grew to <strong>$6,196</strong> vs <strong>$4,619</strong> for just holding Bitcoin. The worst dip was about <strong>−18%</strong> vs about <strong>−53%</strong> for holding.</p>
+      <p>Slower “stickier” versions and a “hold until a crash” idea were tested next. They did not beat this fast rule. Research now needs a <strong>new family</strong> — not more knobs on the parked crash-exit idea.</p>
+      <div class="metrics">
+        <div class="metric"><span>Paper champion</span><b>Fast SMA 5/20</b></div>
+        <div class="metric"><span>Vs hold (2023–26)</span><b class="gain">$6,196 vs $4,619</b></div>
+        <div class="metric"><span>Worst dip</span><b class="loss">about −18%</b></div>
+        <div class="metric"><span>Live trading</span><b>Not yet — paper only</b></div>
       </div>
     </section>
 
-    <div class="grid">
-    <a class="card" href="briefs/2026-09-06-sma520-stress.html">
-      <div class="card-top">
-        <span class="date">Sep 6, 2026</span>
-        <span class="chip tweak">Tweak</span>
+    <section aria-labelledby="stand-title">
+      <h2 id="stand-title" style="margin:1.15rem 0 .65rem">Where each idea stands</h2>
+      <div class="family">
+        <article class="fam keep">
+          <div class="fam-top">
+            <span class="chip keep">Keep</span>
+            <h3>Fast trend rule (SMA 5/20) — paper bar</h3>
+          </div>
+          <p>Best of everything tried. Beat “just hold BTC” in 6 of 7 calendar years. Still jumps in and out of Bitcoin often, so it is a research champion — not a green light.</p>
+        </article>
+        <article class="fam keep">
+          <div class="fam-top">
+            <span class="chip keep">Keep</span>
+            <h3>Buy &amp; hold Bitcoin — the reference</h3>
+          </div>
+          <p>Always invested. Every new idea has to beat this on paper dollars, and we also watch how much Bitcoin you would still hold. Deepest crash on the long sample: about −76%.</p>
+        </article>
+        <article class="fam tweak">
+          <div class="fam-top">
+            <span class="chip tweak">Tweak</span>
+            <h3>Fast trend as a “live-style” rule</h3>
+          </div>
+          <p>It often beats hold and softens ugly years, but it sells Bitcoin regularly. That is a tweak, not a keep, if the point is to stay invested most of the time.</p>
+        </article>
+        <article class="fam tweak">
+          <div class="fam-top">
+            <span class="chip tweak">Tweak</span>
+            <h3>Hold-protect 20/15 — soft-hold recipe</h3>
+          </div>
+          <p>Stay in, exit after a ~20% drop, climb back in after a 15% bounce. Beats hold on the long paper path. Still far behind the fast trend rule. Documented, not crowned.</p>
+        </article>
+        <article class="fam park">
+          <div class="fam-top">
+            <span class="chip park">Parked</span>
+            <h3>Hold-protect family on Bitcoin</h3>
+          </div>
+          <p>The knobs were searched. Stop spinning the same dials. Optional later branch: one Fear &amp; Greed experiment — treat that as new work, not more crash-exit grids.</p>
+        </article>
+        <article class="fam drop">
+          <div class="fam-top">
+            <span class="chip drop">Drop</span>
+            <h3>Sticky SMA defaults, and sticky as a BTC rule</h3>
+          </div>
+          <p>Meant to stay invested longer. On paper it roughly matched hold while sitting in cash ~44% of the time, and lost to the fast rule. A grid helped the defaults — still not close.</p>
+        </article>
+        <article class="fam drop">
+          <div class="fam-top">
+            <span class="chip drop">Drop</span>
+            <h3>Trend + RSI combo, and hold-protect defaults</h3>
+          </div>
+          <p>RSI “hot/cold” add-ons mostly never traded. Hold-protect’s first settings (25% crash / 10% re-entry) grew <em>fewer</em> Bitcoin units than just holding.</p>
+        </article>
       </div>
-      <h2>SMA 5/20 stress — BTC</h2>
-      <p class="file"><code>2026-09-06-sma520-stress.html</code></p>
-      <span class="open">Open brief →</span>
-    </a>
-    <a class="card" href="briefs/2026-09-06-sma-sticky-vs-fast.html">
-      <div class="card-top">
-        <span class="date">Sep 6, 2026</span>
-        <span class="chip tweak">Tweak family</span>
-      </div>
-      <h2>Sticky SMA vs Fast 5/20 — BTC</h2>
-      <p class="file"><code>2026-09-06-sma-sticky-vs-fast.html</code></p>
-      <span class="open">Open brief →</span>
-    </a>
-    <a class="card" href="briefs/2026-09-06-sma-sticky-grid.html">
-      <div class="card-top">
-        <span class="date">Sep 6, 2026</span>
-        <span class="chip tweak">Tweak → Drop</span>
-      </div>
-      <h2>Sticky SMA grid — BTC</h2>
-      <p class="file"><code>2026-09-06-sma-sticky-grid.html</code></p>
-      <span class="open">Open brief →</span>
-    </a>
-    <a class="card" href="briefs/2026-09-06-first-grids.html">
-      <div class="card-top">
-        <span class="date">Sep 6, 2026</span>
-        <span class="chip keep">Keep</span>
-      </div>
-      <h2>Paper-only BTC/ALGO grid results</h2>
-      <p class="file"><code>2026-09-06-first-grids.html</code></p>
-      <span class="open">Open brief →</span>
-    </a>
-    <a class="card" href="briefs/2026-09-06-btc-hold-protect-dd20-re15.html">
-      <div class="card-top">
-        <span class="date">Sep 6, 2026</span>
-        <span class="chip tweak">Tweak BTC core</span>
-      </div>
-      <h2>BTC hold-protect dd20/re15 stress</h2>
-      <p class="file"><code>2026-09-06-btc-hold-protect-dd20-re15.html</code></p>
-      <span class="open">Open brief →</span>
-    </a>
-    <a class="card" href="briefs/2026-09-06-btc-hold-protect.html">
-      <div class="card-top">
-        <span class="date">Sep 6, 2026</span>
-        <span class="chip tweak">Tweak family</span>
-      </div>
-      <h2>BTC hold-protect vs B&amp;H &amp; fast SMA</h2>
-      <p class="file"><code>2026-09-06-btc-hold-protect.html</code></p>
-      <span class="open">Open brief →</span>
-    </a>
-    </div>
+    </section>
 
-    <footer>
-      Source: <a href="https://github.com/offmann/trading-lab">offmann/trading-lab</a>
-      · regenerate with <code>scripts/sync_briefs_to_pages.py</code>
-    </footer>
-  </div>
+    <section aria-labelledby="path-title">
+      <h2 id="path-title" style="margin:1.25rem 0 .65rem">Then go deeper</h2>
+      <div class="paths">
+        <a class="path" href="progress.html">
+          <h3>Progress</h3>
+          <p>The learning arc — six experiments in the order they happened, and what each one taught.</p>
+          <span class="go">Open the timeline →</span>
+        </a>
+        <a class="path" href="keepers.html">
+          <h3>Keepers</h3>
+          <p>Plain-English “what survived and why.” The two ideas worth remembering, plus the parked recipe.</p>
+          <span class="go">See what survived →</span>
+        </a>
+      </div>
+    </section>
+
+    <section aria-labelledby="brief-title">
+      <h2 id="brief-title" style="margin:1.25rem 0 .65rem">Details on demand</h2>
+      <p style="margin-bottom:.7rem">Full experiment cards. Same hypothetical $1,000. Open one only if you want the tables.</p>
+      <div class="briefs">
+        <a class="brief" href="briefs/2026-09-06-first-grids.html">
+          <div class="brief-top"><span class="date">Sep 6</span><span class="chip keep">Keep</span></div>
+          <h3>First screen — BTC &amp; ALGO grids</h3>
+        </a>
+        <a class="brief" href="briefs/2026-09-06-sma520-stress.html">
+          <div class="brief-top"><span class="date">Sep 6</span><span class="chip tweak">Tweak</span></div>
+          <h3>SMA 5/20 stress — year by year</h3>
+        </a>
+        <a class="brief" href="briefs/2026-09-06-sma-sticky-vs-fast.html">
+          <div class="brief-top"><span class="date">Sep 6</span><span class="chip tweak">Tweak family</span></div>
+          <h3>Sticky SMA vs fast 5/20</h3>
+        </a>
+        <a class="brief" href="briefs/2026-09-06-sma-sticky-grid.html">
+          <div class="brief-top"><span class="date">Sep 6</span><span class="chip drop">Tweak → Drop</span></div>
+          <h3>Sticky SMA grid — 81 settings</h3>
+        </a>
+        <a class="brief" href="briefs/2026-09-06-btc-hold-protect.html">
+          <div class="brief-top"><span class="date">Sep 6</span><span class="chip tweak">Tweak family</span></div>
+          <h3>Hold-protect defaults vs hold &amp; SMA</h3>
+        </a>
+        <a class="brief" href="briefs/2026-09-06-btc-hold-protect-dd20-re15.html">
+          <div class="brief-top"><span class="date">Sep 6</span><span class="chip park">Parked</span></div>
+          <h3>Hold-protect 20/15 — then park</h3>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site">
+    Paper research · hypothetical $1,000 · not financial advice · no live orders<br>
+    Source notes live in the private lab; this site publishes findings only.
+  </footer>
+
+  <script>
+    (function () {
+      var KEY = "tl-theme";
+      var root = document.documentElement;
+      var saved = localStorage.getItem(KEY);
+      if (saved === "light" || saved === "dark") root.setAttribute("data-theme", saved);
+      var btn = document.getElementById("themeBtn");
+      if (!btn) return;
+      btn.addEventListener("click", function () {
+        var now = root.getAttribute("data-theme");
+        if (!now) now = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        var next = now === "dark" ? "light" : "dark";
+        root.setAttribute("data-theme", next);
+        localStorage.setItem(KEY, next);
+      });
+    })();
+  </script>
 </body>
 </html>

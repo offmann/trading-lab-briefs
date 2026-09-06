@@ -52,6 +52,8 @@
     min-height: 100dvh;
   }
   .wrap { width: min(100% - 1.5rem, var(--max)); margin-inline: auto; padding: 1.25rem 0 2.5rem; }
+  .lab-back { margin: 0 0 .85rem; }
+  .lab-back a { color: var(--teal); font-weight: 650; text-decoration: none; font-size: .875rem; }
   header.top { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.25rem; }
   .logo {
     width: 2.5rem; height: 2.5rem; border-radius: 10px; flex-shrink: 0;
@@ -131,6 +133,7 @@
 </head>
 <body>
   <div class="wrap">
+    <p class="lab-back"><a href="../index.html">← Lab overview</a></p>
     <header class="top">
       <div class="logo" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none"><path d="M4 17 L9 9 L13 14 L20 5" stroke="#99f6e4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="5" r="1.8" fill="#fbbf24"/></svg>
@@ -232,12 +235,12 @@
     <section class="card">
       <h2>Keep · Tweak · Drop</h2>
       <div class="row-verdicts">
-        <div class="verdict-row"><span class="chip tweak">Tweak</span><div class="txt"><b>BTC core rule (20/15)</b> — beats hold on $ &amp; units &amp; 5/7 years; still ≪ SMA units; not obvious enough to sell core BTC on this alone.</div></div>
+        <div class="verdict-row"><span class="chip tweak">Tweak</span><div class="txt"><b>As a BTC rule (20/15)</b> — beats hold on $ &amp; units &amp; 5/7 years; still ≪ SMA units; not obvious enough to replace just holding on this alone.</div></div>
         <div class="verdict-row"><span class="chip drop">Park</span><div class="txt"><b>Hold-protect family (BTC)</b> — dd/reentry grid + stress/WF done. Stop knob spiral. Do not DROP the idea (documented soft-hold recipe).</div></div>
         <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>Defaults (25/10) as core</b> — confirmed worse than 20/15 and worse than hold on units.</div></div>
         <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>Fast SMA 5/20 paper baseline</b> — still best ending_units (0.612).</div></div>
         <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>Buy&amp;hold core reference</b> — 100% time-in-market; deepest DD (−76%).</div></div>
-        <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>Ship to Revolut</b> — paper only; no explicit OK.</div></div>
+        <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>Go live</b> — paper only; no explicit OK.</div></div>
       </div>
     </section>
 
@@ -254,7 +257,7 @@
 
     <section class="card next">
       <h2>Next build step</h2>
-      <p><b>Park hold-protect on BTC.</b> Point research at a different family (or alts sleeve). Optional later branch: one-shot Fear &amp; Greed <code>fng_floor</code> — treat as a new experiment if revisited, not more dd/reentry grids. Keep SMA 5/20 as the paper bar on ending_units.</p>
+      <p><b>Park hold-protect on BTC.</b> Point research at a different family (or other assets). Optional later branch: one-shot Fear &amp; Greed <code>fng_floor</code> — treat as a new experiment if revisited, not more dd/reentry grids. Keep SMA 5/20 as the paper bar on ending_units.</p>
     </section>
 
     <section class="card">
@@ -269,8 +272,7 @@
     </section>
 
     <footer>
-      Paper research only. Not financial advice. No Revolut orders.<br>
-      Risk profile: BTC = core wealth sleeve · accumulate bias.<br>
+      Paper research only. Not financial advice. No live orders.<br>
       <b>Family parked</b> for active BTC dd/reentry research.
     </footer>
   </div>
