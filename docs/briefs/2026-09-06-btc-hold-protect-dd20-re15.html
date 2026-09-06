@@ -17,9 +17,11 @@
     --amber: #b45309; --amber-soft: #fef3c7;
     --green: #047857; --green-soft: #d1fae5;
     --red: #b91c1c; --red-soft: #fee2e2;
+    --sky: #0369a1; --sky-soft: #e0f2fe;
     --chip-keep: #047857; --chip-keep-bg: #d1fae5;
     --chip-tweak: #b45309; --chip-tweak-bg: #fef3c7;
     --chip-drop: #b91c1c; --chip-drop-bg: #fee2e2;
+    --chip-park: #0369a1; --chip-park-bg: #e0f2fe;
     --shadow: 0 1px 2px rgba(15,23,42,.06), 0 8px 24px rgba(15,23,42,.06);
     --radius: 14px; --radius-sm: 10px;
     --font: "DM Sans", system-ui, -apple-system, sans-serif;
@@ -34,9 +36,11 @@
       --amber: #fbbf24; --amber-soft: #422006;
       --green: #34d399; --green-soft: #064e3b;
       --red: #f87171; --red-soft: #450a0a;
+      --sky: #7dd3fc; --sky-soft: #0c4a6e;
       --chip-keep: #34d399; --chip-keep-bg: #064e3b;
       --chip-tweak: #fbbf24; --chip-tweak-bg: #422006;
       --chip-drop: #f87171; --chip-drop-bg: #450a0a;
+      --chip-park: #7dd3fc; --chip-park-bg: #0c4a6e;
       --shadow: 0 1px 2px rgba(0,0,0,.35), 0 12px 28px rgba(0,0,0,.35);
     }
   }
@@ -53,7 +57,7 @@
   }
   .wrap { width: min(100% - 1.5rem, var(--max)); margin-inline: auto; padding: 1.25rem 0 2.5rem; }
   .lab-back { margin: 0 0 .85rem; }
-  .lab-back a { color: var(--teal); font-weight: 650; text-decoration: none; font-size: .875rem; }
+  .lab-back a { display: inline-flex; align-items: center; min-height: 2.75rem; color: var(--teal); font-weight: 650; text-decoration: none; font-size: .875rem; }
   header.top { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.25rem; }
   .logo {
     width: 2.5rem; height: 2.5rem; border-radius: 10px; flex-shrink: 0;
@@ -80,6 +84,7 @@
   .chip.tweak { color: var(--chip-tweak); background: var(--chip-tweak-bg); }
   .chip.keep { color: var(--chip-keep); background: var(--chip-keep-bg); }
   .chip.drop { color: var(--chip-drop); background: var(--chip-drop-bg); }
+  .chip.park { color: var(--chip-park); background: var(--chip-park-bg); }
   .chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .55rem; }
   .meta { display: flex; flex-wrap: wrap; gap: .4rem; margin: .85rem 0 0; }
   .pill {
@@ -147,7 +152,7 @@
     <section class="card">
       <div class="chips">
         <span class="chip tweak">Tweak BTC core</span>
-        <span class="chip drop">Park family</span>
+        <span class="chip park">Parked</span>
       </div>
       <h1>Grid winner 20/15 beats hold — still trails fast SMA on units</h1>
       <p class="lede"><b>btc_hold_protect</b> with <code>dd_pct=20</code>, <code>reentry_pct=15</code> rescues year-split to <b>5/7</b> beat B&amp;H (defaults were 1/7) and grows ending units to <b>0.210 &gt; hold 0.132</b>. Walk-forward beat-hold <b>43%</b>. Fast SMA 5/20 still wins the pile (<b>0.612</b> units, 6/7 years). <b>Park</b> further dd/reentry research on this family for BTC.</p>
@@ -236,7 +241,7 @@
       <h2>Keep · Tweak · Drop</h2>
       <div class="row-verdicts">
         <div class="verdict-row"><span class="chip tweak">Tweak</span><div class="txt"><b>As a BTC rule (20/15)</b> — beats hold on $ &amp; units &amp; 5/7 years; still ≪ SMA units; not obvious enough to replace just holding on this alone.</div></div>
-        <div class="verdict-row"><span class="chip drop">Park</span><div class="txt"><b>Hold-protect family (BTC)</b> — dd/reentry grid + stress/WF done. Stop knob spiral. Do not DROP the idea (documented soft-hold recipe).</div></div>
+        <div class="verdict-row"><span class="chip park">Parked</span><div class="txt"><b>Hold-protect family (BTC)</b> — dd/reentry grid + stress/WF done. Stop knob spiral. Do not DROP the idea (documented soft-hold recipe).</div></div>
         <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>Defaults (25/10) as core</b> — confirmed worse than 20/15 and worse than hold on units.</div></div>
         <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>Fast SMA 5/20 paper baseline</b> — still best ending_units (0.612).</div></div>
         <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>Buy&amp;hold core reference</b> — 100% time-in-market; deepest DD (−76%).</div></div>
