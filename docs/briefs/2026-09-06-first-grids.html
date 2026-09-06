@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Trading Lab — Experiment Brief · Sep 6, 2026</title>
+<meta name="description" content="First screen experiment brief: paper-only BTC/ALGO grid results. Not financial advice.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Cpath d='M8 22 L14 12 L18 18 L24 8' fill='none' stroke='%2399f6e4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='8' r='2' fill='%23fbbf24'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f1f5f9;
+    --bg-elev: #ffffff;
+    --bg-soft: #e2e8f0;
+    --ink: #0f172a;
+    --ink-muted: #475569;
+    --ink-faint: #64748b;
+    --line: #cbd5e1;
+    --teal: #0f766e;
+    --teal-soft: #ccfbf1;
+    --teal-ink: #115e59;
+    --amber: #b45309;
+    --amber-soft: #fef3c7;
+    --green: #047857;
+    --green-soft: #d1fae5;
+    --red: #b91c1c;
+    --red-soft: #fee2e2;
+    --slate: #334155;
+    --chip-keep: #047857;
+    --chip-keep-bg: #d1fae5;
+    --chip-tweak: #b45309;
+    --chip-tweak-bg: #fef3c7;
+    --chip-drop: #b91c1c;
+    --chip-drop-bg: #fee2e2;
+    --shadow: 0 1px 2px rgba(15, 23, 42, 0.06), 0 8px 24px rgba(15, 23, 42, 0.06);
+    --radius: 14px;
+    --radius-sm: 10px;
+    --font: "DM Sans", system-ui, -apple-system, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --space: 1rem;
+    --max: 40rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b1220;
+      --bg-elev: #111827;
+      --bg-soft: #1e293b;
+      --ink: #e2e8f0;
+      --ink-muted: #94a3b8;
+      --ink-faint: #64748b;
+      --line: #334155;
+      --teal: #2dd4bf;
+      --teal-soft: #134e4a;
+      --teal-ink: #99f6e4;
+      --amber: #fbbf24;
+      --amber-soft: #422006;
+      --green: #34d399;
+      --green-soft: #064e3b;
+      --red: #f87171;
+      --red-soft: #450a0a;
+      --slate: #94a3b8;
+      --chip-keep: #34d399;
+      --chip-keep-bg: #064e3b;
+      --chip-tweak: #fbbf24;
+      --chip-tweak-bg: #422006;
+      --chip-drop: #f87171;
+      --chip-drop-bg: #450a0a;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 12px 28px rgba(0, 0, 0, 0.35);
+    }
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: var(--font);
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--ink);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, color-mix(in srgb, var(--teal) 18%, transparent), transparent 55%),
+      radial-gradient(900px 500px at 100% 0%, color-mix(in srgb, var(--slate) 12%, transparent), transparent 50%),
+      var(--bg);
+    min-height: 100dvh;
+  }
+
+  .wrap {
+    width: min(100% - 1.5rem, var(--max));
+    margin-inline: auto;
+    padding: 1.25rem 0 2.5rem;
+  }
+
+  header.top {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+  .logo {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.65rem;
+    background: var(--teal);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    box-shadow: var(--shadow);
+  }
+  .logo svg { width: 1.25rem; height: 1.25rem; }
+  .brand {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--teal-ink);
+  }
+  .badge {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    padding: 0.3rem 0.55rem;
+    border-radius: 999px;
+    background: var(--amber-soft);
+    color: var(--amber);
+    border: 1px solid color-mix(in srgb, var(--amber) 35%, transparent);
+  }
+
+  h1 {
+    font-size: 1.75rem;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    margin: 0 0 0.4rem;
+    font-weight: 700;
+  }
+  .subtitle {
+    margin: 0 0 1.5rem;
+    color: var(--ink-muted);
+    font-size: 0.9375rem;
+  }
+
+  .kpis {
+    display: grid;
+    gap: 0.75rem;
+    margin-bottom: 1.75rem;
+  }
+  .kpi {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1rem 1.1rem;
+    box-shadow: var(--shadow);
+  }
+  .kpi.hero {
+    background:
+      linear-gradient(145deg, color-mix(in srgb, var(--teal) 12%, var(--bg-elev)), var(--bg-elev) 55%);
+    border-color: color-mix(in srgb, var(--teal) 40%, var(--line));
+  }
+  .kpi-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.35rem;
+  }
+  .kpi-value {
+    font-family: var(--mono);
+    font-size: 1.375rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    color: var(--ink);
+  }
+  .kpi.hero .kpi-value { font-size: 1.5rem; }
+  .kpi-sub {
+    margin-top: 0.35rem;
+    font-size: 0.8125rem;
+    color: var(--ink-muted);
+  }
+  .gain { color: var(--green); }
+  .loss { color: var(--red); }
+  .teal { color: var(--teal-ink); }
+
+  section {
+    margin-bottom: 1.75rem;
+  }
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+  h2 {
+    font-size: 1.125rem;
+    margin: 0;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+  .sec-tag {
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    color: var(--ink-faint);
+  }
+
+  .card {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1rem 1.1rem;
+    box-shadow: var(--shadow);
+  }
+  .card + .card { margin-top: 0.75rem; }
+  .card p { margin: 0.5rem 0 0; color: var(--ink-muted); font-size: 0.9375rem; }
+  .card p:first-child { margin-top: 0; }
+  ul.plain {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.65rem;
+  }
+  ul.plain li {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.85rem 1rem;
+    box-shadow: var(--shadow);
+    color: var(--ink-muted);
+    font-size: 0.9375rem;
+  }
+  ul.plain strong { color: var(--ink); font-weight: 600; }
+
+  .story-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.35rem;
+  }
+  .story-title h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+  }
+  .pill {
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+    letter-spacing: 0.02em;
+  }
+  .pill.base { background: var(--bg-soft); color: var(--slate); }
+  .pill.win { background: var(--green-soft); color: var(--green); }
+  .pill.lose { background: var(--red-soft); color: var(--red); }
+
+  .metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+  .metric {
+    background: var(--bg-soft);
+    border-radius: 0.65rem;
+    padding: 0.55rem 0.65rem;
+  }
+  .metric span {
+    display: block;
+    font-size: 0.6875rem;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-weight: 600;
+  }
+  .metric b {
+    font-family: var(--mono);
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .takeaways {
+    display: grid;
+    gap: 0.65rem;
+  }
+  .take {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.65rem;
+    align-items: start;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.85rem 1rem;
+    box-shadow: var(--shadow);
+  }
+  .chip {
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.4rem;
+    white-space: nowrap;
+  }
+  .chip.keep { background: var(--chip-keep-bg); color: var(--chip-keep); }
+  .chip.tweak { background: var(--chip-tweak-bg); color: var(--chip-tweak); }
+  .chip.drop { background: var(--chip-drop-bg); color: var(--chip-drop); }
+  .chip.next { background: var(--teal-soft); color: var(--teal-ink); }
+  .take p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--ink-muted);
+  }
+  .take p strong { color: var(--ink); }
+
+  .thermo {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1rem 1.1rem 1.15rem;
+    box-shadow: var(--shadow);
+  }
+  .path {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    overflow-x: auto;
+    padding-bottom: 0.15rem;
+    -webkit-overflow-scrolling: touch;
+  }
+  .step {
+    flex: 1 1 0;
+    min-width: 4.5rem;
+    text-align: center;
+    position: relative;
+    padding: 0 0.2rem;
+  }
+  .step::before {
+    content: "";
+    position: absolute;
+    top: 0.7rem;
+    left: 0;
+    right: 50%;
+    height: 2px;
+    background: var(--line);
+    z-index: 0;
+  }
+  .step::after {
+    content: "";
+    position: absolute;
+    top: 0.7rem;
+    left: 50%;
+    right: 0;
+    height: 2px;
+    background: var(--line);
+    z-index: 0;
+  }
+  .step:first-child::before { display: none; }
+  .step:last-child::after { display: none; }
+  .step.done::before,
+  .step.done::after,
+  .step.done + .step::before {
+    background: var(--teal);
+  }
+  .dot {
+    width: 1.4rem;
+    height: 1.4rem;
+    border-radius: 999px;
+    margin: 0 auto 0.45rem;
+    display: grid;
+    place-items: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+    border: 2px solid var(--line);
+    background: var(--bg-elev);
+    color: var(--ink-faint);
+    font-family: var(--mono);
+  }
+  .step.done .dot {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: #042f2e;
+  }
+  .step.next .dot {
+    border-color: var(--teal);
+    color: var(--teal-ink);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--teal) 22%, transparent);
+  }
+  .step-label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: var(--ink-muted);
+    line-height: 1.25;
+  }
+  .step.done .step-label { color: var(--teal-ink); }
+  .step.next .step-label { color: var(--ink); }
+
+  footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.75rem;
+    color: var(--ink-faint);
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  @media (min-width: 480px) {
+    .kpis { grid-template-columns: 1fr 1fr; }
+    .kpi.hero { grid-column: 1 / -1; }
+    h1 { font-size: 2rem; }
+    .kpi.hero .kpi-value { font-size: 1.75rem; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 17 L9 9 L13 14 L20 5" stroke="#99f6e4" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="20" cy="5" r="1.8" fill="#fbbf24"/>
+        </svg>
+      </div>
+      <div class="brand">Trading Lab</div>
+      <div class="badge">PAPER ONLY</div>
+    </header>
+
+    <h1>Trading Lab — Experiment Brief</h1>
+    <p class="subtitle">First screen · Sep 6, 2026 · Paper money only · $1,000 start</p>
+
+    <div class="kpis" role="region" aria-label="Hero results">
+      <div class="kpi hero">
+        <div class="kpi-label">Best idea so far</div>
+        <div class="kpi-value teal">BTC “fast vs slow average”</div>
+        <div class="kpi-sub">SMA 5 / 20 — short average vs long average (simple trend rule)</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Paper growth</div>
+        <div class="kpi-value">$1,000 → $6,196</div>
+        <div class="kpi-sub"><span class="gain">+$5,196</span> · fees already subtracted</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Worst dip along the way</div>
+        <div class="kpi-value loss">about −18%</div>
+        <div class="kpi-sub">from a peak (drawdown = peak-to-trough drop)</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Beat buy &amp; hold BTC</div>
+        <div class="kpi-value gain">$6,196 vs $4,619</div>
+        <div class="kpi-sub">same period, same starting cash</div>
+      </div>
+    </div>
+
+    <section>
+      <div class="sec-head">
+        <h2>What we tested</h2>
+        <span class="sec-tag">plain English</span>
+      </div>
+      <ul class="plain">
+        <li>We compared <strong>simple rules</strong> for when to be invested in Bitcoin (<strong>BTC-USD</strong>) and Algorand (<strong>ALGO-USD</strong>) vs sitting in cash.</li>
+        <li><strong>Period:</strong> Jan 1, 2023 → Sep 5, 2026, using <strong>one price per day</strong> (not minute-by-minute).</li>
+        <li><strong>Costs:</strong> we subtracted trading fees so results are a bit <strong>pessimistic</strong>.</li>
+      </ul>
+    </section>
+
+    <section>
+      <div class="sec-head">
+        <h2>Story cards</h2>
+        <span class="sec-tag">what happened</span>
+      </div>
+
+      <article class="card">
+        <div class="story-title">
+          <h3>1. Buy &amp; hold baseline</h3>
+          <span class="pill base">BASELINE</span>
+        </div>
+        <p>Just buy once and hold — no timing rules.</p>
+        <div class="metrics">
+          <div class="metric">
+            <span>BTC</span>
+            <b class="gain">$1000→$4619 (+362%)</b>
+          </div>
+          <div class="metric">
+            <span>BTC rough ride</span>
+            <b class="loss">−53%</b>
+          </div>
+          <div class="metric">
+            <span>ALGO</span>
+            <b class="loss">$1000→$567 (−43%)</b>
+          </div>
+          <div class="metric">
+            <span>ALGO rough ride</span>
+            <b class="loss">−83%</b>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="story-title">
+          <h3>2. Winner — short avg above long avg</h3>
+          <span class="pill win">WINNER</span>
+        </div>
+        <p>Rule: be invested when the <strong>5-day average</strong> is above the <strong>20-day average</strong> (trend up); otherwise cash. On BTC this was the standout.</p>
+        <div class="metrics">
+          <div class="metric">
+            <span>BTC 5&amp;20</span>
+            <b class="gain">$6196</b>
+          </div>
+          <div class="metric">
+            <span>Worst dip</span>
+            <b class="loss">−18%</b>
+          </div>
+          <div class="metric">
+            <span>Trades</span>
+            <b>41</b>
+          </div>
+          <div class="metric">
+            <span>Same rule · ALGO</span>
+            <b class="gain">$4290</b>
+          </div>
+        </div>
+        <p style="margin-top:0.75rem">Same rule on ALGO: <strong class="gain">$4290</strong> — a huge upgrade vs holding ALGO ($567).</p>
+      </article>
+
+      <article class="card">
+        <div class="story-title">
+          <h3>3. Loser family — “Trend + RSI”</h3>
+          <span class="pill lose">LOSER</span>
+        </div>
+        <p>Rules that combine trend with <strong>RSI</strong> (a “hot / cold” momentum gauge). Mostly <strong>never traded</strong> — stayed at $1000. Not useful yet.</p>
+        <div class="metrics">
+          <div class="metric">
+            <span>Typical end</span>
+            <b>$1000</b>
+          </div>
+          <div class="metric">
+            <span>Verdict</span>
+            <b class="loss">Drop / redesign</b>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section>
+      <div class="sec-head">
+        <h2>My take</h2>
+        <span class="sec-tag">researcher</span>
+      </div>
+      <div class="takeaways">
+        <div class="take">
+          <span class="chip keep">Keep</span>
+          <p><strong>SMA-style trend following on BTC</strong> — strong on paper, smoother than buy&amp;hold.</p>
+        </div>
+        <div class="take">
+          <span class="chip tweak">Tweak</span>
+          <p><strong>Later:</strong> confirm it wasn’t one lucky bull market (split the years).</p>
+        </div>
+        <div class="take">
+          <span class="chip drop">Drop</span>
+          <p><strong>For now:</strong> trend_rsi as configured.</p>
+        </div>
+        <div class="take">
+          <span class="chip next">Next</span>
+          <p><strong>Suggested (for Othman to approve):</strong> stress-test SMA 5/20 on 2023 / 2024 / 2025 separately before adding new strategy families.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="sec-head">
+        <h2>Path thermometer</h2>
+        <span class="sec-tag">where we are</span>
+      </div>
+      <div class="thermo">
+        <div class="path" role="list">
+          <div class="step done" role="listitem">
+            <div class="dot">✓</div>
+            <div class="step-label">Screen</div>
+          </div>
+          <div class="step next" role="listitem">
+            <div class="dot">2</div>
+            <div class="step-label">Stress<br>(next)</div>
+          </div>
+          <div class="step" role="listitem">
+            <div class="dot">3</div>
+            <div class="step-label">Paper-live</div>
+          </div>
+          <div class="step" role="listitem">
+            <div class="dot">4</div>
+            <div class="step-label">Real $1k<br>(needs OK)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Not financial advice · Paper research · No Revolut / no live orders
+    </footer>
+  </div>
+</body>
+</html>

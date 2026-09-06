@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sticky SMA grid — BTC · Sep 6, 2026</title>
+<meta name="description" content="Paper-only BTC sma_sticky grid vs fast 5/20 and buy&hold. TWEAK→DROP for core. Not financial advice.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Cpath d='M8 22 L14 12 L18 18 L24 8' fill='none' stroke='%2399f6e4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='8' r='2' fill='%23fbbf24'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f1f5f9; --bg-elev: #ffffff; --bg-soft: #e2e8f0;
+    --ink: #0f172a; --ink-muted: #475569; --ink-faint: #64748b; --line: #cbd5e1;
+    --teal: #0f766e; --teal-soft: #ccfbf1; --teal-ink: #115e59;
+    --amber: #b45309; --amber-soft: #fef3c7;
+    --green: #047857; --green-soft: #d1fae5;
+    --red: #b91c1c; --red-soft: #fee2e2;
+    --chip-tweak: #b45309; --chip-tweak-bg: #fef3c7;
+    --chip-drop: #b91c1c; --chip-drop-bg: #fee2e2;
+    --shadow: 0 1px 2px rgba(15,23,42,.06), 0 8px 24px rgba(15,23,42,.06);
+    --radius: 14px; --radius-sm: 10px;
+    --font: "DM Sans", system-ui, -apple-system, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --max: 42rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b1220; --bg-elev: #111827; --bg-soft: #1e293b;
+      --ink: #e2e8f0; --ink-muted: #94a3b8; --ink-faint: #64748b; --line: #334155;
+      --teal: #2dd4bf; --teal-soft: #134e4a; --teal-ink: #99f6e4;
+      --amber: #fbbf24; --amber-soft: #422006;
+      --green: #34d399; --green-soft: #064e3b;
+      --red: #f87171; --red-soft: #450a0a;
+      --chip-tweak: #fbbf24; --chip-tweak-bg: #422006;
+      --chip-drop: #f87171; --chip-drop-bg: #450a0a;
+      --shadow: 0 1px 2px rgba(0,0,0,.35), 0 12px 28px rgba(0,0,0,.35);
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; font-family: var(--font); font-size: 1rem; line-height: 1.55;
+    color: var(--ink);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, color-mix(in srgb, var(--teal) 18%, transparent), transparent 55%),
+      radial-gradient(900px 500px at 100% 0%, color-mix(in srgb, var(--amber) 10%, transparent), transparent 50%),
+      var(--bg);
+    min-height: 100dvh;
+  }
+  .wrap { width: min(100% - 1.5rem, var(--max)); margin-inline: auto; padding: 1.25rem 0 2.5rem; }
+  header.top { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.25rem; }
+  .logo {
+    width: 2.5rem; height: 2.5rem; border-radius: 10px; flex-shrink: 0;
+    background: linear-gradient(145deg, #0f766e, #134e4a);
+    display: grid; place-items: center; box-shadow: var(--shadow);
+  }
+  .logo svg { width: 1.35rem; height: 1.35rem; }
+  .brand { font-weight: 600; font-size: .95rem; }
+  .meta { color: var(--ink-faint); font-size: .8rem; }
+  h1 { font-size: 1.45rem; line-height: 1.25; margin: 0 0 .5rem; letter-spacing: -.02em; }
+  h2 { font-size: 1.05rem; margin: 1.5rem 0 .6rem; letter-spacing: -.01em; }
+  p { margin: .55rem 0; color: var(--ink-muted); }
+  .card {
+    background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 1rem 1.1rem; box-shadow: var(--shadow); margin: .85rem 0;
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: .4rem; margin: .5rem 0 .75rem; }
+  .chip {
+    display: inline-flex; align-items: center; gap: .35rem;
+    font-size: .75rem; font-weight: 600; letter-spacing: .02em;
+    padding: .28rem .6rem; border-radius: 999px; text-transform: uppercase;
+  }
+  .chip.tweak { color: var(--chip-tweak); background: var(--chip-tweak-bg); }
+  .chip.drop { color: var(--chip-drop); background: var(--chip-drop-bg); }
+  .chip.paper { color: var(--teal-ink); background: var(--teal-soft); }
+  table {
+    width: 100%; border-collapse: collapse; font-size: .78rem;
+    font-family: var(--mono); margin: .5rem 0;
+  }
+  th, td { text-align: left; padding: .4rem .35rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--ink-faint); font-weight: 500; font-size: .68rem; text-transform: uppercase; letter-spacing: .04em; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tr.best td { background: color-mix(in srgb, var(--green-soft) 55%, transparent); }
+  .callout {
+    border-left: 3px solid var(--amber); padding: .55rem .8rem; margin: .75rem 0;
+    background: var(--amber-soft); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    color: var(--ink); font-size: .92rem;
+  }
+  .paths { font-family: var(--mono); font-size: .72rem; color: var(--ink-muted); word-break: break-all; }
+  .paths li { margin: .25rem 0; }
+  footer { margin-top: 1.75rem; font-size: .75rem; color: var(--ink-faint); }
+  strong { color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="logo" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 17 L9 9 L13 14 L20 5" stroke="#99f6e4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="5" r="1.6" fill="#fbbf24"/></svg>
+    </div>
+    <div>
+      <div class="brand">trading-lab · paper brief</div>
+      <div class="meta">2026-09-06 · Europe/Paris · SHA 10bb811</div>
+    </div>
+  </header>
+
+  <h1>Sticky SMA grid on BTC — knobs helped, still not core</h1>
+  <div class="chips">
+    <span class="chip paper">Paper only</span>
+    <span class="chip tweak">Tweak → Drop</span>
+    <span class="chip drop">Not BTC core</span>
+  </div>
+
+  <div class="card">
+    <p style="margin-top:0"><strong>Verdict:</strong> Grid found sticky configs that clearly beat <em>defaults</em> on ending BTC units and soften year-split drawdowns. <strong>None</strong> beat fast SMA <strong>5/20</strong> on ending_units. Year-split vs buy&amp;hold stays <strong>3/7</strong> (fast is <strong>6/7</strong>). Soft DD ≠ good BTC accumulation rule.</p>
+    <div class="callout"><strong>Next:</strong> (1) BTC exit-only-on-deep-DD / Fear&amp;Greed, stay long otherwise — or (2) try sticky on an <em>alts</em> sleeve, not core BTC.</div>
+  </div>
+
+  <h2>Top 5 sticky by ending units (= by return)</h2>
+  <div class="card" style="padding:.6rem .7rem; overflow-x:auto">
+  <table>
+    <thead><tr><th>#</th><th>Params</th><th class="num">End $</th><th class="num">Return</th><th class="num">Max DD</th><th class="num">In mkt</th><th class="num">Units</th></tr></thead>
+    <tbody>
+      <tr class="best"><td>1</td><td>10/100 c1 g0.5</td><td class="num">$17,520</td><td class="num">+1652%</td><td class="num">−31.9%</td><td class="num">55.5%</td><td class="num">0.219</td></tr>
+      <tr><td>2</td><td>20/50 c1 g2.0</td><td class="num">$16,004</td><td class="num">+1500%</td><td class="num">−43.3%</td><td class="num">60.6%</td><td class="num">0.200</td></tr>
+      <tr><td>3</td><td>10/100 c1 g1.0</td><td class="num">$15,913</td><td class="num">+1491%</td><td class="num">−39.2%</td><td class="num">55.8%</td><td class="num">0.199</td></tr>
+      <tr><td>4</td><td>10/100 c1 g2.0</td><td class="num">$15,856</td><td class="num">+1486%</td><td class="num">−38.0%</td><td class="num">57.3%</td><td class="num">0.199</td></tr>
+      <tr><td>5</td><td>20/50 c3 g2.0</td><td class="num">$15,584</td><td class="num">+1458%</td><td class="num">−44.9%</td><td class="num">58.9%</td><td class="num">0.195</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:.85rem;margin:.4rem 0 0">Defaults 20/50 c2 g1.0 → units <strong>0.127</strong>. Best sticky <strong>0.219 &gt; B&amp;H 0.132</strong>. Fast 5/20 → <strong>0.612</strong>.</p>
+  </div>
+
+  <h2>Focused full-sample compare</h2>
+  <div class="card" style="padding:.6rem .7rem; overflow-x:auto">
+  <table>
+    <thead><tr><th>Strategy</th><th class="num">End $</th><th class="num">Max DD</th><th class="num">In mkt</th><th class="num">Units</th></tr></thead>
+    <tbody>
+      <tr><td>Sticky best 10/100</td><td class="num">$17,520</td><td class="num">−31.9%</td><td class="num">55.5%</td><td class="num">0.219</td></tr>
+      <tr><td>Sticky defaults</td><td class="num">$10,169</td><td class="num">−52.2%</td><td class="num">56.3%</td><td class="num">0.127</td></tr>
+      <tr class="best"><td>Fast SMA 5/20</td><td class="num">$48,827</td><td class="num">−40.1%</td><td class="num">53.8%</td><td class="num">0.612</td></tr>
+      <tr><td>Buy &amp; hold</td><td class="num">$10,558</td><td class="num">−76.2%</td><td class="num">100%</td><td class="num">0.132</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:.85rem;margin:.4rem 0 0"><strong>Beat fast 5/20 on ending_units?</strong> No.</p>
+  </div>
+
+  <h2>Year-split vs buy&amp;hold</h2>
+  <div class="card" style="padding:.6rem .7rem; overflow-x:auto">
+  <table>
+    <thead><tr><th>Config</th><th class="num">Beat B&amp;H</th><th class="num">Avg PnL</th><th class="num">Worst DD</th></tr></thead>
+    <tbody>
+      <tr><td>Sticky best 10/100</td><td class="num">3/7</td><td class="num">+33.6%</td><td class="num">−26.4%</td></tr>
+      <tr><td>Sticky defaults</td><td class="num">3/7</td><td class="num">+32.8%</td><td class="num">−46.7%</td></tr>
+      <tr class="best"><td>Fast SMA 5/20</td><td class="num">6/7</td><td class="num">+89.9%</td><td class="num">−32.5%</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:.85rem;margin:.4rem 0 0">Best sticky softens DD vs defaults (esp. 2022) but still misses bull years vs hold.</p>
+  </div>
+
+  <h2>Paths</h2>
+  <ul class="paths">
+    <li>Grid (full sample): <code>experiments/runs/20260906T164117Z/</code></li>
+    <li>Focused cmp: <code>…/20260906T164157Z/</code> · <code>…158Z/</code> · <code>…159Z/</code></li>
+    <li>Stress top: <code>experiments/runs/stress_20260906T164206Z/</code></li>
+    <li>Ledger: <code>experiments/results.tsv</code></li>
+    <li>Brief: <code>briefs/2026-09-06-sma-sticky-grid.md</code> · <code>.html</code></li>
+  </ul>
+
+  <footer>Paper research only. Not financial advice. No live orders.</footer>
+</div>
+</body>
+</html>

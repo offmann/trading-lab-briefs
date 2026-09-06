@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SMA 5/20 stress — BTC · Sep 6, 2026</title>
+<meta name="description" content="Paper-only BTC SMA 5/20 year-split and walk-forward. TWEAK for core wealth sleeve. Not financial advice.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Cpath d='M8 22 L14 12 L18 18 L24 8' fill='none' stroke='%2399f6e4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='8' r='2' fill='%23fbbf24'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f1f5f9; --bg-elev: #ffffff; --bg-soft: #e2e8f0;
+    --ink: #0f172a; --ink-muted: #475569; --ink-faint: #64748b; --line: #cbd5e1;
+    --teal: #0f766e; --teal-soft: #ccfbf1; --teal-ink: #115e59;
+    --amber: #b45309; --amber-soft: #fef3c7;
+    --green: #047857; --green-soft: #d1fae5;
+    --red: #b91c1c; --red-soft: #fee2e2;
+    --chip-keep: #047857; --chip-keep-bg: #d1fae5;
+    --chip-tweak: #b45309; --chip-tweak-bg: #fef3c7;
+    --chip-drop: #b91c1c; --chip-drop-bg: #fee2e2;
+    --shadow: 0 1px 2px rgba(15,23,42,.06), 0 8px 24px rgba(15,23,42,.06);
+    --radius: 14px; --radius-sm: 10px;
+    --font: "DM Sans", system-ui, -apple-system, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --max: 40rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b1220; --bg-elev: #111827; --bg-soft: #1e293b;
+      --ink: #e2e8f0; --ink-muted: #94a3b8; --ink-faint: #64748b; --line: #334155;
+      --teal: #2dd4bf; --teal-soft: #134e4a; --teal-ink: #99f6e4;
+      --amber: #fbbf24; --amber-soft: #422006;
+      --green: #34d399; --green-soft: #064e3b;
+      --red: #f87171; --red-soft: #450a0a;
+      --chip-keep: #34d399; --chip-keep-bg: #064e3b;
+      --chip-tweak: #fbbf24; --chip-tweak-bg: #422006;
+      --chip-drop: #f87171; --chip-drop-bg: #450a0a;
+      --shadow: 0 1px 2px rgba(0,0,0,.35), 0 12px 28px rgba(0,0,0,.35);
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; font-family: var(--font); font-size: 1rem; line-height: 1.55;
+    color: var(--ink);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, color-mix(in srgb, var(--teal) 18%, transparent), transparent 55%),
+      radial-gradient(900px 500px at 100% 0%, color-mix(in srgb, var(--amber) 10%, transparent), transparent 50%),
+      var(--bg);
+    min-height: 100dvh;
+  }
+  .wrap { width: min(100% - 1.5rem, var(--max)); margin-inline: auto; padding: 1.25rem 0 2.5rem; }
+  header.top { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.25rem; }
+  .logo {
+    width: 2.5rem; height: 2.5rem; border-radius: 10px; flex-shrink: 0;
+    background: linear-gradient(145deg, #0f766e, #134e4a);
+    display: grid; place-items: center; box-shadow: var(--shadow);
+  }
+  .logo svg { width: 1.35rem; height: 1.35rem; }
+  .brand { font-weight: 700; font-size: .95rem; letter-spacing: -.01em; }
+  .sub { font-size: .8rem; color: var(--ink-faint); }
+  .card {
+    background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 1.1rem 1.15rem; margin-bottom: 1rem;
+  }
+  h1 { font-size: 1.35rem; line-height: 1.25; margin: 0 0 .5rem; letter-spacing: -.02em; }
+  h2 { font-size: 1.05rem; margin: 0 0 .65rem; letter-spacing: -.015em; }
+  p { margin: 0 0 .75rem; color: var(--ink-muted); }
+  p:last-child { margin-bottom: 0; }
+  .lede { color: var(--ink); font-size: 1.02rem; }
+  .chip {
+    display: inline-flex; align-items: center; gap: .35rem;
+    font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+    padding: .28rem .55rem; border-radius: 999px;
+  }
+  .chip.tweak { color: var(--chip-tweak); background: var(--chip-tweak-bg); }
+  .chip.keep { color: var(--chip-keep); background: var(--chip-keep-bg); }
+  .chip.drop { color: var(--chip-drop); background: var(--chip-drop-bg); }
+  .meta { display: flex; flex-wrap: wrap; gap: .4rem; margin: .85rem 0 0; }
+  .pill {
+    font-family: var(--mono); font-size: .7rem; color: var(--ink-muted);
+    background: var(--bg-soft); border-radius: 999px; padding: .25rem .55rem;
+  }
+  .statgrid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; margin-top: .85rem;
+  }
+  @media (min-width: 480px) { .statgrid { grid-template-columns: repeat(4, 1fr); } }
+  .stat {
+    background: var(--bg-soft); border-radius: var(--radius-sm); padding: .7rem .75rem;
+  }
+  .stat .k { font-size: .7rem; color: var(--ink-faint); text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
+  .stat .v { font-family: var(--mono); font-size: 1.05rem; font-weight: 600; margin-top: .2rem; color: var(--ink); }
+  .stat .v.good { color: var(--green); }
+  .stat .v.warn { color: var(--amber); }
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: .5rem 0 0; border-radius: var(--radius-sm); border: 1px solid var(--line); }
+  table { width: 100%; border-collapse: collapse; font-size: .82rem; min-width: 32rem; }
+  th, td { padding: .55rem .6rem; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  th { background: var(--bg-soft); font-size: .68rem; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-faint); font-weight: 700; }
+  tr:last-child td { border-bottom: 0; }
+  td.mono { font-family: var(--mono); font-size: .78rem; }
+  .beat { color: var(--green); font-weight: 600; }
+  .lost { color: var(--red); font-weight: 600; }
+  ul.plain { margin: 0; padding-left: 1.1rem; color: var(--ink-muted); }
+  ul.plain li { margin-bottom: .45rem; }
+  ul.plain li:last-child { margin-bottom: 0; }
+  .callout {
+    border-left: 3px solid var(--teal); background: var(--teal-soft);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: .75rem .9rem; margin-top: .75rem;
+  }
+  .callout strong { color: var(--teal-ink); }
+  .next {
+    background: linear-gradient(135deg, color-mix(in srgb, var(--teal) 12%, var(--bg-elev)), var(--bg-elev));
+  }
+  footer {
+    margin-top: 1.25rem; font-size: .75rem; color: var(--ink-faint); text-align: center; line-height: 1.45;
+  }
+  .row-verdicts { display: flex; flex-direction: column; gap: .55rem; }
+  .verdict-row {
+    display: flex; align-items: flex-start; gap: .65rem;
+    padding: .65rem .7rem; background: var(--bg-soft); border-radius: var(--radius-sm);
+  }
+  .verdict-row .txt { font-size: .88rem; color: var(--ink-muted); }
+  .verdict-row .txt b { color: var(--ink); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 17 L9 9 L13 14 L20 5" stroke="#99f6e4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="5" r="1.8" fill="#fbbf24"/></svg>
+      </div>
+      <div>
+        <div class="brand">Trading Lab · Experiment brief</div>
+        <div class="sub">Sun Sep 6, 2026 · paper only · PT</div>
+      </div>
+    </header>
+
+    <section class="card">
+      <span class="chip tweak">Tweak</span>
+      <h1>SMA 5/20 on Bitcoin: softens crashes, still sells too often</h1>
+      <p class="lede">We stress-tested the short/fast moving-average rule (5 &amp; 20 days) year by year and in rolling 90-day windows. It often beats “just hold BTC” on paper — especially in ugly years — but it regularly steps out of Bitcoin. For your <b>core wealth sleeve</b>, that’s a tweak signal, not a green light.</p>
+      <div class="meta">
+        <span class="pill">BTC-USD</span>
+        <span class="pill">fast=5 · slow=20</span>
+        <span class="pill">$1,000 / year</span>
+        <span class="pill">main 3a1878f · PR #3</span>
+      </div>
+      <div class="statgrid">
+        <div class="stat"><div class="k">Years vs hold</div><div class="v good">6 / 7</div></div>
+        <div class="stat"><div class="k">Avg year PnL</div><div class="v">+89.9%</div></div>
+        <div class="stat"><div class="k">Worst DD</div><div class="v warn">−32.5%</div></div>
+        <div class="stat"><div class="k">WF beat hold</div><div class="v">13 / 23</div></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Year table · plain $</h2>
+      <p>Each row restarts with <b>$1,000</b> on Jan 1 of that year (2026 = YTD).</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th>SMA end</th>
+              <th>SMA PnL</th>
+              <th>Max DD</th>
+              <th>Hold end</th>
+              <th>Hold PnL</th>
+              <th>vs hold</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>2020</td><td class="mono">$4,258</td><td class="mono">+326%</td><td class="mono">−17%</td><td class="mono">$3,868</td><td class="mono">+287%</td><td class="beat">BEAT</td></tr>
+            <tr><td>2021</td><td class="mono">$1,661</td><td class="mono">+66%</td><td class="mono">−32%</td><td class="mono">$1,563</td><td class="mono">+56%</td><td class="beat">BEAT</td></tr>
+            <tr><td>2022</td><td class="mono">$727</td><td class="mono">−27%</td><td class="mono">−33%</td><td class="mono">$388</td><td class="mono">−61%</td><td class="beat">BEAT</td></tr>
+            <tr><td>2023</td><td class="mono">$1,714</td><td class="mono">+71%</td><td class="mono">−18%</td><td class="mono">$2,469</td><td class="mono">+147%</td><td class="lost">LOST</td></tr>
+            <tr><td>2024</td><td class="mono">$2,545</td><td class="mono">+154%</td><td class="mono">−13%</td><td class="mono">$2,143</td><td class="mono">+114%</td><td class="beat">BEAT</td></tr>
+            <tr><td>2025</td><td class="mono">$1,107</td><td class="mono">+11%</td><td class="mono">−16%</td><td class="mono">$937</td><td class="mono">−6%</td><td class="beat">BEAT</td></tr>
+            <tr><td>2026*</td><td class="mono">$1,280</td><td class="mono">+28%</td><td class="mono">−9%</td><td class="mono">$914</td><td class="mono">−9%</td><td class="beat">BEAT</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout"><strong>Worst years:</strong> 2022 still lost ~$273 but held up far better than buy-and-hold (~$388 left). 2023 made money (+71%) but trailed a strong hold year (+147%). Deepest strategy dip inside a year ≈ <b>−33%</b>.</div>
+    </section>
+
+    <section class="card">
+      <h2>Walk-forward (fixed 5/20)</h2>
+      <p>Train 365 days → test 90 → step 90. <b>23 folds</b>, each starting at $1,000.</p>
+      <div class="statgrid">
+        <div class="stat"><div class="k">Mean return</div><div class="v good">+11.6%</div></div>
+        <div class="stat"><div class="k">Mean end $</div><div class="v">$1,116</div></div>
+        <div class="stat"><div class="k">Best / worst</div><div class="v">+57% / −13%</div></div>
+        <div class="stat"><div class="k">Worst DD</div><div class="v warn">−21.3%</div></div>
+      </div>
+      <p style="margin-top:.85rem">Beats buy-and-hold in <b>57%</b> of folds — useful shock absorber, not an obvious consistent winner.</p>
+    </section>
+
+    <section class="card">
+      <h2>Keep · Tweak · Drop</h2>
+      <div class="row-verdicts">
+        <div class="verdict-row"><span class="chip tweak">Tweak</span><div class="txt"><b>Live BTC core rule</b> — softens crashes but sells BTC too often vs accumulate bias.</div></div>
+        <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>Paper research on this family</b> — traceable baseline; 6/7 years beat hold.</div></div>
+        <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>Ship to Revolut as-is</b> — not an obvious winner. Paper only.</div></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>vs just holding BTC</h2>
+      <ul class="plain">
+        <li>Usually wins the year comparison, especially crash/chop years (2022, 2025, 2026 YTD).</li>
+        <li>Strong bull stretch in 2023: holding wins big.</li>
+        <li>Cost of the edge: being out of BTC in some of the best stretches — fights “grow the BTC pile.”</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>ALGO same rule (optional)</h2>
+      <p>5/7 years beat hold · avg +87% · worst DD <b>−55%</b>. Deeper pain — alts upside sleeve territory, not BTC core. 2026 YTD still red.</p>
+    </section>
+
+    <section class="card next">
+      <h2>Next build step</h2>
+      <p>Try a <b>stickier BTC rule</b> (longer averages or “exit only on deep fear / big drawdown”) so the default is stay invested. Re-run year-split + walk-forward and score <b>time-in-market</b> and BTC units held over time — not just dollars.</p>
+    </section>
+
+    <section class="card">
+      <h2>Traceability</h2>
+      <ul class="plain">
+        <li><code>experiments/runs/stress_20260906T162745Z</code> — BTC year-split</li>
+        <li><code>experiments/runs/walkforward_20260906T162749Z</code> — BTC walk-forward</li>
+        <li><code>experiments/runs/stress_20260906T162805Z</code> — ALGO year-split</li>
+        <li><code>briefs/2026-09-06-sma520-stress.md</code> · <code>experiments/results.tsv</code></li>
+      </ul>
+    </section>
+
+    <footer>
+      Paper research only. Not financial advice. No Revolut orders.<br>
+      Risk profile: BTC = core wealth sleeve · accumulate bias.
+    </footer>
+  </div>
+</body>
+</html>

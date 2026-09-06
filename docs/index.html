@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Trading Lab — Experiment Briefs</title>
+<meta name="description" content="Browse paper-only experiment HTML briefs from trading-lab.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Cpath d='M8 22 L14 12 L18 18 L24 8' fill='none' stroke='%2399f6e4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='8' r='2' fill='%23fbbf24'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b1220; --bg-elev: #111827; --bg-soft: #1e293b;
+    --ink: #e2e8f0; --ink-muted: #94a3b8; --ink-faint: #64748b; --line: #334155;
+    --teal: #2dd4bf; --teal-soft: #134e4a; --teal-ink: #99f6e4;
+    --amber: #fbbf24; --amber-soft: #422006;
+    --green: #34d399; --green-soft: #064e3b;
+    --red: #f87171; --red-soft: #450a0a;
+    --chip-keep: #34d399; --chip-keep-bg: #064e3b;
+    --chip-tweak: #fbbf24; --chip-tweak-bg: #422006;
+    --chip-drop: #f87171; --chip-drop-bg: #450a0a;
+    --shadow: 0 1px 2px rgba(0,0,0,.35), 0 12px 28px rgba(0,0,0,.35);
+    --radius: 14px; --radius-sm: 10px;
+    --font: "DM Sans", system-ui, -apple-system, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --max: 44rem;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; font-family: var(--font); font-size: 1rem; line-height: 1.55;
+    color: var(--ink);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, color-mix(in srgb, var(--teal) 18%, transparent), transparent 55%),
+      radial-gradient(900px 500px at 100% 0%, color-mix(in srgb, var(--amber) 10%, transparent), transparent 50%),
+      var(--bg);
+    min-height: 100dvh;
+  }
+  .wrap { width: min(100% - 1.5rem, var(--max)); margin-inline: auto; padding: 1.25rem 0 2.75rem; }
+  header.top { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.35rem; }
+  .logo {
+    width: 2.5rem; height: 2.5rem; border-radius: 10px; flex-shrink: 0;
+    background: linear-gradient(145deg, #0f766e, #134e4a);
+    display: grid; place-items: center; box-shadow: var(--shadow);
+  }
+  .logo svg { width: 1.35rem; height: 1.35rem; }
+  .brand { font-weight: 700; font-size: .95rem; letter-spacing: -.01em; }
+  .sub { font-size: .8rem; color: var(--ink-faint); }
+  .hero {
+    background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 1.15rem 1.2rem; margin-bottom: 1.15rem;
+  }
+  h1 { font-size: 1.4rem; line-height: 1.25; margin: 0 0 .45rem; letter-spacing: -.02em; }
+  .lede { margin: 0; color: var(--ink-muted); font-size: 1.02rem; }
+  .meta { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .85rem; }
+  .pill {
+    font-family: var(--mono); font-size: .7rem; color: var(--ink-muted);
+    background: var(--bg-soft); border-radius: 999px; padding: .25rem .55rem;
+  }
+  .grid { display: grid; gap: .85rem; }
+  a.card {
+    display: block; text-decoration: none; color: inherit;
+    background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 1rem 1.1rem;
+    transition: border-color .15s ease, transform .15s ease;
+  }
+  a.card:hover, a.card:focus-visible {
+    border-color: color-mix(in srgb, var(--teal) 55%, var(--line));
+    transform: translateY(-1px); outline: none;
+  }
+  .card-top { display: flex; flex-wrap: wrap; align-items: center; gap: .45rem; margin-bottom: .45rem; }
+  .date {
+    font-family: var(--mono); font-size: .72rem; color: var(--ink-faint);
+    background: var(--bg-soft); border-radius: 999px; padding: .22rem .5rem;
+  }
+  .chip {
+    display: inline-flex; align-items: center; gap: .35rem;
+    font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+    padding: .22rem .5rem; border-radius: 999px;
+  }
+  .chip.keep { color: var(--chip-keep); background: var(--chip-keep-bg); }
+  .chip.tweak { color: var(--chip-tweak); background: var(--chip-tweak-bg); }
+  .chip.drop { color: var(--chip-drop); background: var(--chip-drop-bg); }
+  h2 { font-size: 1.08rem; margin: 0 0 .35rem; letter-spacing: -.015em; }
+  .file { margin: 0 0 .55rem; }
+  .file code {
+    font-family: var(--mono); font-size: .72rem; color: var(--ink-faint);
+    word-break: break-all;
+  }
+  .open { font-size: .85rem; font-weight: 600; color: var(--teal-ink); }
+  .empty { color: var(--ink-muted); }
+  footer {
+    margin-top: 1.5rem; font-size: .78rem; color: var(--ink-faint); text-align: center;
+  }
+  footer a { color: var(--teal); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 17 L9 9 L13 14 L19 5" stroke="#99f6e4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="19" cy="5" r="1.6" fill="#fbbf24"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand">Trading Lab</div>
+        <div class="sub">Paper-only experiment briefs</div>
+      </div>
+    </header>
+
+    <section class="hero">
+      <h1>Experiment briefs</h1>
+      <p class="lede">Mobile-friendly gallery of HTML research briefs. Paper only — not financial advice, no live trading.</p>
+      <div class="meta">
+        <span class="pill">6 briefs</span>
+        <span class="pill">synced 2026-09-06</span>
+      </div>
+    </section>
+
+    <div class="grid">
+    <a class="card" href="briefs/2026-09-06-sma520-stress.html">
+      <div class="card-top">
+        <span class="date">Sep 6, 2026</span>
+        <span class="chip tweak">Tweak</span>
+      </div>
+      <h2>SMA 5/20 stress — BTC</h2>
+      <p class="file"><code>2026-09-06-sma520-stress.html</code></p>
+      <span class="open">Open brief →</span>
+    </a>
+    <a class="card" href="briefs/2026-09-06-sma-sticky-vs-fast.html">
+      <div class="card-top">
+        <span class="date">Sep 6, 2026</span>
+        <span class="chip tweak">Tweak family</span>
+      </div>
+      <h2>Sticky SMA vs Fast 5/20 — BTC</h2>
+      <p class="file"><code>2026-09-06-sma-sticky-vs-fast.html</code></p>
+      <span class="open">Open brief →</span>
+    </a>
+    <a class="card" href="briefs/2026-09-06-sma-sticky-grid.html">
+      <div class="card-top">
+        <span class="date">Sep 6, 2026</span>
+        <span class="chip tweak">Tweak → Drop</span>
+      </div>
+      <h2>Sticky SMA grid — BTC</h2>
+      <p class="file"><code>2026-09-06-sma-sticky-grid.html</code></p>
+      <span class="open">Open brief →</span>
+    </a>
+    <a class="card" href="briefs/2026-09-06-first-grids.html">
+      <div class="card-top">
+        <span class="date">Sep 6, 2026</span>
+        <span class="chip keep">Keep</span>
+      </div>
+      <h2>Paper-only BTC/ALGO grid results</h2>
+      <p class="file"><code>2026-09-06-first-grids.html</code></p>
+      <span class="open">Open brief →</span>
+    </a>
+    <a class="card" href="briefs/2026-09-06-btc-hold-protect-dd20-re15.html">
+      <div class="card-top">
+        <span class="date">Sep 6, 2026</span>
+        <span class="chip tweak">Tweak BTC core</span>
+      </div>
+      <h2>BTC hold-protect dd20/re15 stress</h2>
+      <p class="file"><code>2026-09-06-btc-hold-protect-dd20-re15.html</code></p>
+      <span class="open">Open brief →</span>
+    </a>
+    <a class="card" href="briefs/2026-09-06-btc-hold-protect.html">
+      <div class="card-top">
+        <span class="date">Sep 6, 2026</span>
+        <span class="chip tweak">Tweak family</span>
+      </div>
+      <h2>BTC hold-protect vs B&amp;H &amp; fast SMA</h2>
+      <p class="file"><code>2026-09-06-btc-hold-protect.html</code></p>
+      <span class="open">Open brief →</span>
+    </a>
+    </div>
+
+    <footer>
+      Source: <a href="https://github.com/offmann/trading-lab">offmann/trading-lab</a>
+      · regenerate with <code>scripts/sync_briefs_to_pages.py</code>
+    </footer>
+  </div>
+</body>
+</html>

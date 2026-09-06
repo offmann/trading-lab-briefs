@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sticky SMA vs Fast 5/20 — BTC · Sep 6, 2026</title>
+<meta name="description" content="Paper-only BTC sticky SMA vs fast SMA vs buy&hold. Tweak family, drop these sticky defaults for core sleeve.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Cpath d='M8 22 L14 12 L18 18 L24 8' fill='none' stroke='%2399f6e4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='8' r='2' fill='%23fbbf24'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f1f5f9; --bg-elev: #ffffff; --bg-soft: #e2e8f0;
+    --ink: #0f172a; --ink-muted: #475569; --ink-faint: #64748b; --line: #cbd5e1;
+    --teal: #0f766e; --teal-soft: #ccfbf1; --teal-ink: #115e59;
+    --amber: #b45309; --amber-soft: #fef3c7;
+    --green: #047857; --green-soft: #d1fae5;
+    --red: #b91c1c; --red-soft: #fee2e2;
+    --chip-keep: #047857; --chip-keep-bg: #d1fae5;
+    --chip-tweak: #b45309; --chip-tweak-bg: #fef3c7;
+    --chip-drop: #b91c1c; --chip-drop-bg: #fee2e2;
+    --shadow: 0 1px 2px rgba(15,23,42,.06), 0 8px 24px rgba(15,23,42,.06);
+    --radius: 14px; --radius-sm: 10px;
+    --font: "DM Sans", system-ui, -apple-system, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --max: 40rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b1220; --bg-elev: #111827; --bg-soft: #1e293b;
+      --ink: #e2e8f0; --ink-muted: #94a3b8; --ink-faint: #64748b; --line: #334155;
+      --teal: #2dd4bf; --teal-soft: #134e4a; --teal-ink: #99f6e4;
+      --amber: #fbbf24; --amber-soft: #422006;
+      --green: #34d399; --green-soft: #064e3b;
+      --red: #f87171; --red-soft: #450a0a;
+      --chip-keep: #34d399; --chip-keep-bg: #064e3b;
+      --chip-tweak: #fbbf24; --chip-tweak-bg: #422006;
+      --chip-drop: #f87171; --chip-drop-bg: #450a0a;
+      --shadow: 0 1px 2px rgba(0,0,0,.35), 0 12px 28px rgba(0,0,0,.35);
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; font-family: var(--font); font-size: 1rem; line-height: 1.55;
+    color: var(--ink);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, color-mix(in srgb, var(--teal) 18%, transparent), transparent 55%),
+      radial-gradient(900px 500px at 100% 0%, color-mix(in srgb, var(--amber) 10%, transparent), transparent 50%),
+      var(--bg);
+    min-height: 100dvh;
+  }
+  .wrap { width: min(100% - 1.5rem, var(--max)); margin-inline: auto; padding: 1.25rem 0 2.5rem; }
+  header.top { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.25rem; }
+  .logo {
+    width: 2.5rem; height: 2.5rem; border-radius: 10px; flex-shrink: 0;
+    background: linear-gradient(145deg, #0f766e, #134e4a);
+    display: grid; place-items: center; box-shadow: var(--shadow);
+  }
+  .logo svg { width: 1.35rem; height: 1.35rem; }
+  .brand { font-weight: 700; font-size: .95rem; letter-spacing: -.01em; }
+  .sub { font-size: .8rem; color: var(--ink-faint); }
+  .card {
+    background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 1.1rem 1.15rem; margin-bottom: 1rem;
+  }
+  h1 { font-size: 1.35rem; line-height: 1.25; margin: 0 0 .5rem; letter-spacing: -.02em; }
+  h2 { font-size: 1.05rem; margin: 0 0 .65rem; letter-spacing: -.015em; }
+  p { margin: 0 0 .75rem; color: var(--ink-muted); }
+  p:last-child { margin-bottom: 0; }
+  .lede { color: var(--ink); font-size: 1.02rem; }
+  .chip {
+    display: inline-flex; align-items: center; gap: .35rem;
+    font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+    padding: .28rem .55rem; border-radius: 999px;
+  }
+  .chip.tweak { color: var(--chip-tweak); background: var(--chip-tweak-bg); }
+  .chip.keep { color: var(--chip-keep); background: var(--chip-keep-bg); }
+  .chip.drop { color: var(--chip-drop); background: var(--chip-drop-bg); }
+  .chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .55rem; }
+  .meta { display: flex; flex-wrap: wrap; gap: .4rem; margin: .85rem 0 0; }
+  .pill {
+    font-family: var(--mono); font-size: .7rem; color: var(--ink-muted);
+    background: var(--bg-soft); border-radius: 999px; padding: .25rem .55rem;
+  }
+  .statgrid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; margin-top: .85rem;
+  }
+  @media (min-width: 480px) { .statgrid { grid-template-columns: repeat(4, 1fr); } }
+  .stat {
+    background: var(--bg-soft); border-radius: var(--radius-sm); padding: .7rem .75rem;
+  }
+  .stat .k { font-size: .7rem; color: var(--ink-faint); text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
+  .stat .v { font-family: var(--mono); font-size: 1.05rem; font-weight: 600; margin-top: .2rem; color: var(--ink); }
+  .stat .v.good { color: var(--green); }
+  .stat .v.warn { color: var(--amber); }
+  .stat .v.bad { color: var(--red); }
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: .5rem 0 0; border-radius: var(--radius-sm); border: 1px solid var(--line); }
+  table { width: 100%; border-collapse: collapse; font-size: .82rem; min-width: 32rem; }
+  th, td { padding: .55rem .6rem; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  th { background: var(--bg-soft); font-size: .68rem; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-faint); font-weight: 700; }
+  tr:last-child td { border-bottom: 0; }
+  td.mono { font-family: var(--mono); font-size: .78rem; }
+  .beat { color: var(--green); font-weight: 600; }
+  .lost { color: var(--red); font-weight: 600; }
+  ul.plain { margin: 0; padding-left: 1.1rem; color: var(--ink-muted); }
+  ul.plain li { margin-bottom: .45rem; }
+  ul.plain li:last-child { margin-bottom: 0; }
+  .callout {
+    border-left: 3px solid var(--teal); background: var(--teal-soft);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: .75rem .9rem; margin-top: .75rem;
+  }
+  .callout strong { color: var(--teal-ink); }
+  .next {
+    background: linear-gradient(135deg, color-mix(in srgb, var(--teal) 12%, var(--bg-elev)), var(--bg-elev));
+  }
+  footer {
+    margin-top: 1.25rem; font-size: .75rem; color: var(--ink-faint); text-align: center; line-height: 1.45;
+  }
+  .row-verdicts { display: flex; flex-direction: column; gap: .55rem; }
+  .verdict-row {
+    display: flex; align-items: flex-start; gap: .65rem;
+    padding: .65rem .7rem; background: var(--bg-soft); border-radius: var(--radius-sm);
+  }
+  .verdict-row .txt { font-size: .88rem; color: var(--ink-muted); }
+  .verdict-row .txt b { color: var(--ink); }
+  .diagram {
+    width: 100%; height: auto; border-radius: var(--radius-sm);
+    border: 1px solid var(--line); margin-top: .65rem; background: #f1f5f9;
+  }
+  code { font-family: var(--mono); font-size: .78rem; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 17 L9 9 L13 14 L20 5" stroke="#99f6e4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="5" r="1.8" fill="#fbbf24"/></svg>
+      </div>
+      <div>
+        <div class="brand">Trading Lab · Experiment brief</div>
+        <div class="sub">Sun Sep 6, 2026 · paper only · PT</div>
+      </div>
+    </header>
+
+    <section class="card">
+      <div class="chips">
+        <span class="chip tweak">Tweak family</span>
+        <span class="chip drop">Drop sticky defaults</span>
+      </div>
+      <h1>Sticky SMA vs fast 5/20: more “stick” didn’t buy more Bitcoin</h1>
+      <p class="lede">After PR #4 we compared the new <b>sma_sticky</b> defaults (20/50, confirm 2, exit gap 1%) to the fast SMA 5/20 baseline and plain buy&amp;hold on BTC. Sticky was meant to stay invested and grow units. On this sample it roughly matches hold on dollars, stays out ~44% of the time, and <b>loses badly to fast SMA</b> on both $ and BTC-units. Grid the knobs before killing the idea — don’t ship these defaults.</p>
+      <div class="meta">
+        <span class="pill">BTC-USD</span>
+        <span class="pill">sticky 20/50 · c2 · g1%</span>
+        <span class="pill">fast 5/20</span>
+        <span class="pill">$1,000</span>
+        <span class="pill">main 10bb811 · PR #4</span>
+      </div>
+      <div class="statgrid">
+        <div class="stat"><div class="k">Sticky vs hold (yrs)</div><div class="v bad">3 / 7</div></div>
+        <div class="stat"><div class="k">Fast vs hold (yrs)</div><div class="v good">6 / 7</div></div>
+        <div class="stat"><div class="k">Sticky end units</div><div class="v">0.127</div></div>
+        <div class="stat"><div class="k">Fast end units</div><div class="v good">0.612</div></div>
+      </div>
+      <img class="diagram" src="sma-sticky-vs-fast-top.png" alt="Bar charts: ending equity, BTC units, and time in market for sticky, fast SMA, and buy and hold">
+    </section>
+
+    <section class="card">
+      <h2>Full sample · $ and BTC-units lens</h2>
+      <p>One continuous run: 2020-01-01 → 2026-09-05 · start <b>$1,000</b>.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Strategy</th>
+              <th>End $</th>
+              <th>Max DD</th>
+              <th>Trades</th>
+              <th>In mkt</th>
+              <th>BTC units</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Sticky 20/50</td><td class="mono">$10,169</td><td class="mono">−52%</td><td class="mono">24</td><td class="mono">56%</td><td class="mono">0.127</td></tr>
+            <tr><td>Fast 5/20</td><td class="mono">$48,827</td><td class="mono">−40%</td><td class="mono">70</td><td class="mono">54%</td><td class="mono">0.612</td></tr>
+            <tr><td>Buy &amp; hold</td><td class="mono">$10,558</td><td class="mono">−76%</td><td class="mono">1</td><td class="mono">100%</td><td class="mono">0.132</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout"><strong>Units lens:</strong> Sticky ≈ hold on BTC you could buy at the end (0.127 vs 0.132) despite being flat nearly half the time. Fast prints ~<b>4.6×</b> the ending units — confirmation lag on sticky costs early bull entries.</div>
+    </section>
+
+    <section class="card">
+      <h2>Year-split · sticky defaults</h2>
+      <p>Each row restarts with <b>$1,000</b> on Jan 1 (2026 = YTD).</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th>Sticky end</th>
+              <th>PnL</th>
+              <th>Max DD</th>
+              <th>Hold end</th>
+              <th>vs hold</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>2020</td><td class="mono">$2,678</td><td class="mono">+168%</td><td class="mono">−17%</td><td class="mono">$3,868</td><td class="lost">LOST</td></tr>
+            <tr><td>2021</td><td class="mono">$1,092</td><td class="mono">+9%</td><td class="mono">−22%</td><td class="mono">$1,563</td><td class="lost">LOST</td></tr>
+            <tr><td>2022</td><td class="mono">$607</td><td class="mono">−39%</td><td class="mono">−47%</td><td class="mono">$388</td><td class="beat">BEAT</td></tr>
+            <tr><td>2023</td><td class="mono">$1,165</td><td class="mono">+17%</td><td class="mono">−26%</td><td class="mono">$2,469</td><td class="lost">LOST</td></tr>
+            <tr><td>2024</td><td class="mono">$1,343</td><td class="mono">+34%</td><td class="mono">−37%</td><td class="mono">$2,143</td><td class="lost">LOST</td></tr>
+            <tr><td>2025</td><td class="mono">$1,153</td><td class="mono">+15%</td><td class="mono">−14%</td><td class="mono">$937</td><td class="beat">BEAT</td></tr>
+            <tr><td>2026*</td><td class="mono">$1,255</td><td class="mono">+26%</td><td class="mono">−14%</td><td class="mono">$914</td><td class="beat">BEAT</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:.75rem">Sticky: <b>3/7</b> beat hold · avg PnL <b>+32.8%</b> · worst DD <b>−46.7%</b>. Fast refresh still <b>6/7</b> · avg <b>+89.9%</b> · worst DD <b>−32.5%</b>.</p>
+      <img class="diagram" src="sma-sticky-vs-fast-mid.png" alt="Year-split PnL bars and truth-serum summary sticky vs fast">
+    </section>
+
+    <section class="card">
+      <h2>Walk-forward (fixed params)</h2>
+      <p>Train 365 → test 90 → step 90 · <b>23 folds</b> · $1,000 each.</p>
+      <div class="statgrid">
+        <div class="stat"><div class="k">Sticky mean</div><div class="v warn">+2.1%</div></div>
+        <div class="stat"><div class="k">Fast mean</div><div class="v good">+11.6%</div></div>
+        <div class="stat"><div class="k">Sticky beat hold</div><div class="v">12 / 23</div></div>
+        <div class="stat"><div class="k">Fast beat hold</div><div class="v">13 / 23</div></div>
+      </div>
+      <p style="margin-top:.85rem">Sticky WF is a coin-flip vs hold and clearly behind the fast baseline. Softest story for a “stickier core” rule.</p>
+    </section>
+
+    <section class="card">
+      <h2>Keep · Tweak · Drop</h2>
+      <div class="row-verdicts">
+        <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>Sticky defaults as BTC core rule</b> — loses to fast SMA on $ &amp; units; ≈ hold $ while out ~44% of bars.</div></div>
+        <div class="verdict-row"><span class="chip tweak">Tweak</span><div class="txt"><b>Sticky idea family</b> — confirm + exit-gap still worth a grid before killing (RESEARCH rule).</div></div>
+        <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>Fast SMA 5/20 as paper baseline</b> — best of the three on this path; live core still TWEAK (sells often).</div></div>
+        <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>Buy&amp;hold as core reference</b> — 100% time-in-market; deepest DD (−76%).</div></div>
+        <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>Ship to Revolut as-is</b> — paper only; no explicit OK.</div></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Five insights</h2>
+      <ul class="plain">
+        <li>Sticky time-in-market (56%) ≈ fast (54%) but ending units <b>0.127 vs 0.612</b> — lag, not stickiness, dominates.</li>
+        <li>Full-sample sticky ~$10.2k ≈ buy&amp;hold ~$10.6k; fast ~$48.8k on the same harness.</li>
+        <li>Year-split sticky only 3/7 beat hold; fast still 6/7.</li>
+        <li>Crash softness alone isn’t enough if you miss 2020 / 2023 / 2024 bulls.</li>
+        <li>Next score on <b>ending_units</b> + beat-B&amp;H rate via <code>configs/grids/sma_sticky.yaml</code>.</li>
+      </ul>
+    </section>
+
+    <section class="card next">
+      <h2>Next build step</h2>
+      <p>Grid-search sticky params; optionally try <b>fast entry / sticky exit</b> or shorter windows with a gap. Keep fast 5/20 as the champion to beat until a sticky config clearly wins BTC-units <b>and</b> softens dips.</p>
+    </section>
+
+    <section class="card">
+      <h2>Traceability</h2>
+      <ul class="plain">
+        <li><code>experiments/runs/stress_20260906T163824Z</code> — sticky year-split</li>
+        <li><code>experiments/runs/stress_20260906T163829Z</code> — fast year-split refresh</li>
+        <li><code>experiments/runs/walkforward_20260906T163830Z</code> — sticky WF</li>
+        <li><code>experiments/runs/walkforward_20260906T163837Z</code> — fast WF refresh</li>
+        <li><code>experiments/runs/20260906T163836Z/</code> — full-sample sticky / fast / B&amp;H</li>
+        <li><code>briefs/2026-09-06-sma-sticky-vs-fast.md</code> · diagrams · <code>experiments/results.tsv</code></li>
+      </ul>
+    </section>
+
+    <footer>
+      Paper research only. Not financial advice. No Revolut orders.<br>
+      Risk profile: BTC = core wealth sleeve · accumulate bias.
+    </footer>
+  </div>
+</body>
+</html>
