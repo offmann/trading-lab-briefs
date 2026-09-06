@@ -7,3 +7,14 @@ Public GitHub Pages site for paper-only experiment findings from trading-lab.
 - IA for agents: [`docs/UX.md`](docs/UX.md)
 
 Overview → Progress → Keepers, then individual briefs on demand. Hypothetical paper $1,000 only — no holdings, balances, or personal risk-profile text.
+
+## CI
+
+Briefs become public pages like this:
+
+1. Drop `docs/briefs/<date>-<slug>.html` (optional `.md`) on `main`.
+2. GitHub Action [rebuild-pages](.github/workflows/rebuild-pages.yml) runs `scripts/rebuild_gallery.py --strip` on that push (or via **Actions → Rebuild Pages → Run workflow**).
+3. The script rebuilds Overview cards from the briefs, appends missing Progress/Keepers links, and redacts forbidden personal-capital patterns.
+4. If the hub HTML changed, `github-actions[bot]` commits; GitHub Pages then serves the updated `/docs` tree.
+
+Hand-edit the family board / “Right now” / keepers prose when the research story changes — see [`docs/UX.md`](docs/UX.md).
