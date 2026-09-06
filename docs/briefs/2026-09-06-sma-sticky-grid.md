@@ -1,7 +1,7 @@
-# Sticky SMA grid — BTC core (full sample)
+# Sticky SMA grid — BTC (full sample)
 
 **Date:** 2026-09-06 (PT)  
-**Paper only.** No live / Revolut trades. No merge.  
+**Paper only.** No live trades. No merge.  
 **Main SHA:** `10bb811`  
 **Cash:** $1,000 · fees 10 bps + slippage 5 bps  
 **Grid:** `configs/grids/sma_sticky.yaml` → 81 sticky cells (+ B&H)  
@@ -9,13 +9,13 @@
 
 ---
 
-## Verdict: **TWEAK → DROP** for BTC *core* trading · knobs helped, family still not a core rule
+## Verdict: **TWEAK → DROP** for BTC stay-invested trading · knobs helped, family still not that kind of rule
 
-Grid search **did** find sticky configs that clearly beat **defaults** on ending BTC units and that **soften** year-split drawdowns vs defaults. None beat **fast SMA 5/20** on ending_units. Year-split beat-rate vs buy&hold stays **3/7** (same as defaults; fast is **6/7**). Soft DD is not enough for a BTC accumulation sleeve that keeps missing bull years.
+Grid search **did** find sticky configs that clearly beat **defaults** on ending BTC units and that **soften** year-split drawdowns vs defaults. None beat **fast SMA 5/20** on ending_units. Year-split beat-rate vs buy&hold stays **3/7** (same as defaults; fast is **6/7**). Soft DD is not enough for a stay-invested BTC rule that keeps missing bull years.
 
 **Next research (pick one):**
-1. **BTC rule that only exits on deep drawdown / Fear&Greed** (stay long otherwise — hold-friendly core).
-2. **Try sticky / slower trend on an alts sleeve** (not core BTC), where softer dips matter more than max units.
+1. **BTC rule that only exits on deep drawdown / Fear&Greed** (stay long otherwise).
+2. **Try sticky / slower trend on other assets**, where softer dips matter more than max units.
 
 ---
 

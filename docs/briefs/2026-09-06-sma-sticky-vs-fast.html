@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sticky SMA vs Fast 5/20 — BTC · Sep 6, 2026</title>
-<meta name="description" content="Paper-only BTC sticky SMA vs fast SMA vs buy&hold. Tweak family, drop these sticky defaults for core sleeve.">
+<meta name="description" content="Paper-only BTC sticky SMA vs fast SMA vs buy&hold. Tweak family, drop these sticky defaults as a stay-invested BTC rule.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Cpath d='M8 22 L14 12 L18 18 L24 8' fill='none' stroke='%2399f6e4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='8' r='2' fill='%23fbbf24'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,6 +52,8 @@
     min-height: 100dvh;
   }
   .wrap { width: min(100% - 1.5rem, var(--max)); margin-inline: auto; padding: 1.25rem 0 2.5rem; }
+  .lab-back { margin: 0 0 .85rem; }
+  .lab-back a { color: var(--teal); font-weight: 650; text-decoration: none; font-size: .875rem; }
   header.top { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.25rem; }
   .logo {
     width: 2.5rem; height: 2.5rem; border-radius: 10px; flex-shrink: 0;
@@ -135,6 +137,7 @@
 </head>
 <body>
   <div class="wrap">
+    <p class="lab-back"><a href="../index.html">← Lab overview</a></p>
     <header class="top">
       <div class="logo" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none"><path d="M4 17 L9 9 L13 14 L20 5" stroke="#99f6e4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="5" r="1.8" fill="#fbbf24"/></svg>
@@ -240,9 +243,9 @@
       <div class="row-verdicts">
         <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>Sticky defaults as BTC core rule</b> — loses to fast SMA on $ &amp; units; ≈ hold $ while out ~44% of bars.</div></div>
         <div class="verdict-row"><span class="chip tweak">Tweak</span><div class="txt"><b>Sticky idea family</b> — confirm + exit-gap still worth a grid before killing (RESEARCH rule).</div></div>
-        <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>Fast SMA 5/20 as paper baseline</b> — best of the three on this path; live core still TWEAK (sells often).</div></div>
+        <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>Fast SMA 5/20 as paper baseline</b> — best of the three on this path; as a live-style rule still TWEAK (sells often).</div></div>
         <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>Buy&amp;hold as core reference</b> — 100% time-in-market; deepest DD (−76%).</div></div>
-        <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>Ship to Revolut as-is</b> — paper only; no explicit OK.</div></div>
+        <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>Go live as-is</b> — paper only; no explicit OK.</div></div>
       </div>
     </section>
 
@@ -275,8 +278,7 @@
     </section>
 
     <footer>
-      Paper research only. Not financial advice. No Revolut orders.<br>
-      Risk profile: BTC = core wealth sleeve · accumulate bias.
+      Paper research only. Not financial advice. No live orders.
     </footer>
   </div>
 </body>

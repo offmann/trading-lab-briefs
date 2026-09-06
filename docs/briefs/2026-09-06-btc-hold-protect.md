@@ -1,7 +1,7 @@
 # BTC hold-protect — drawdown exit vs B&H & fast SMA
 
 **Date:** 2026-09-06 (PT)  
-**Paper only.** No Revolut trades.  
+**Paper only.** No live trades.  
 **Main SHA (pre-commit):** `669099c` (strategy + tests + grid YAML already on main)  
 **Strategy:** `btc_hold_protect` defaults `{"dd_pct":25,"reentry_pct":10,"fng_floor":0}` · start **$1,000**  
 **Runs:**
@@ -14,7 +14,7 @@
 
 ## Verdict: **TWEAK family · DROP defaults for BTC core**
 
-Hold-protect is the right *shape* for a core sleeve (stay long; exit only on a deep drawdown; re-enter on recovery). With **defaults**, it softens the worst dip (−28% vs B&H −76%) but **shrinks the BTC pile** (ending units **0.077 vs 0.132** hold) and loses calendar years **6/7** to buy&hold. Fast SMA 5/20 still dominates on $ and units. Grid shows **wider re-entry** (15%) helps — family stays alive under RESEARCH “search knobs before killing.”
+Hold-protect is the right *shape* for a stay-invested idea (stay long; exit only on a deep drawdown; re-enter on recovery). With **defaults**, it softens the worst dip (−28% vs B&H −76%) but **shrinks the BTC pile** (ending units **0.077 vs 0.132** hold) and loses calendar years **6/7** to buy&hold. Fast SMA 5/20 still dominates on $ and units. Grid shows **wider re-entry** (15%) helps — family stays alive under RESEARCH “search knobs before killing.”
 
 ---
 
@@ -28,7 +28,7 @@ Period **2020-01-01 → 2026-09-05** · $1,000 start.
 | sma_crossover 5/20 | $48,827 | −40.1% | 70 | 53.8% | 0.612 |
 | buy_and_hold | $10,558 | −76.2% | 1 | 100% | 0.132 |
 
-**Read:** Defaults buy crash softness by sitting in cash too long after exits — you end with **fewer BTC units than just holding**, which fights the accumulate bias in `RISK_PROFILE.md`.
+**Read:** Defaults buy crash softness by sitting in cash too long after exits — you end with **fewer BTC units than just holding**, which fights a stay-invested style.
 
 ---
 
@@ -100,7 +100,7 @@ Train 365d / test 90d / step 90d · **23 folds** · $1,000 per fold.
 | Hold-protect idea family | **TWEAK** | Right accumulate + crash-exit shape; grid re-entry / F&G next |
 | Fast SMA 5/20 paper baseline | **KEEP** | Still dominates $ & units on this path |
 | Buy&hold core reference | **KEEP** | 100% time-in-market accumulate bar |
-| Ship to Revolut as-is | **DROP** | Paper only; no explicit OK |
+| Go live as-is | **DROP** | Paper only; no explicit OK |
 
 ---
 

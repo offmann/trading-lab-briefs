@@ -1,7 +1,7 @@
 # BTC hold-protect grid winner — stress + walk-forward (dd20 / re15)
 
 **Date:** 2026-09-06 (PT)  
-**Paper only.** No Revolut trades.  
+**Paper only.** No live trades.  
 **Main SHA (pre-commit):** `5ad3750`  
 **Strategy:** `btc_hold_protect` params `{"dd_pct":20,"reentry_pct":15,"fng_floor":0}` · start **$1,000**  
 **Grid names:** `configs/grids/btc_hold_protect.yaml` → `dd_pct`, `reentry_pct`  
@@ -88,7 +88,7 @@ Train 365d / test 90d / step 90d · **23 folds** · $1,000 per fold.
 | Defaults (25/10) as core | **DROP** | Confirmed worse than 20/15 and worse than hold on units |
 | Fast SMA 5/20 paper baseline | **KEEP** | Still dominates ending_units |
 | Buy&hold core reference | **KEEP** | 100% time-in-market accumulate bar |
-| Ship to Revolut | **DROP** | Paper only; no explicit OK |
+| Go live | **DROP** | Paper only; no explicit OK |
 
 **Family should be parked** for active BTC research. Optional later branch (not now): one-shot `fng_floor` gate — treat as a new experiment if revisited, not more dd/reentry grids.
 
@@ -106,6 +106,6 @@ Train 365d / test 90d / step 90d · **23 folds** · $1,000 per fold.
 
 ## Next suggestion
 
-**Park hold-protect on BTC.** Point research at a different family (or alts sleeve), or optionally a single Fear & Greed re-entry experiment later. Keep SMA 5/20 as the paper bar to beat on ending_units.
+**Park hold-protect on BTC.** Point research at a different family (or other assets), or optionally a single Fear & Greed re-entry experiment later. Keep SMA 5/20 as the paper bar to beat on ending_units.
 
 **Harness note:** Params match grid YAML (`dd_pct`, `reentry_pct`). Ledger rows appended in `experiments/results.tsv`.
