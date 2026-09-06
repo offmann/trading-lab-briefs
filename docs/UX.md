@@ -55,7 +55,7 @@ python3 scripts/rebuild_gallery.py --check  # scan only
 python3 scripts/rebuild_gallery.py --strip  # redact leaks, then rebuild
 ```
 
-On push to `main` that touches `docs/briefs/**` or `scripts/**`, `.github/workflows/rebuild-pages.yml` runs the script with `--strip`. If `git diff` is non-empty, `github-actions[bot]` commits and GitHub Pages is asked to rebuild `/docs`. `workflow_dispatch` runs the same job.
+On push to `main` that touches `docs/briefs/**` or `scripts/**`, `.github/workflows/rebuild-pages.yml` runs the script with `--strip`. If `git diff` is non-empty, `github-actions[bot]` commits and GitHub Pages is asked to rebuild `/docs`. The same workflow runs `--check` on pull requests that touch those paths. `workflow_dispatch` rebuilds like a main push.
 
 Still update the family board / keepers prose when the *research story* changes. CI only guarantees every brief has a card and is not leaking personal capital.
 
