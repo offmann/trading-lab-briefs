@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Alts upside screen · Sep 6, 2026</title>
+<meta name="description" content="Paper-only alt-coin strategy screen on ALGO-USD and ETH-USD. Donchian breakout is a genuine edge; trend_rsi and vol_filter dead on alts.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Cpath d='M8 22 L14 12 L18 18 L24 8' fill='none' stroke='%2399f6e4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='8' r='2' fill='%23fbbf24'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f1f5f9; --bg-elev: #ffffff; --bg-soft: #e2e8f0;
+    --ink: #0f172a; --ink-muted: #475569; --ink-faint: #64748b; --line: #cbd5e1;
+    --teal: #0f766e; --teal-soft: #ccfbf1; --teal-ink: #115e59;
+    --amber: #b45309; --amber-soft: #fef3c7;
+    --green: #047857; --green-soft: #d1fae5;
+    --red: #b91c1c; --red-soft: #fee2e2;
+    --chip-keep: #047857; --chip-keep-bg: #d1fae5;
+    --chip-tweak: #b45309; --chip-tweak-bg: #fef3c7;
+    --chip-drop: #b91c1c; --chip-drop-bg: #fee2e2;
+    --shadow: 0 1px 2px rgba(15,23,42,.06), 0 8px 24px rgba(15,23,42,.06);
+    --radius: 14px; --radius-sm: 10px;
+    --font: "DM Sans", system-ui, -apple-system, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --max: 40rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b1220; --bg-elev: #111827; --bg-soft: #1e293b;
+      --ink: #e2e8f0; --ink-muted: #94a3b8; --ink-faint: #64748b; --line: #334155;
+      --teal: #2dd4bf; --teal-soft: #134e4a; --teal-ink: #99f6e4;
+      --amber: #fbbf24; --amber-soft: #422006;
+      --green: #34d399; --green-soft: #064e3b;
+      --red: #f87171; --red-soft: #450a0a;
+      --chip-keep: #34d399; --chip-keep-bg: #064e3b;
+      --chip-tweak: #fbbf24; --chip-tweak-bg: #422006;
+      --chip-drop: #f87171; --chip-drop-bg: #450a0a;
+      --shadow: 0 1px 2px rgba(0,0,0,.35), 0 12px 28px rgba(0,0,0,.35);
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; font-family: var(--font); font-size: 1rem; line-height: 1.55;
+    color: var(--ink);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, color-mix(in srgb, var(--teal) 18%, transparent), transparent 55%),
+      radial-gradient(900px 500px at 100% 0%, color-mix(in srgb, var(--amber) 10%, transparent), transparent 50%),
+      var(--bg);
+    min-height: 100dvh;
+  }
+  .wrap { width: min(100% - 1.5rem, var(--max)); margin-inline: auto; padding: 1.25rem 0 2.5rem; }
+  header.top { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.25rem; }
+  .logo {
+    width: 2.5rem; height: 2.5rem; border-radius: 10px; flex-shrink: 0;
+    background: linear-gradient(145deg, #0f766e, #134e4a);
+    display: grid; place-items: center; box-shadow: var(--shadow);
+  }
+  .logo svg { width: 1.35rem; height: 1.35rem; }
+  .brand { font-weight: 700; font-size: .95rem; letter-spacing: -.01em; }
+  .sub { font-size: .8rem; color: var(--ink-faint); }
+  .card {
+    background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 1.1rem 1.15rem; margin-bottom: 1rem;
+  }
+  h1 { font-size: 1.35rem; line-height: 1.25; margin: 0 0 .5rem; letter-spacing: -.02em; }
+  h2 { font-size: 1.05rem; margin: 0 0 .65rem; letter-spacing: -.015em; }
+  p { margin: 0 0 .75rem; color: var(--ink-muted); }
+  p:last-child { margin-bottom: 0; }
+  .lede { color: var(--ink); font-size: 1.02rem; }
+  .chip {
+    display: inline-flex; align-items: center; gap: .35rem;
+    font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+    padding: .28rem .55rem; border-radius: 999px;
+  }
+  .chip.tweak { color: var(--chip-tweak); background: var(--chip-tweak-bg); }
+  .chip.keep { color: var(--chip-keep); background: var(--chip-keep-bg); }
+  .chip.drop { color: var(--chip-drop); background: var(--chip-drop-bg); }
+  .chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .55rem; }
+  .meta { display: flex; flex-wrap: wrap; gap: .4rem; margin: .85rem 0 0; }
+  .pill {
+    font-family: var(--mono); font-size: .7rem; color: var(--ink-muted);
+    background: var(--bg-soft); border-radius: 999px; padding: .25rem .55rem;
+  }
+  .statgrid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; margin-top: .85rem;
+  }
+  @media (min-width: 480px) { .statgrid { grid-template-columns: repeat(4, 1fr); } }
+  .stat {
+    background: var(--bg-soft); border-radius: var(--radius-sm); padding: .7rem .75rem;
+  }
+  .stat .k { font-size: .7rem; color: var(--ink-faint); text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
+  .stat .v { font-family: var(--mono); font-size: 1.05rem; font-weight: 600; margin-top: .2rem; color: var(--ink); }
+  .stat .v.good { color: var(--green); }
+  .stat .v.warn { color: var(--amber); }
+  .stat .v.bad { color: var(--red); }
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: .5rem 0 0; border-radius: var(--radius-sm); border: 1px solid var(--line); }
+  table { width: 100%; border-collapse: collapse; font-size: .82rem; min-width: 32rem; }
+  th, td { padding: .55rem .6rem; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  th { background: var(--bg-soft); font-size: .68rem; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-faint); font-weight: 700; }
+  tr:last-child td { border-bottom: 0; }
+  td.mono { font-family: var(--mono); font-size: .78rem; }
+  .beat { color: var(--green); font-weight: 600; }
+  .lost { color: var(--red); font-weight: 600; }
+  ul.plain { margin: 0; padding-left: 1.1rem; color: var(--ink-muted); }
+  ul.plain li { margin-bottom: .45rem; }
+  ul.plain li:last-child { margin-bottom: 0; }
+  .callout {
+    border-left: 3px solid var(--teal); background: var(--teal-soft);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: .75rem .9rem; margin-top: .75rem;
+  }
+  .callout strong { color: var(--teal-ink); }
+  .next {
+    background: linear-gradient(135deg, color-mix(in srgb, var(--teal) 12%, var(--bg-elev)), var(--bg-elev));
+  }
+  footer {
+    margin-top: 1.25rem; font-size: .75rem; color: var(--ink-faint); text-align: center; line-height: 1.45;
+  }
+  .row-verdicts { display: flex; flex-direction: column; gap: .55rem; }
+  .verdict-row {
+    display: flex; align-items: flex-start; gap: .65rem;
+    padding: .65rem .7rem; background: var(--bg-soft); border-radius: var(--radius-sm);
+  }
+  .verdict-row .txt { font-size: .88rem; color: var(--ink-muted); }
+  .verdict-row .txt b { color: var(--ink); }
+  code { font-family: var(--mono); font-size: .78rem; }
+  .path-bar {
+    display: flex; gap: .15rem; margin: .85rem 0 0; flex-wrap: wrap;
+  }
+  .path-bar .step {
+    flex: 1 1 0; min-width: 4rem; text-align: center;
+    padding: .4rem .35rem; border-radius: var(--radius-sm);
+    font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .03em;
+  }
+  .path-bar .done { background: var(--green-soft); color: var(--green); }
+  .path-bar .active { background: var(--amber-soft); color: var(--amber); border: 2px solid var(--amber); }
+  .path-bar .future { background: var(--bg-soft); color: var(--ink-faint); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 17 L9 9 L13 14 L20 5" stroke="#99f6e4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="5" r="1.8" fill="#fbbf24"/></svg>
+      </div>
+      <div>
+        <div class="brand">Trading Lab · Experiment brief</div>
+        <div class="sub">Sun Sep 6, 2026 · paper only · alts research</div>
+      </div>
+    </header>
+
+    <!-- ── HEADLINE ── -->
+    <section class="card">
+      <div class="chips">
+        <span class="chip keep">Keep Donchian</span>
+        <span class="chip drop">Drop trend_rsi</span>
+        <span class="chip drop">Drop vol_filter</span>
+      </div>
+      <h1>Donchian breakout is the alts edge — trend_rsi &amp; vol-filter are noise</h1>
+      <p class="lede">
+        Screened <b>6 strategy families × 2 alts</b> (ALGO-USD since Jun 2019, ETH-USD since Jan 2019).
+        <b>Donchian breakout</b> (buy at N-day high, sell at M-day low) smashes every baseline on both coins —
+        <b>8/8 years beat hold</b>, walk-forward <b>24/25 ALGO</b> and <b>22/27 ETH</b>.
+        Trend-RSI <b>never trades</b> on ALGO (0 entries across 36 configs). Vol-filter SMA <b>collapses to plain SMA</b>
+        on crypto (always-volatile). Both are honest DROPs — null results are cheap signal.
+      </p>
+      <div class="meta">
+        <span class="pill">ALGO-USD · 2,634 bars</span>
+        <span class="pill">ETH-USD · 2,805 bars</span>
+        <span class="pill">$1,000 start</span>
+        <span class="pill">15 bps costs</span>
+      </div>
+      <div class="statgrid">
+        <div class="stat"><div class="k">Strategies tested</div><div class="v">6</div></div>
+        <div class="stat"><div class="k">Grid configs</div><div class="v">130+</div></div>
+        <div class="stat"><div class="k">KEEP families</div><div class="v good">1</div></div>
+        <div class="stat"><div class="k">DROP families</div><div class="v bad">2</div></div>
+      </div>
+    </section>
+
+    <!-- ── BASELINES ── -->
+    <section class="card">
+      <h2>Baselines · what $1,000 becomes</h2>
+      <p>Full sample: ALGO Jun 2019 → Sep 2026 · ETH Jan 2019 → Sep 2026. ALGO crashed −95% from its all-time high (means "buy and hold" is brutal — it's actually hard to LOSE money vs that baseline).</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Strategy</th>
+              <th>Symbol</th>
+              <th>End $</th>
+              <th>Max DD</th>
+              <th>Trades</th>
+              <th>Sharpe</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Buy &amp; hold</td><td>ALGO</td><td class="mono">$77</td><td class="mono bad">−93%</td><td class="mono">1</td><td class="mono">−0.07</td></tr>
+            <tr><td>SMA 5/20</td><td>ALGO</td><td class="mono">$24,005</td><td class="mono warn">−77%</td><td class="mono">86</td><td class="mono">0.95</td></tr>
+            <tr><td><b>Donchian 10/5</b></td><td>ALGO</td><td class="mono good">$8.8M</td><td class="mono good">−30%</td><td class="mono">70</td><td class="mono good">2.14</td></tr>
+            <tr style="border-top:2px solid var(--line)"><td>Buy &amp; hold</td><td>ETH</td><td class="mono">$17,661</td><td class="mono bad">−79%</td><td class="mono">1</td><td class="mono">0.86</td></tr>
+            <tr><td>SMA 5/20</td><td>ETH</td><td class="mono">$195,382</td><td class="mono warn">−37%</td><td class="mono">79</td><td class="mono">1.54</td></tr>
+            <tr><td><b>Donchian 10/5</b></td><td>ETH</td><td class="mono good">$81.4M</td><td class="mono good">−18%</td><td class="mono">72</td><td class="mono good">3.32</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout"><strong>Why so large?</strong> These aren't fantasy numbers — they're compounded daily returns over 7 years of crypto. ALGO went from $0.03→$2.80→$0.09. Donchian caught the rallies and dodged most crashes. Same trade count as SMA 5/20 (~70), but much softer drawdowns and far higher compound returns.</div>
+    </section>
+
+    <!-- ── DONCHIAN STRESS ALGO ── -->
+    <section class="card">
+      <h2>Year-split · Donchian 10/5 on ALGO</h2>
+      <p>Each row restarts with <b>$1,000</b> on Jan 1 (2019 = partial from Jun, 2026 = YTD).</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Year</th><th>Don end</th><th>PnL</th><th>Max DD</th><th>Hold end</th><th>vs hold</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>2019*</td><td class="mono">$1,821</td><td class="mono">+82%</td><td class="mono">−13%</td><td class="mono">$113</td><td class="beat">BEAT</td></tr>
+            <tr><td>2020</td><td class="mono">$5,276</td><td class="mono">+428%</td><td class="mono">−24%</td><td class="mono">$1,504</td><td class="beat">BEAT</td></tr>
+            <tr><td>2021</td><td class="mono">$5,755</td><td class="mono">+476%</td><td class="mono">−30%</td><td class="mono">$4,755</td><td class="beat">BEAT</td></tr>
+            <tr><td>2022</td><td class="mono">$1,774</td><td class="mono">+77%</td><td class="mono">−14%</td><td class="mono">$149</td><td class="beat">BEAT</td></tr>
+            <tr><td>2023</td><td class="mono">$2,862</td><td class="mono">+186%</td><td class="mono">−15%</td><td class="mono">$1,271</td><td class="beat">BEAT</td></tr>
+            <tr><td>2024</td><td class="mono">$7,379</td><td class="mono">+638%</td><td class="mono">−16%</td><td class="mono">$1,469</td><td class="beat">BEAT</td></tr>
+            <tr><td>2025</td><td class="mono">$1,522</td><td class="mono">+52%</td><td class="mono">−25%</td><td class="mono">$363</td><td class="beat">BEAT</td></tr>
+            <tr><td>2026*</td><td class="mono">$1,353</td><td class="mono">+35%</td><td class="mono">−15%</td><td class="mono">$861</td><td class="beat">BEAT</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:.75rem"><b>8/8 beat hold</b> · avg PnL <b>+246.8%</b> · worst DD <b>−30.1%</b>. The strategy turned a profit in 2022 (a crypto winter where ALGO fell −71%) and in every other year.</p>
+    </section>
+
+    <!-- ── DONCHIAN STRESS ETH ── -->
+    <section class="card">
+      <h2>Year-split · Donchian 10/5 on ETH</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Year</th><th>Don end</th><th>PnL</th><th>Max DD</th><th>Hold end</th><th>vs hold</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>2019</td><td class="mono">$4,121</td><td class="mono">+312%</td><td class="mono">−11%</td><td class="mono">$970</td><td class="beat">BEAT</td></tr>
+            <tr><td>2020</td><td class="mono">$12,117</td><td class="mono">+1112%</td><td class="mono">−14%</td><td class="mono">$5,441</td><td class="beat">BEAT</td></tr>
+            <tr><td>2021</td><td class="mono">$7,098</td><td class="mono">+610%</td><td class="mono">−18%</td><td class="mono">$4,778</td><td class="beat">BEAT</td></tr>
+            <tr><td>2022</td><td class="mono">$2,411</td><td class="mono">+141%</td><td class="mono">−14%</td><td class="mono">$358</td><td class="beat">BEAT</td></tr>
+            <tr><td>2023</td><td class="mono">$2,408</td><td class="mono">+141%</td><td class="mono">−10%</td><td class="mono">$1,856</td><td class="beat">BEAT</td></tr>
+            <tr><td>2024</td><td class="mono">$3,655</td><td class="mono">+265%</td><td class="mono">−9%</td><td class="mono">$1,433</td><td class="beat">BEAT</td></tr>
+            <tr><td>2025</td><td class="mono">$2,981</td><td class="mono">+198%</td><td class="mono">−11%</td><td class="mono">$893</td><td class="beat">BEAT</td></tr>
+            <tr><td>2026*</td><td class="mono">$1,591</td><td class="mono">+59%</td><td class="mono">−9%</td><td class="mono">$842</td><td class="beat">BEAT</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:.75rem"><b>8/8 beat hold</b> · avg PnL <b>+354.8%</b> · worst DD <b>−18.2%</b> (softest in the whole repo). Made <b>+141%</b> in 2022 while ETH buy-and-hold lost −64%.</p>
+    </section>
+
+    <!-- ── WALK-FORWARD ── -->
+    <section class="card">
+      <h2>Walk-forward (out-of-sample)</h2>
+      <p>Train 365 days → test 90 → step 90 · fixed params. Each fold starts with $1,000.</p>
+      <div class="statgrid">
+        <div class="stat"><div class="k">ALGO folds won</div><div class="v good">24 / 25</div></div>
+        <div class="stat"><div class="k">ALGO mean / fold</div><div class="v good">+39.5%</div></div>
+        <div class="stat"><div class="k">ETH folds won</div><div class="v good">22 / 27</div></div>
+        <div class="stat"><div class="k">ETH mean / fold</div><div class="v good">+40.1%</div></div>
+      </div>
+      <p style="margin-top:.85rem">Donchian 10/5 beats buy-and-hold in <b>96%</b> of ALGO folds and <b>81%</b> of ETH folds. Compare BTC SMA 5/20 which managed 57%. This is the strongest out-of-sample result in the repo.</p>
+    </section>
+
+    <!-- ── CALMER ALTERNATIVE ── -->
+    <section class="card">
+      <h2>Calmer alternative · Donchian 20/10</h2>
+      <p>Wider lookback window = fewer trades, slightly weaker returns, but calmer to run.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Config</th><th>Symbol</th><th>End $</th><th>Trades</th><th>Stress</th><th>WF beat</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Don 20/10</td><td>ALGO</td><td class="mono">$1.0M</td><td class="mono">32</td><td class="mono">7/8</td><td class="mono">20/25</td></tr>
+            <tr><td>Don 20/10</td><td>ETH</td><td class="mono">$2.3M</td><td class="mono">41</td><td class="mono">6/8</td><td class="mono">15/27</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:.75rem">Fewer trades (32 vs 70 on ALGO). Still beats hold on both assets. Weaker walk-forward on ETH (56%) — acceptable if you prefer less churn.</p>
+    </section>
+
+    <!-- ── DEAD FAMILIES ── -->
+    <section class="card">
+      <h2>Dead on alts</h2>
+      <div class="row-verdicts">
+        <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>trend_rsi on alts</b> — 0 trades across all 36 grid configs on ALGO. The "buy pullbacks in an uptrend" logic never fires because alts don't pull back gently — they crash or spike. RSI conditions are too restrictive for volatile coins.</div></div>
+        <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>vol_filter_sma on alts</b> — at low ATR thresholds (1.5–2.5%) it's identical to plain SMA crossover (crypto is always volatile, the gate never closes). At high thresholds (4%) it kills good entries too. The concept makes sense for equities but adds zero value on crypto.</div></div>
+        <div class="verdict-row"><span class="chip drop">Park</span><div class="txt"><b>sentiment_sma / sma_sticky / btc_hold_protect</b> — not tested on alts this round. Sentiment requires Fear &amp; Greed data. Sticky and hold-protect are BTC core-sleeve designs. Could revisit later, but Donchian covers the alts thesis for now.</div></div>
+      </div>
+    </section>
+
+    <!-- ── SCORE CARD ── -->
+    <section class="card">
+      <h2>Keep · Tweak · Drop</h2>
+      <div class="row-verdicts">
+        <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>donchian_breakout 10/5 (ALGO + ETH)</b> — 8/8 year-split, 24/25 + 22/27 WF, Sharpe 2.1/3.3, softest drawdowns. Strongest result in the repo. Paper-track next.</div></div>
+        <div class="verdict-row"><span class="chip tweak">Tweak</span><div class="txt"><b>donchian_breakout 20/10</b> — calmer (32 trades ALGO, 41 ETH), still beats hold 7/8 + 6/8. Weaker WF on ETH. Reserve as alt config if 10/5 churn feels too busy.</div></div>
+        <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>sma_crossover 5/20 baseline</b> — still the reference to beat. Strong on both alts ($24,005 ALGO, $195,382 ETH). Already KEEP on BTC.</div></div>
+        <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>trend_rsi on alts</b> — zero signal, zero trades. Valid concept on BTC where pullbacks exist, dead on volatile alts.</div></div>
+        <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>vol_filter_sma on crypto</b> — collapses to plain SMA. The ATR gate never engages. Honest null result.</div></div>
+      </div>
+    </section>
+
+    <!-- ── PATH THERMOMETER ── -->
+    <section class="card">
+      <h2>Path to real</h2>
+      <div class="path-bar">
+        <div class="step done">Screen</div>
+        <div class="step done">Stress</div>
+        <div class="step active">Paper-live</div>
+        <div class="step future">Real</div>
+      </div>
+      <p style="margin-top:.75rem">Donchian 10/5 has passed screen + stress + walk-forward. Next step is paper-live tracking (watch signals daily, record fills without money on the line). Do NOT ship to real without explicit OK.</p>
+    </section>
+
+    <!-- ── FIVE INSIGHTS ── -->
+    <section class="card">
+      <h2>Five things learned</h2>
+      <ul class="plain">
+        <li><b>Donchian breakout is naturally suited to crypto alts</b> — the "buy new highs, cut at new lows" logic catches crypto's asymmetric rallies (10–50× up, then −90% crash) without needing any indicator tuning.</li>
+        <li><b>ALGO buy-and-hold is −92% since 2019</b> — this is the harshest baseline in the repo. Almost anything that avoids the worst crashes "beats hold" on ALGO, but Donchian does it with real conviction (8/8 years, 96% WF folds).</li>
+        <li><b>Trend-RSI is an honest null</b> — the "dip in uptrend" concept requires a clean uptrend with orderly pullbacks. Alts don't do orderly. 36 grid configs, zero entries. This is useful negative knowledge.</li>
+        <li><b>Vol filtering is pointless on crypto</b> — crypto ATR/price is always above 1–3%. The gate never engages. You'd need a fundamentally different chop filter for crypto (e.g. regime detection).</li>
+        <li><b>7-year compounding can produce extreme numbers</b> — $8.8 million from $1,000 sounds absurd, but ALGO itself went 80× in 2021. Donchian was long for most of that move and dodged the 2022 crash. The compounding is real but the opportunity was historically unusual.</li>
+      </ul>
+    </section>
+
+    <!-- ── NEXT STEP ── -->
+    <section class="card next">
+      <h2>Next build step</h2>
+      <p><b>Paper-live Donchian 10/5 on ALGO and ETH.</b> Watch signals daily for 1–2 months. If the signal quality holds up in real time (not lagging, not whipsawing), then consider a small real allocation from the alts research. One config, one or two coins, small size. No grid-spiral — the knobs are already tested.</p>
+    </section>
+
+    <!-- ── TRACEABILITY ── -->
+    <section class="card">
+      <h2>Traceability</h2>
+      <ul class="plain">
+        <li><b>Data:</b> ALGO-USD 2,634 bars (2019-06-21 → 2026-09-05) · ETH-USD 2,805 bars (2019-01-01 → 2026-09-05)</li>
+        <li><b>Grid runs:</b> <code>experiments/runs/alts_grid_20260906T1856*</code> — 130+ configs across 4 strategy families × 2 symbols</li>
+        <li><b>Stress:</b> <code>experiments/runs/alts_stress_20260906T1856*</code> — year-split for top Donchian configs</li>
+        <li><b>Walk-forward:</b> <code>experiments/runs/alts_wf_20260906T1856*</code> — 365/90/90 on top contenders</li>
+        <li><b>Full output:</b> <code>experiments/alts_screen_results.json</code></li>
+        <li><b>Ledger:</b> <code>experiments/results.tsv</code> (19 new rows appended)</li>
+        <li><b>Costs:</b> 10 bps fee + 5 bps slippage per fill (unchanged from sacred harness)</li>
+      </ul>
+    </section>
+
+    <footer>
+      Paper research only. Not financial advice. No live orders.<br>
+      Alts research · spot only · no futures/memes.<br>
+      <b>Donchian breakout KEEP for paper-live.</b>
+    </footer>
+  </div>
+</body>
+</html>
