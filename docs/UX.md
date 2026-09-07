@@ -44,11 +44,19 @@ Append new nodes. Do not reorder history.
 
 ## Champion strip
 
-The **Champion so far** strip on Progress (and the slim copy on Overview) is a chronological handoff of the paper leader: date + who + $1,000 figure where known.
+The **Champion so far** strip on Progress (and the slim copy on Overview) is the **public-safe story**, not a dump of every brief. Five beats, paper $1,000 only, in this order:
 
-Update it when the paper leader **changes**. Paper-live start is a forward clock, not a new KEEP — say that. Extreme compounded backtest dollars (Donchian on ALGO/ETH) must be labelled **paper/historical**, not a live promise.
+1. `first-grids` / `sma520-stress` → **SMA 5/20 KEEP** (BTC paper baseline)  
+2. `sma-sticky-*` → **DROP** sticky for BTC core  
+3. `btc-hold-protect*` → **PARK** the hold-protect family  
+4. `alts-upside-screen` → **Donchian 10/5 KEEP** (alts)  
+5. `paper-live-donchian` → forward paper watch started (**ALGO OUT / ETH IN** on day 0) — **not a new KEEP**
 
-Do not invent results. Pull $ figures only from published brief HTML.
+Each beat: date + verdict chip + who + $1,000 figure where known. Extreme compounded backtest dollars (Donchian on ALGO/ETH) must be labelled **paper/historical**, not a live promise.
+
+Update the strip when a KEEP, DROP, or PARK actually changes. Paper-live is a forward clock, not a new KEEP.
+
+Do **not** publish `RISK_PROFILE`, holdings, Revolut, or raw `experiments/results.tsv` on hub pages. Do not invent missing briefs for private-lab run folders.
 
 ## Verdict words (use these, not synonyms)
 

@@ -246,12 +246,19 @@
     padding: .55rem .65rem; background: var(--bg-soft); border-radius: .65rem;
     border-left: 3px solid var(--teal);
   }
+  .handoff li.drop { border-left-color: var(--chip-drop); }
+  .handoff li.park { border-left-color: var(--chip-park); }
+  .handoff .champ-top { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem; }
   .handoff .when {
     font-family: "JetBrains Mono", ui-monospace, monospace;
     font-size: .75rem; font-weight: 600; color: var(--teal-ink);
   }
   .handoff .who { font-size: .9rem; font-weight: 650; color: var(--ink); }
   .handoff .bucks { font-size: .8rem; color: var(--ink-muted); line-height: 1.35; }
+  .handoff .bucks strong {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-weight: 600; color: var(--ink);
+  }
   .champion .now { margin: .6rem 0 0; font-size: .9rem; }
   footer.site {
     width: min(100% - 1.5rem, 42rem); margin: 0 auto;
@@ -306,11 +313,11 @@
       <h2 id="now-title">Right now</h2>
       <p>On Bitcoin, the paper bar is still a simple trend rule: be invested when the <strong>5-day average</strong> is above the <strong>20-day average</strong>. First screen (Jan 2023 → Sep 2026): hypothetical <strong>$1,000</strong> grew to <strong>$6,196</strong> vs <strong>$4,619</strong> for holding. Worst dip about <strong>−18%</strong> vs about <strong>−53%</strong>.</p>
       <p>A <strong>new family</strong> then landed. <strong>Donchian 10/5</strong> (buy a fresh N-day high, sell an M-day low) is the alts KEEP on ALGO and ETH. Those paper paths compound to extreme historical dollars — <strong>$8.8M</strong> on ALGO and <strong>$81.4M</strong> on ETH from $1,000. That is backtest compounding, not a live promise.</p>
-      <p>On <strong>7 Sep 2026</strong> the lab opened two $1,000 paper-live books on that Donchian rule. Day 0 has <strong>no P&amp;L yet</strong>. Hold-protect on Bitcoin is parked. Nothing here is ready for real money.</p>
+      <p>On <strong>7 Sep 2026</strong> the lab opened two $1,000 paper-live books on that Donchian rule. Day 0: ALGO is <strong>OUT</strong>, ETH is <strong>IN</strong>, <strong>no P&amp;L yet</strong>. Hold-protect on Bitcoin is parked. Nothing here is ready for real money.</p>
       <div class="metrics">
         <div class="metric"><span>Alts KEEP</span><b>Donchian 10/5</b></div>
         <div class="metric"><span>BTC paper bar</span><b>$6,196 vs hold $4,619</b></div>
-        <div class="metric"><span>Paper-live</span><b>$1,000 · no P&amp;L yet</b></div>
+        <div class="metric"><span>Paper-live Day 0</span><b>ALGO out · ETH in</b></div>
         <div class="metric"><span>Live trading</span><b>Not yet — paper only</b></div>
       </div>
     </section>
@@ -319,19 +326,44 @@
       <h2 id="champ-title">Champion so far</h2>
       <ol class="handoff">
         <li>
-          <span class="when">6 Sep 2026</span>
-          <span class="who">Fast SMA 5/20 · BTC paper bar</span>
+          <div class="champ-top">
+            <span class="when">6 Sep 2026</span>
+            <span class="chip keep">Keep</span>
+          </div>
+          <span class="who">SMA 5/20 · BTC paper baseline</span>
           <span class="bucks">$6,196 vs hold $4,619 on the first-screen window</span>
         </li>
+        <li class="drop">
+          <div class="champ-top">
+            <span class="when">6 Sep 2026</span>
+            <span class="chip drop">Drop</span>
+          </div>
+          <span class="who">Sticky SMA · dropped for BTC core</span>
+          <span class="bucks">Best sticky $17,520 vs fast $48,827</span>
+        </li>
+        <li class="park">
+          <div class="champ-top">
+            <span class="when">6 Sep 2026</span>
+            <span class="chip park">Parked</span>
+          </div>
+          <span class="who">Hold-protect family · parked</span>
+          <span class="bucks">20/15 $16,783 vs hold $10,558 — still behind fast</span>
+        </li>
         <li>
-          <span class="when">6 Sep 2026 · later</span>
+          <div class="champ-top">
+            <span class="when">6 Sep 2026 · later</span>
+            <span class="chip keep">Keep</span>
+          </div>
           <span class="who">Donchian 10/5 · alts KEEP</span>
           <span class="bucks">Paper/historical compound on ALGO &amp; ETH — not a live promise</span>
         </li>
         <li>
-          <span class="when">7 Sep 2026</span>
-          <span class="who">Paper-live Donchian starts</span>
-          <span class="bucks">$1,000 books open — no P&amp;L yet (forward clock, not a new KEEP)</span>
+          <div class="champ-top">
+            <span class="when">7 Sep 2026</span>
+            <span class="chip tweak">Tweak</span>
+          </div>
+          <span class="who">Paper-live Donchian · forward watch</span>
+          <span class="bucks">ALGO OUT · ETH IN · $1,000 books — no P&amp;L yet (not a new KEEP)</span>
         </li>
       </ol>
       <p class="now">The alts paper leader is Donchian 10/5. Fast SMA 5/20 is still the Bitcoin bar. Neither is a live order.</p>
@@ -366,7 +398,7 @@
             <span class="chip tweak">Tweak</span>
             <h3>Paper-live Donchian — watching</h3>
           </div>
-          <p>7 Sep: two $1,000 books opened on Donchian 10/5 (ALGO cash, ETH queued to buy at the next open). This starts the forward clock. It is not a new KEEP and not a real order. No P&amp;L yet.</p>
+          <p>7 Sep: two $1,000 books opened on Donchian 10/5. Day 0: ALGO is OUT (cash); ETH is IN (buy queued at the next open). Forward clock — not a new KEEP, not a real order, no P&amp;L yet.</p>
         </article>
         <article class="fam tweak">
           <div class="fam-top">
@@ -466,7 +498,7 @@
         <a class="brief" href="briefs/2026-09-07-paper-live-donchian.html">
           <div class="brief-top"><span class="date">7 Sep 2026</span><span class="chip tweak">Tweak — paper-live start</span></div>
           <h3>Paper-live start</h3>
-          <p class="teaser">$1,000 books open — no P&amp;L yet</p>
+          <p class="teaser">$1,000 books open — ALGO OUT · ETH IN · no P&amp;L yet</p>
         </a>
         <!-- gallery:briefs:end -->
       </div>
