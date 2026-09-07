@@ -54,7 +54,7 @@ SKIP_CHIP_LABELS = re.compile(
 GO_LIVE_CHIP = re.compile(r"go live|ship to|as-is", re.I)
 
 # Optional per-brief override, e.g.
-# <!-- gallery-card title="First screen — BTC & ALGO grids" chip="Keep" class="keep" -->
+# <!-- gallery-card title="First screen — BTC & ALGO grids" chip="Keep" class="keep" teaser="$6,196 vs hold $4,619" -->
 GALLERY_CARD_RE = re.compile(
     r"<!--\s*gallery-card\b(.*?)-->",
     re.I | re.S,
@@ -153,6 +153,7 @@ class Brief:
     chip_kind: str
     chip_label: str
     summary: str
+    teaser: str
     href: str = field(init=False)
 
     def __post_init__(self) -> None:
@@ -262,12 +263,17 @@ def date_from_text(text: str) -> dt.date | None:
     return dt.date(int(match.group(4)), month, int(match.group(3)))
 
 
+def public_date_label(day: dt.date) -> str:
+    """Full date on Overview cards and Progress nodes, e.g. '6 Sep 2026'."""
+    return f"{day.day} {day.strftime('%b')} {day.year}"
+
+
 def card_date_label(day: dt.date) -> str:
-    return f"{day.strftime('%b')} {day.day}"
+    return public_date_label(day)
 
 
 def kicker_date_label(day: dt.date) -> str:
-    return f"{day.day} {day.strftime('%b')} {day.year}"
+    return public_date_label(day)
 
 
 def short_title(raw: str) -> str:
@@ -319,6 +325,34 @@ def pick_title(html_src: str, filename: str) -> str:
 
     slug = FILENAME_DATE_RE.sub("", Path(filename).stem)
     return slug.replace("-", " ").strip().title() or filename
+
+
+def pick_teaser(html_src: str) -> str:
+    """One-line paper $1,000 outcome for Overview cards and Progress nodes.
+
+    Never invent a dollar figure. Prefer an explicit gallery-card teaser;
+    otherwise only a plain Day-0 fallback when the brief is clearly paper-live.
+    """
+    override = GALLERY_CARD_RE.search(html_src)
+    if override:
+        teaser = parse_attrs(override.group(1)).get("teaser", "").strip()
+        if teaser:
+            return teaser
+
+    blob = html_text(html_src).lower()
+    if "paper-live" in blob or "paper live" in blob:
+        if any(
+            needle in blob
+            for needle in (
+                "no p&l",
+                "day 0",
+                "books are open",
+                "books still hold $1,000",
+                "books still hold $1000",
+            )
+        ):
+            return "$1,000 books open — no P&L yet"
+    return ""
 
 
 def pick_summary(html_src: str) -> str:
@@ -387,6 +421,7 @@ def parse_brief(path: Path) -> Brief:
         chip_kind=kind,
         chip_label=label,
         summary=pick_summary(src),
+        teaser=pick_teaser(src),
     )
 
 
@@ -420,6 +455,11 @@ def order_briefs(briefs: list[Brief], index_html: str) -> list[Brief]:
 def render_brief_cards(briefs: list[Brief]) -> str:
     cards: list[str] = []
     for brief in briefs:
+        teaser_html = ""
+        if brief.teaser:
+            teaser_html = (
+                "\n          <p class=\"teaser\">" + esc(brief.teaser) + "</p>"
+            )
         cards.append(
             "        <a class=\"brief\" href=\""
             + esc(brief.href)
@@ -431,7 +471,9 @@ def render_brief_cards(briefs: list[Brief]) -> str:
             + esc(brief.chip_label)
             + "</span></div>\n          <h3>"
             + esc(brief.title)
-            + "</h3>\n        </a>"
+            + "</h3>"
+            + teaser_html
+            + "\n        </a>"
         )
     return "\n".join(cards)
 
@@ -473,6 +515,12 @@ def count_nodes_outside_region(source: str, start: str, end: str) -> int:
     return len(re.findall(r"<li\s+class=\"node", clipped))
 
 
+def paper_line(brief: Brief) -> str:
+    if brief.teaser:
+        return brief.teaser
+    return "No single $1,000 figure in this brief — open for tables."
+
+
 def render_progress_nodes(briefs: list[Brief], start_step: int) -> str:
     if not briefs:
         return ""
@@ -489,6 +537,9 @@ def render_progress_nodes(briefs: list[Brief], start_step: int) -> str:
             "        <div class=\"dot\" aria-hidden=\"true\"></div>\n"
             "        <article class=\"card\">\n"
             "          <div class=\"meta\">\n"
+            "            <span class=\"date\">"
+            + esc(card_date_label(brief.date))
+            + "</span>\n"
             "            <span class=\"step\">"
             + esc(f"{step} · Brief")
             + "</span>\n"
@@ -503,6 +554,9 @@ def render_progress_nodes(briefs: list[Brief], start_step: int) -> str:
             + "</h2>\n"
             "          <p class=\"learned\"><strong>Learned:</strong> "
             + esc(brief.summary)
+            + "</p>\n"
+            "          <p class=\"paper\">"
+            + esc(paper_line(brief))
             + "</p>\n"
             "          <a class=\"open\" href=\""
             + esc(brief.href)
@@ -521,6 +575,9 @@ def render_keepers_section(briefs: list[Brief]) -> str:
         items.append(
             "      <article class=\"card\">\n"
             "        <div class=\"top\">\n"
+            "          <span class=\"date\">"
+            + esc(card_date_label(brief.date))
+            + "</span>\n"
             "          <span class=\"chip "
             + esc(brief.chip_kind)
             + "\">"
@@ -741,6 +798,19 @@ def self_test() -> None:
         '<span class="chip tweak">Tweak</span><h1>Long thesis sentence here</h1>'
     )
     assert pick_title(keep_src, "2026-09-06-sma520-stress.html") == "SMA 5/20 stress — BTC"
+    assert public_date_label(dt.date(2026, 9, 6)) == "6 Sep 2026"
+
+    teaser_src = (
+        '<!-- gallery-card title="Alts upside screen" chip="Keep Donchian" '
+        'class="keep" teaser="Donchian paper: ALGO $8.8M · ETH $81.4M (historical)" -->'
+    )
+    assert "ALGO $8.8M" in pick_teaser(teaser_src)
+
+    live_src = (
+        "<p class='lede'>This is path step Paper-live. Two separate $1,000 paper "
+        "books are open. Day 0 does not pretend we traded.</p>"
+    )
+    assert pick_teaser(live_src) == "$1,000 books open — no P&L yet"
     print("self-test ok")
 
 

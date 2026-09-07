@@ -136,6 +136,11 @@
   .chip.tweak { color: var(--chip-tweak); background: var(--chip-tweak-bg); }
   .chip.drop { color: var(--chip-drop); background: var(--chip-drop-bg); }
   .chip.park { color: var(--chip-park); background: var(--chip-park-bg); }
+  .date {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: .6875rem; color: var(--ink-faint);
+    background: var(--bg-soft); border-radius: 999px; padding: .18rem .45rem;
+  }
   .timeline { position: relative; display: grid; gap: 0; list-style: none; margin: 0; padding: 0; }
   .timeline::before {
     content: ""; position: absolute; left: .7rem; top: .4rem; bottom: .4rem;
@@ -166,8 +171,21 @@
   h2 { font-size: 1.05rem; margin: 0 0 .35rem; letter-spacing: -.015em; }
   p { margin: 0 0 .55rem; color: var(--ink-muted); font-size: .9375rem; }
   p:last-child { margin-bottom: 0; }
-  .learned { margin: .45rem 0 .65rem; color: var(--ink); font-size: .9375rem; }
+  .learned { margin: .45rem 0 .55rem; color: var(--ink); font-size: .9375rem; }
   .learned strong { font-weight: 650; }
+  .paper {
+    font-size: .8125rem;
+    color: var(--ink);
+    background: var(--bg-soft);
+    border-radius: .55rem;
+    padding: .45rem .6rem;
+    margin: .1rem 0 .65rem;
+    line-height: 1.4;
+  }
+  .paper strong {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-weight: 600;
+  }
   a.open {
     font-size: .85rem; font-weight: 650; color: var(--teal-ink); text-decoration: none;
   }
@@ -178,6 +196,24 @@
   }
   .arc h2 { font-size: 1.125rem; margin-bottom: .45rem; }
   .arc p { margin: 0; }
+  .champion {
+    background: var(--bg-elev); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow); padding: 1rem 1.1rem; margin-bottom: 1.15rem;
+  }
+  .champion h2 { font-size: 1.125rem; margin: 0 0 .45rem; }
+  .handoff { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+  .handoff li {
+    display: grid; gap: .08rem;
+    padding: .55rem .65rem; background: var(--bg-soft); border-radius: .65rem;
+    border-left: 3px solid var(--teal);
+  }
+  .handoff .when {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: .6875rem; color: var(--ink-faint);
+  }
+  .handoff .who { font-size: .9rem; font-weight: 650; color: var(--ink); }
+  .handoff .bucks { font-size: .8rem; color: var(--ink-muted); line-height: 1.35; }
+  .champion .now { margin: .65rem 0 0; font-size: .9rem; color: var(--ink-muted); }
   footer.site {
     width: min(100% - 1.5rem, 42rem); margin: 0 auto;
     padding: 0 0 2rem; font-size: .75rem; color: var(--ink-faint);
@@ -213,13 +249,35 @@
   </header>
 
   <main id="main" class="wrap">
-    <p class="kicker">Learning arc · 6 Sep 2026</p>
+    <p class="kicker">Time-series · 6–7 Sep 2026 · paper $1,000</p>
     <h1>How the research moved</h1>
-    <p class="lede">Same day, six steps. The story is not “more experiments = better.” It is: find a paper champion, try to beat it fairly, then stop when knobs stop helping.</p>
+    <p class="lede">Eight steps across two days. Each node has a date, a verdict, and how a hypothetical $1,000 moved — so after a week you can see which models are actually progressing.</p>
+
+    <section class="champion" aria-labelledby="champ-title">
+      <h2 id="champ-title">Champion so far</h2>
+      <ol class="handoff">
+        <li>
+          <span class="when">6 Sep 2026</span>
+          <span class="who">Fast SMA 5/20 becomes the BTC paper bar</span>
+          <span class="bucks">$6,196 vs hold $4,619 on the first-screen window (Jan 2023 → Sep 2026)</span>
+        </li>
+        <li>
+          <span class="when">6 Sep 2026 · later</span>
+          <span class="who">Donchian 10/5 takes the alts KEEP</span>
+          <span class="bucks">Paper/historical compound: ALGO $8.8M vs hold $77 · ETH $81.4M vs hold $17,661 — not a live promise</span>
+        </li>
+        <li>
+          <span class="when">7 Sep 2026</span>
+          <span class="who">Paper-live Donchian starts</span>
+          <span class="bucks">$1,000 books open — no P&amp;L yet. Forward clock; not a new KEEP</span>
+        </li>
+      </ol>
+      <p class="now">Update this strip when the paper leader changes. Today: Donchian 10/5 leads on alts; Fast SMA 5/20 remains the Bitcoin bar.</p>
+    </section>
 
     <section class="arc">
       <h2>The one-sentence arc</h2>
-      <p>A simple fast trend rule won the first screen. Year-by-year tests kept it alive but did not make it a stay-invested rule. Slower copies lost. A crash-exit idea improved, then got parked. <strong>Next work should be a new family.</strong></p>
+      <p>A simple fast trend rule won the first Bitcoin screen. Stickier copies and a crash-exit idea were tested, then parked. <strong>Donchian 10/5 then became the alts KEEP</strong>, and on 7 Sep the lab started watching it on paper-live — still not a live order.</p>
     </section>
 
     <ol class="timeline">
@@ -227,12 +285,13 @@
         <div class="dot" aria-hidden="true"></div>
         <article class="card">
           <div class="meta">
+            <span class="date">6 Sep 2026</span>
             <span class="step">1 · Screen</span>
             <span class="chip keep">Keep</span>
           </div>
           <h2>First grids — BTC &amp; ALGO</h2>
           <p class="learned"><strong>Learned:</strong> A “short average above long average” rule (5 &amp; 20 days) was the standout on Bitcoin. The same idea also rescued Algorand vs just holding it. Combining trend with an RSI “hot/cold” gauge mostly never traded.</p>
-          <p>Paper $1,000 on BTC, Jan 2023 → Sep 2026: <strong>$6,196</strong> vs hold <strong>$4,619</strong>. Worst dip about −18% vs −53%.</p>
+          <p class="paper">Paper $1,000 on BTC, Jan 2023 → Sep 2026: <strong>$6,196</strong> vs hold <strong>$4,619</strong>. Worst dip about −18% vs −53%.</p>
           <a class="open" href="briefs/2026-09-06-first-grids.html">Open brief →</a>
         </article>
       </li>
@@ -240,11 +299,13 @@
         <div class="dot" aria-hidden="true"></div>
         <article class="card">
           <div class="meta">
+            <span class="date">6 Sep 2026</span>
             <span class="step">2 · Stress</span>
             <span class="chip tweak">Tweak</span>
           </div>
           <h2>Was the fast rule just one lucky bull?</h2>
           <p class="learned"><strong>Learned:</strong> No — it beat hold in <strong>6 of 7</strong> calendar years and lost less in 2022. On shorter rolling windows it only beat hold 13 of 23 times. Useful shock absorber, not an obvious always-winner. It still sells Bitcoin often.</p>
+          <p class="paper">No single $1,000 path — each year restarts at $1,000. Mean walk-forward end <strong>$1,116</strong>.</p>
           <a class="open" href="briefs/2026-09-06-sma520-stress.html">Open brief →</a>
         </article>
       </li>
@@ -252,11 +313,13 @@
         <div class="dot" aria-hidden="true"></div>
         <article class="card">
           <div class="meta">
+            <span class="date">6 Sep 2026</span>
             <span class="step">3 · Stickier</span>
             <span class="chip tweak">Tweak family</span>
           </div>
           <h2>Sticky SMA vs the fast rule</h2>
           <p class="learned"><strong>Learned:</strong> Slower defaults (20/50, wait-to-confirm, small exit gap) were supposed to stay invested more and grow more Bitcoin. They roughly matched hold dollars while sitting in cash ~44% of the time, and lost badly to the fast rule. The <em>idea</em> stayed alive for a grid search.</p>
+          <p class="paper">2020–26, $1,000 start: sticky <strong>$10,169</strong> ≈ hold <strong>$10,558</strong>; fast <strong>$48,827</strong>.</p>
           <a class="open" href="briefs/2026-09-06-sma-sticky-vs-fast.html">Open brief →</a>
         </article>
       </li>
@@ -264,11 +327,13 @@
         <div class="dot" aria-hidden="true"></div>
         <article class="card">
           <div class="meta">
+            <span class="date">6 Sep 2026</span>
             <span class="step">4 · Grid</span>
             <span class="chip drop">Tweak → Drop</span>
           </div>
           <h2>81 sticky settings later</h2>
           <p class="learned"><strong>Learned:</strong> Knobs helped the defaults. The best sticky still ended with about <strong>0.22</strong> BTC units vs <strong>0.61</strong> for the fast rule on the same 2020–2026 paper path. Year-split vs hold stayed 3/7 (fast is 6/7). Soft dips are not enough if you miss the bull years. Drop sticky as a Bitcoin rule.</p>
+          <p class="paper">Best sticky <strong>$17,520</strong> vs fast <strong>$48,827</strong> vs hold <strong>$10,558</strong> (2020–26, $1,000 start).</p>
           <a class="open" href="briefs/2026-09-06-sma-sticky-grid.html">Open brief →</a>
         </article>
       </li>
@@ -276,11 +341,13 @@
         <div class="dot" aria-hidden="true"></div>
         <article class="card">
           <div class="meta">
+            <span class="date">6 Sep 2026</span>
             <span class="step">5 · Crash exit</span>
             <span class="chip tweak">Tweak family</span>
           </div>
           <h2>Hold-protect defaults</h2>
           <p class="learned"><strong>Learned:</strong> “Stay in, leave only on a deep drop, climb back in” is the right <em>shape</em> for a stay-invested idea. The first settings (25% drop / 10% bounce) softened the crash (−28% vs hold −76%) but grew <strong>fewer</strong> Bitcoin units than holding. Fast SMA still dominated. Wider re-entry looked promising.</p>
+          <p class="paper">Defaults <strong>$6,160</strong> vs hold <strong>$10,558</strong> vs fast <strong>$48,827</strong> (2020–26, $1,000 start).</p>
           <a class="open" href="briefs/2026-09-06-btc-hold-protect.html">Open brief →</a>
         </article>
       </li>
@@ -288,24 +355,27 @@
         <div class="dot" aria-hidden="true"></div>
         <article class="card">
           <div class="meta">
+            <span class="date">6 Sep 2026</span>
             <span class="step">6 · Park</span>
             <span class="chip park">Parked</span>
           </div>
           <h2>Hold-protect 20/15, then stop</h2>
           <p class="learned"><strong>Learned:</strong> Better knobs (20% drop / 15% bounce) beat hold on dollars and Bitcoin units, and won 5 of 7 years. Still about <strong>3×</strong> fewer units than the fast trend rule. The family is documented. Do not keep searching the same two knobs.</p>
+          <p class="paper">Hold-protect 20/15 <strong>$16,783</strong> vs hold <strong>$10,558</strong> vs fast <strong>$48,827</strong> (2020–26, $1,000 start).</p>
           <a class="open" href="briefs/2026-09-06-btc-hold-protect-dd20-re15.html">Open brief →</a>
         </article>
       </li>
-      <!-- gallery:progress-auto:start -->
       <li class="node">
         <div class="dot" aria-hidden="true"></div>
         <article class="card">
           <div class="meta">
-            <span class="step">7 · Brief</span>
+            <span class="date">6 Sep 2026</span>
+            <span class="step">7 · Alts</span>
             <span class="chip keep">Keep Donchian</span>
           </div>
           <h2>Alts upside screen</h2>
-          <p class="learned"><strong>Learned:</strong> Screened 6 strategy families × 2 alts (ALGO-USD since Jun 2019, ETH-USD since Jan 2019). Donchian breakout (buy at N-day high, sell at M-day low) smashes every baseline on both coins — 8/8 years beat hold , walk-forward 24/25 ALGO and 22/27 ETH . Trend-RSI never trades on ALGO…</p>
+          <p class="learned"><strong>Learned:</strong> Across 6 strategy families on ALGO and ETH, Donchian breakout (buy at an N-day high, sell at an M-day low) beat every baseline. 8/8 years vs hold; walk-forward 24/25 ALGO and 22/27 ETH. Trend-RSI never traded on ALGO. Vol-filter collapsed to plain SMA. This is the new family — not more Bitcoin knobs.</p>
+          <p class="paper">Paper/historical compound from $1,000 — <strong>not a live promise</strong>: ALGO Donchian <strong>$8.8M</strong> vs hold <strong>$77</strong>; ETH Donchian <strong>$81.4M</strong> vs hold <strong>$17,661</strong>.</p>
           <a class="open" href="briefs/2026-09-06-alts-upside-screen.html">Open brief →</a>
         </article>
       </li>
@@ -313,14 +383,17 @@
         <div class="dot" aria-hidden="true"></div>
         <article class="card">
           <div class="meta">
-            <span class="step">8 · Brief</span>
+            <span class="date">7 Sep 2026</span>
+            <span class="step">8 · Paper-live</span>
             <span class="chip tweak">Tweak — paper-live start</span>
           </div>
           <h2>Paper-live start</h2>
-          <p class="learned"><strong>Learned:</strong> This is path step Paper-live , not a new KEEP and not a real order . Two separate $1,000 paper books are open. We will watch the daily signal for 1–2 months and record fills on paper only.</p>
+          <p class="learned"><strong>Learned:</strong> This is path step Paper-live, not a new KEEP and not a real order. Two separate $1,000 paper books are open. Watch the daily signal for 1–2 months and record fills on paper only.</p>
+          <p class="paper">$1,000 books open — no P&amp;L yet. ALGO sits in cash; ETH is queued to buy at the next daily open.</p>
           <a class="open" href="briefs/2026-09-07-paper-live-donchian.html">Open brief →</a>
         </article>
       </li>
+      <!-- gallery:progress-auto:start -->
       <!-- gallery:progress-auto:end -->
     </ol>
   </main>
