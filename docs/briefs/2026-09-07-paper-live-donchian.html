@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Paper-live start · Donchian 10/5 · Sep 7, 2026</title>
+<meta name="description" content="Day 0 paper-live tracking for Donchian breakout 10/5 on ALGO-USD and ETH-USD. Path step Paper-live, not a new KEEP, not a real order.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Cpath d='M8 22 L14 12 L18 18 L24 8' fill='none' stroke='%2399f6e4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='8' r='2' fill='%23fbbf24'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f1f5f9; --bg-elev: #ffffff; --bg-soft: #e2e8f0;
+    --ink: #0f172a; --ink-muted: #475569; --ink-faint: #64748b; --line: #cbd5e1;
+    --teal: #0f766e; --teal-soft: #ccfbf1; --teal-ink: #115e59;
+    --amber: #b45309; --amber-soft: #fef3c7;
+    --green: #047857; --green-soft: #d1fae5;
+    --red: #b91c1c; --red-soft: #fee2e2;
+    --chip-keep: #047857; --chip-keep-bg: #d1fae5;
+    --chip-tweak: #b45309; --chip-tweak-bg: #fef3c7;
+    --chip-drop: #b91c1c; --chip-drop-bg: #fee2e2;
+    --shadow: 0 1px 2px rgba(15,23,42,.06), 0 8px 24px rgba(15,23,42,.06);
+    --radius: 14px; --radius-sm: 10px;
+    --font: "DM Sans", system-ui, -apple-system, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --max: 40rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b1220; --bg-elev: #111827; --bg-soft: #1e293b;
+      --ink: #e2e8f0; --ink-muted: #94a3b8; --ink-faint: #64748b; --line: #334155;
+      --teal: #2dd4bf; --teal-soft: #134e4a; --teal-ink: #99f6e4;
+      --amber: #fbbf24; --amber-soft: #422006;
+      --green: #34d399; --green-soft: #064e3b;
+      --red: #f87171; --red-soft: #450a0a;
+      --chip-keep: #34d399; --chip-keep-bg: #064e3b;
+      --chip-tweak: #fbbf24; --chip-tweak-bg: #422006;
+      --chip-drop: #f87171; --chip-drop-bg: #450a0a;
+      --shadow: 0 1px 2px rgba(0,0,0,.35), 0 12px 28px rgba(0,0,0,.35);
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; font-family: var(--font); font-size: 1rem; line-height: 1.55;
+    color: var(--ink);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, color-mix(in srgb, var(--teal) 18%, transparent), transparent 55%),
+      radial-gradient(900px 500px at 100% 0%, color-mix(in srgb, var(--amber) 10%, transparent), transparent 50%),
+      var(--bg);
+    min-height: 100dvh;
+  }
+  .wrap { width: min(100% - 1.5rem, var(--max)); margin-inline: auto; padding: 1.25rem 0 2.5rem; }
+  header.top { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.25rem; }
+  .logo {
+    width: 2.5rem; height: 2.5rem; border-radius: 10px; flex-shrink: 0;
+    background: linear-gradient(145deg, #0f766e, #134e4a);
+    display: grid; place-items: center; box-shadow: var(--shadow);
+  }
+  .logo svg { width: 1.35rem; height: 1.35rem; }
+  .brand { font-weight: 700; font-size: .95rem; letter-spacing: -.01em; }
+  .sub { font-size: .8rem; color: var(--ink-faint); }
+  .card {
+    background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 1.1rem 1.15rem; margin-bottom: 1rem;
+  }
+  h1 { font-size: 1.35rem; line-height: 1.25; margin: 0 0 .5rem; letter-spacing: -.02em; }
+  h2 { font-size: 1.05rem; margin: 0 0 .65rem; letter-spacing: -.015em; }
+  p { margin: 0 0 .75rem; color: var(--ink-muted); }
+  p:last-child { margin-bottom: 0; }
+  .lede { color: var(--ink); font-size: 1.02rem; }
+  .chip {
+    display: inline-flex; align-items: center; gap: .35rem;
+    font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+    padding: .28rem .55rem; border-radius: 999px;
+  }
+  .chip.tweak { color: var(--chip-tweak); background: var(--chip-tweak-bg); }
+  .chip.keep { color: var(--chip-keep); background: var(--chip-keep-bg); }
+  .chip.drop { color: var(--chip-drop); background: var(--chip-drop-bg); }
+  .chip.out { color: var(--ink-muted); background: var(--bg-soft); }
+  .chip.in { color: var(--chip-keep); background: var(--chip-keep-bg); }
+  .chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .55rem; }
+  .meta { display: flex; flex-wrap: wrap; gap: .4rem; margin: .85rem 0 0; }
+  .pill {
+    font-family: var(--mono); font-size: .7rem; color: var(--ink-muted);
+    background: var(--bg-soft); border-radius: 999px; padding: .25rem .55rem;
+  }
+  .statgrid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; margin-top: .85rem;
+  }
+  @media (min-width: 480px) { .statgrid { grid-template-columns: repeat(4, 1fr); } }
+  .stat {
+    background: var(--bg-soft); border-radius: var(--radius-sm); padding: .7rem .75rem;
+  }
+  .stat .k { font-size: .7rem; color: var(--ink-faint); text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
+  .stat .v { font-family: var(--mono); font-size: 1.05rem; font-weight: 600; margin-top: .2rem; color: var(--ink); }
+  .stat .v.good { color: var(--green); }
+  .stat .v.warn { color: var(--amber); }
+  ul.plain { margin: 0; padding-left: 1.1rem; color: var(--ink-muted); }
+  ul.plain li { margin-bottom: .45rem; }
+  ul.plain li:last-child { margin-bottom: 0; }
+  .callout {
+    border-left: 3px solid var(--teal); background: var(--teal-soft);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: .75rem .9rem; margin-top: .75rem;
+  }
+  .callout strong { color: var(--teal-ink); }
+  .callout.warn {
+    border-left-color: var(--amber); background: var(--amber-soft);
+  }
+  .callout.warn strong { color: var(--amber); }
+  .next {
+    background: linear-gradient(135deg, color-mix(in srgb, var(--teal) 12%, var(--bg-elev)), var(--bg-elev));
+  }
+  footer {
+    margin-top: 1.25rem; font-size: .75rem; color: var(--ink-faint); text-align: center; line-height: 1.45;
+  }
+  .row-verdicts { display: flex; flex-direction: column; gap: .55rem; }
+  .verdict-row {
+    display: flex; align-items: flex-start; gap: .65rem;
+    padding: .65rem .7rem; background: var(--bg-soft); border-radius: var(--radius-sm);
+  }
+  .verdict-row .txt { font-size: .88rem; color: var(--ink-muted); }
+  .verdict-row .txt b { color: var(--ink); }
+  code { font-family: var(--mono); font-size: .78rem; }
+  .path-bar {
+    display: flex; gap: .15rem; margin: .85rem 0 0; flex-wrap: wrap;
+  }
+  .path-bar .step {
+    flex: 1 1 0; min-width: 4rem; text-align: center;
+    padding: .4rem .35rem; border-radius: var(--radius-sm);
+    font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .03em;
+  }
+  .path-bar .done { background: var(--green-soft); color: var(--green); }
+  .path-bar .active { background: var(--amber-soft); color: var(--amber); border: 2px solid var(--amber); }
+  .path-bar .future { background: var(--bg-soft); color: var(--ink-faint); }
+  .signal-card {
+    padding: .85rem .9rem; border-radius: var(--radius-sm);
+    background: var(--bg-soft); margin-top: .65rem;
+  }
+  .signal-card h3 { margin: 0 0 .35rem; font-size: 1rem; }
+  .signal-card p { margin: 0; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 17 L9 9 L13 14 L20 5" stroke="#99f6e4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="5" r="1.8" fill="#fbbf24"/></svg>
+      </div>
+      <div>
+        <div class="brand">Trading Lab · Experiment brief</div>
+        <div class="sub">Mon Sep 7, 2026 · paper only · Donchian 10/5</div>
+      </div>
+    </header>
+
+    <section class="card">
+      <div class="chips">
+        <span class="chip tweak">Tweak — paper-live start</span>
+        <span class="chip keep">Prior KEEP stands</span>
+      </div>
+      <h1>Paper clock is running — Donchian 10/5 on ALGO and ETH</h1>
+      <p class="lede">
+        This is <b>path step Paper-live</b>, not a new KEEP and <b>not a real order</b>.
+        Two separate $1,000 paper books are open. We will watch the daily signal for 1–2 months
+        and record fills on paper only.
+      </p>
+      <div class="meta">
+        <span class="pill">last bar · Sat Sep 5, 2026</span>
+        <span class="pill">$1,000 each</span>
+        <span class="pill">15 bps costs</span>
+        <span class="pill">next-open fills</span>
+      </div>
+      <div class="statgrid">
+        <div class="stat"><div class="k">ALGO signal</div><div class="v">OUT</div></div>
+        <div class="stat"><div class="k">ETH signal</div><div class="v good">IN</div></div>
+        <div class="stat"><div class="k">Paper books</div><div class="v">$1,000</div></div>
+        <div class="stat"><div class="k">Fills today</div><div class="v">none</div></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Today in plain English</h2>
+      <p>Latest complete daily bar on the tape is <b>Saturday Sep 5, 2026</b>. Both books still hold $1,000 cash — Day 0 does not pretend we traded the last seven years.</p>
+
+      <div class="signal-card">
+        <div class="chips"><span class="chip out">ALGO · out</span></div>
+        <h3>Sit in cash</h3>
+        <p>Donchian 10/5 says <b>out</b>. No paper buy is scheduled. Close was about $0.094. Stay flat until price makes a fresh 10-day high.</p>
+      </div>
+      <div class="signal-card">
+        <div class="chips"><span class="chip in">ETH · in</span></div>
+        <h3>Buy at the next daily open</h3>
+        <p>Donchian 10/5 says <b>in</b>. Close was about $2,481. The paper book will buy 95% of the $1,000 at the <b>next daily open</b> (same 15 bps cost as every backtest). Still not a real order.</p>
+      </div>
+
+      <div class="callout warn" style="margin-top: .85rem;">
+        <strong>Same-window buy &amp; hold.</strong> The comparison from here is a fresh $1,000 hold starting at that same next open — not the 7-year backtest numbers. Both paper books and both hold books are even at $1,000 until that first open prints.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Path to real</h2>
+      <div class="path-bar">
+        <div class="step done">Screen</div>
+        <div class="step done">Stress</div>
+        <div class="step active">Paper-live</div>
+        <div class="step future">Real</div>
+      </div>
+      <p style="margin-top:.75rem">
+        Screen + year-split + walk-forward already passed for this config
+        (see the Sep 6 alts screen brief). This step only asks: does the live daily signal
+        stay usable for 1–2 months — not laggy, not a whip-saw machine.
+        <b>Do not ship to real without an explicit OK.</b>
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Keep · Tweak · Drop</h2>
+      <div class="row-verdicts">
+        <div class="verdict-row"><span class="chip tweak">Watch</span><div class="txt"><b>This brief is not a new score.</b> Paper-live start does not Keep, Tweak, or Drop Donchian. It starts the forward clock.</div></div>
+        <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>donchian_breakout 10/5 (ALGO + ETH)</b> — already KEEP from the alts screen. Unchanged. We did not re-grid.</div></div>
+        <div class="verdict-row"><span class="chip drop">Don't</span><div class="txt"><b>Treat Day 0 as a trade.</b> ALGO is cash. ETH’s buy waits for the next open on paper. Nobody should click a live ticket from this card.</div></div>
+      </div>
+    </section>
+
+    <section class="card next">
+      <h2>How to watch</h2>
+      <p>Re-run the same command when a new daily bar is in. It marks the books, fills a pending next-open trade if one was queued, and prints a phone card.</p>
+      <p><code>python -m trading_lab paper_live --strategy donchian_breakout --symbol ALGO-USD,ETH-USD --params '{"entry_period":10,"exit_period":5}' --start 2019-01-01</code></p>
+      <p style="margin-top:.65rem"><b>Next:</b> 1–2 months of daily snapshots. Only then talk about a tiny real size — and only with an explicit OK.</p>
+    </section>
+
+    <section class="card">
+      <h2>Traceability</h2>
+      <ul class="plain">
+        <li><b>Prior KEEP:</b> <code>briefs/2026-09-06-alts-upside-screen.html</code></li>
+        <li><b>Paper books:</b> <code>experiments/paper_live/donchian_breakout_ALGOUSD_entry10_exit5/</code> · <code>…_ETHUSD_entry10_exit5/</code></li>
+        <li><b>Day 0 log:</b> <code>experiments/runs/paper_live_20260907T063202Z/</code></li>
+        <li><b>Ledger:</b> <code>experiments/results.tsv</code> (verdict <code>paper_live_start</code>)</li>
+        <li><b>Data:</b> ALGO from 2019-06-21 · ETH from 2019-01-01 · last bar 2026-09-05</li>
+        <li><b>Costs:</b> 10 bps fee + 5 bps slippage per fill · 95% sizing · next-open (unchanged)</li>
+      </ul>
+    </section>
+
+    <footer>
+      Paper research only. Not financial advice. No live orders.<br>
+      Path step Paper-live — not a new KEEP, not a real order.
+    </footer>
+  </div>
+</body>
+</html>
