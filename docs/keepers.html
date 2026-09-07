@@ -141,6 +141,11 @@
   .chip.tweak { color: var(--chip-tweak); background: var(--chip-tweak-bg); }
   .chip.park { color: var(--chip-park); background: var(--chip-park-bg); }
   .chip.drop { color: var(--chip-drop); background: var(--chip-drop-bg); }
+  .date {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: .6875rem; color: var(--ink-faint);
+    background: var(--bg-soft); border-radius: 999px; padding: .18rem .45rem;
+  }
   .card {
     background: var(--bg-elev); border: 1px solid var(--line); border-radius: 14px;
     box-shadow: var(--shadow); padding: 1rem 1.1rem; margin-bottom: .85rem;
@@ -215,21 +220,39 @@
     <h1>Keepers — and what that word means</h1>
     <p class="lede"><strong>Keep</strong> here means “keep as a paper baseline or a reference,” not “go trade it.” Everything on this page used a hypothetical <strong>$1,000</strong>. Spot-style ideas, no leverage, no live orders.</p>
 
-    <p class="note">If you only remember two things: the fast 5/20 trend rule is the paper champion to beat, and buy-and-hold Bitcoin is the “just sit there” bar. Nothing else we tried beat both stories at once.</p>
+    <p class="note">If you only remember three things: <strong>Donchian 10/5</strong> is the alts KEEP (extreme paper/historical $ — not a live promise). <strong>Fast SMA 5/20</strong> is still the Bitcoin paper bar. <strong>Buy-and-hold</strong> is the honest default on each coin. Nothing is a live order.</p>
 
     <article class="card hero">
       <div class="top">
-        <span class="chip keep">Keep · paper bar</span>
+        <span class="date">6 Sep 2026</span>
+        <span class="chip keep">Keep · alts leader</span>
+      </div>
+      <h2>Donchian breakout 10/5 (ALGO + ETH)</h2>
+      <p class="why">Buy a fresh 10-day high, sell a 5-day low. This is the family that landed after the Bitcoin knob search parked. On the published alts screen it beat hold every year and held up out of sample. Paper-live books are now watching it (Day 0: ALGO OUT, ETH IN) — that is a forward clock, not a new KEEP.</p>
+      <div class="metrics">
+        <div class="metric"><span>ALGO paper end</span><b class="gain">$1,000 → $8.8M</b></div>
+        <div class="metric"><span>ALGO just hold</span><b class="loss">$77</b></div>
+        <div class="metric"><span>ETH paper end</span><b class="gain">$1,000 → $81.4M</b></div>
+        <div class="metric"><span>ETH just hold</span><b>$17,661</b></div>
+      </div>
+      <p>Those million-dollar figures are <strong>compounded paper/historical paths</strong> over ~7 years of crypto — not a forecast and not a live account. Treat them as “the backtest was unusually strong,” then read the paper-live card for the $1,000 books that actually start now.</p>
+      <a class="open" href="briefs/2026-09-06-alts-upside-screen.html">Alts screen brief →</a>
+    </article>
+
+    <article class="card">
+      <div class="top">
+        <span class="date">6 Sep 2026</span>
+        <span class="chip keep">Keep · BTC paper bar</span>
       </div>
       <h2>Fast trend rule (5-day vs 20-day average)</h2>
-      <p class="why">Be invested in Bitcoin when the short average is above the long one; otherwise cash. On every comparison so far, this printed more paper dollars and more Bitcoin units than the alternatives.</p>
+      <p class="why">Be invested in Bitcoin when the short average is above the long one; otherwise cash. On every <em>Bitcoin</em> comparison so far, this printed more paper dollars and more Bitcoin units than the alternatives.</p>
       <div class="metrics">
         <div class="metric"><span>First screen end</span><b class="gain">$1,000 → $6,196</b></div>
         <div class="metric"><span>Same period, just hold</span><b>$4,619</b></div>
         <div class="metric"><span>Worst dip (screen)</span><b class="loss">about −18%</b></div>
         <div class="metric"><span>Years vs hold</span><b class="gain">6 / 7 beat</b></div>
       </div>
-      <p>Why it is still only a paper keep: it jumps in and out. On shorter rolling tests it beat hold only a bit more than half the time. Treat it as the scoreboard, not a green light.</p>
+      <p>Why it is still only a Bitcoin paper keep: it jumps in and out. On shorter rolling tests it beat hold only a bit more than half the time. On alts, Donchian later beat this same SMA idea. Treat Fast SMA as the BTC scoreboard, not a green light.</p>
       <a class="open" href="briefs/2026-09-06-sma520-stress.html">Year-by-year brief →</a>
     </article>
 
@@ -277,17 +300,6 @@
       </ul>
     </section>
     <!-- gallery:keepers-auto:start -->
-    <section aria-labelledby="auto-keepers-title">
-      <h2 id="auto-keepers-title" style="margin:1.2rem 0 .65rem;font-size:1.125rem">From newer briefs</h2>
-      <article class="card">
-        <div class="top">
-          <span class="chip keep">Keep Donchian</span>
-        </div>
-        <h2>Alts upside screen</h2>
-        <p>Screened 6 strategy families × 2 alts (ALGO-USD since Jun 2019, ETH-USD since Jan 2019). Donchian breakout (buy at N-day high, sell at M-day low) smashes every baseline on both coins — 8/8 years beat hold , walk-forward 24/25 ALGO and 22/27 ETH . Trend-RSI never trades on ALGO…</p>
-        <a class="open" href="briefs/2026-09-06-alts-upside-screen.html">Open brief →</a>
-      </article>
-    </section>
     <!-- gallery:keepers-auto:end -->
   </main>
 
