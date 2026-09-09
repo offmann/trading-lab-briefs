@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Trading Lab — Keepers</title>
-<meta name="description" content="What survived paper research and why, in plain English. Hypothetical $1,000 vs buy-and-hold Bitcoin.">
+<title>Trading Lab — Investor digest</title>
+<meta name="description" content="Plain-language paper digest: what was tested after the look-ahead fix, what $1,000 would have become vs buy-and-hold. Not advice.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Cpath d='M8 22 L14 12 L18 18 L24 8' fill='none' stroke='%2399f6e4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='8' r='2' fill='%23fbbf24'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -128,25 +128,7 @@
     margin: 0 0 .55rem; font-weight: 700;
   }
   .lede { margin: 0 0 1.1rem; color: var(--ink-muted); font-size: 1.02rem; }
-  .note {
-    background: var(--amber-soft); border: 1px solid color-mix(in srgb, var(--amber) 35%, var(--line));
-    border-radius: 12px; padding: .8rem .95rem; margin-bottom: 1.1rem;
-    color: var(--ink); font-size: .9rem;
-  }
-  .chip {
-    display: inline-flex; font-size: .6875rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: .04em;
-    padding: .22rem .5rem; border-radius: 999px;
-  }
-  .chip.keep { color: var(--chip-keep); background: var(--chip-keep-bg); }
-  .chip.tweak { color: var(--chip-tweak); background: var(--chip-tweak-bg); }
-  .chip.park { color: var(--chip-park); background: var(--chip-park-bg); }
-  .chip.drop { color: var(--chip-drop); background: var(--chip-drop-bg); }
-  .date {
-    font-family: "JetBrains Mono", ui-monospace, monospace;
-    font-size: .6875rem; color: var(--ink-faint);
-    background: var(--bg-soft); border-radius: 999px; padding: .18rem .45rem;
-  }
+  .lede strong { color: var(--ink); font-weight: 650; }
   .card {
     background: var(--bg-elev); border: 1px solid var(--line); border-radius: 14px;
     box-shadow: var(--shadow); padding: 1rem 1.1rem; margin-bottom: .85rem;
@@ -156,13 +138,15 @@
       linear-gradient(145deg, color-mix(in srgb, var(--teal) 12%, var(--bg-elev)), var(--bg-elev) 58%);
     border-color: color-mix(in srgb, var(--teal) 40%, var(--line));
   }
-  .top { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; margin-bottom: .45rem; }
-  h2 { font-size: 1.125rem; margin: 0; letter-spacing: -.02em; }
-  h3 { font-size: 1rem; margin: 0 0 .35rem; }
-  p { margin: 0 0 .65rem; color: var(--ink-muted); }
+  .qnum {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: .6875rem; font-weight: 700; letter-spacing: .04em;
+    color: var(--teal-ink); text-transform: uppercase; margin: 0 0 .35rem;
+  }
+  h2 { font-size: 1.125rem; margin: 0 0 .55rem; letter-spacing: -.02em; }
+  p { margin: 0 0 .7rem; color: var(--ink-muted); }
   p:last-child { margin-bottom: 0; }
-  .why { margin: .15rem 0 .7rem; color: var(--ink); }
-  .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; margin: .75rem 0; }
+  .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; margin-top: .75rem; }
   .metric { background: var(--bg-soft); border-radius: .65rem; padding: .55rem .65rem; }
   .metric span {
     display: block; font-size: .6875rem; color: var(--ink-faint);
@@ -174,14 +158,21 @@
   }
   .gain { color: var(--green); }
   .loss { color: var(--red); }
+  .chip {
+    display: inline-flex; align-items: center;
+    font-size: .6875rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+    padding: .22rem .5rem; border-radius: 999px;
+  }
+  .chip.keep { color: var(--chip-keep); background: var(--chip-keep-bg); }
+  .chip.tweak { color: var(--chip-tweak); background: var(--chip-tweak-bg); }
+  .chip.drop { color: var(--chip-drop); background: var(--chip-drop-bg); }
+  .note {
+    background: var(--amber-soft); border: 1px solid color-mix(in srgb, var(--amber) 35%, var(--line));
+    border-radius: 12px; padding: .8rem .95rem; margin-bottom: 1.1rem;
+    color: var(--ink); font-size: .9rem;
+  }
   a.open { font-size: .85rem; font-weight: 650; color: var(--teal-ink); text-decoration: none; }
   a.open:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
-  ul.plain { margin: 0; padding: 0; list-style: none; display: grid; gap: .55rem; }
-  ul.plain li {
-    background: var(--bg-elev); border: 1px solid var(--line); border-radius: 12px;
-    padding: .8rem .9rem; box-shadow: var(--shadow); color: var(--ink-muted); font-size: .9375rem;
-  }
-  ul.plain strong { color: var(--ink); }
   footer.site {
     width: min(100% - 1.5rem, 42rem); margin: 0 auto;
     padding: 0 0 2rem; font-size: .75rem; color: var(--ink-faint);
@@ -211,89 +202,57 @@
       <nav class="tabs" aria-label="Lab sections">
         <a href="index.html">Overview</a>
         <a href="progress.html">Progress</a>
-        <a href="keepers.html" aria-current="page">Keepers</a>
-        <a href="investor.html">Investor</a>
+        <a href="keepers.html">Keepers</a>
+        <a href="investor.html" aria-current="page">Investor</a>
         <a href="leaderboard.html">Leaderboard</a>
       </nav>
     </div>
   </header>
 
   <main id="main" class="wrap">
-    <p class="kicker">What survived · after the 9 Sep honest engine</p>
-    <h1>Keepers — and what that word means</h1>
-    <p class="lede"><strong>Keep</strong> here means “keep as a paper baseline or a reference,” not “go trade it.” Everything on this page used a hypothetical <strong>$1,000</strong>. Spot-style ideas, no leverage, no live orders. The 9 Sep revalidation is the scorecard; older KEEP chips on individual briefs are history.</p>
+    <p class="kicker"><!-- gallery:updated:start -->Updated 2026-09-09 13:54:16 CEST · hypothetical $1,000<!-- gallery:updated:end --></p>
+    <h1>What $1,000 would have become</h1>
+    <p class="lede">Plain language, <strong>paper only</strong>. Numbers below are from the 9 Sep harness revalidation — the honest engine after the look-ahead fix. Not a forecast. Not a live account.</p>
 
-    <p class="note">If you only remember two survivors: <strong>buy&amp;hold Bitcoin</strong> is the paper bar ($1,000 → $19,879, dip −76%). <strong>Donchian 20/10 on ALGO</strong> is the only active KEEP ($1,000 → $10,663 vs hold $79). Donchian 10/5 and Fast SMA are demoted. Nothing is a live order.</p>
+    <p class="note">Ignore older briefs that quote Donchian $3.41M / $8.8M / $81.4M or SMA $124k. Those were look-ahead artefacts. This page uses post-revalidation paper dollars only.</p>
 
-    <article class="card hero">
-      <div class="top">
-        <span class="date">9 Sep 2026</span>
-        <span class="chip keep">Keep · BTC paper bar</span>
-      </div>
-      <h2>Buy &amp; hold Bitcoin</h2>
-      <p class="why">Buy once, never time it. Always invested. After the look-ahead fix, this is the honest default on the core sleeve: the active rules we trusted did not grow more coins.</p>
-      <div class="metrics">
-        <div class="metric"><span>Full sample end</span><b class="gain">$1,000 → $19,879</b></div>
-        <div class="metric"><span>Window</span><b>2019-01-01 → 2026-09-08</b></div>
-        <div class="metric"><span>Deepest dip</span><b class="loss">about −76%</b></div>
-        <div class="metric"><span>Vs Donchian 10/5</span><b>$19,879 vs $2,598</b></div>
-      </div>
-      <p>The lab also counts ending coin-units so a rule cannot “win” by sitting in cash through a bull market and looking fine in dollars only. Hold finishes with 0.25 BTC-units vs 0.03 for the old Donchian 10/5 KEEP.</p>
-      <a class="open" href="briefs/2026-09-09-harness-revalidation.html">Revalidation brief →</a>
-    </article>
-
-    <article class="card">
-      <div class="top">
-        <span class="date">9 Sep 2026</span>
-        <span class="chip keep">Keep · alts leader</span>
-      </div>
-      <h2>Donchian breakout 20/10 (ALGO)</h2>
-      <p class="why">Buy a fresh 20-day high, sell a 10-day low. The only active rule that grows the paper $1,000, beats ALGO hold 6/8 years and 17/25 walk-forward folds, and crashes softer than hold (−58% vs −93%). Still 32 round-trips — paper-live before any real talk.</p>
-      <div class="metrics">
-        <div class="metric"><span>ALGO paper end</span><b class="gain">$1,000 → $10,663</b></div>
-        <div class="metric"><span>ALGO just hold</span><b class="loss">$79</b></div>
-        <div class="metric"><span>Years vs hold</span><b class="gain">6 / 8 beat</b></div>
-        <div class="metric"><span>Walk-forward</span><b class="gain">17 / 25 (68%)</b></div>
-      </div>
-      <p>ALGO buy&amp;hold is a wreck. The old KEEP (Donchian 10/5) still “beats hold” at $886 — but that is a loss vs the $1,000 start, not a growth rule. The calmer 20/10 is the one that actually grows the pile.</p>
-      <a class="open" href="briefs/2026-09-09-harness-revalidation.html">Revalidation brief →</a>
-    </article>
-
-    <article class="card">
-      <div class="top">
-        <span class="chip park">Parked · documented</span>
-      </div>
-      <h2>Hold-protect 20/15 (not a champion)</h2>
-      <p class="why">Stay in Bitcoin, leave after a ~20% drop from a peak, climb back after a 15% bounce. Written down so we do not re-search the same two knobs. Not re-run on the honest engine here. Not a drop (the idea has a shape), and not a keep (it lost the paper pile race even on the old engine).</p>
-      <a class="open" href="briefs/2026-09-06-btc-hold-protect-dd20-re15.html">Park brief →</a>
-    </article>
-
-    <section aria-labelledby="demote-title">
-      <h2 id="demote-title" style="margin:1.2rem 0 .65rem;font-size:1.125rem">What was demoted</h2>
-      <ul class="plain">
-        <li><span class="chip drop">Drop</span> &nbsp; <strong>Donchian 10/5 on BTC</strong> — prior KEEP. Honest $2,598 vs hold $19,879. Old $3.41M was look-ahead. <a class="open" href="briefs/2026-09-08-btc-donchian-transfer.html">Transfer brief →</a></li>
-        <li><span class="chip drop">Drop</span> &nbsp; <strong>Donchian 10/5 on ALGO</strong> — prior KEEP ($8.8M artefact). Honest $886: beats a crashed hold, loses vs $1,000 start. <a class="open" href="briefs/2026-09-06-alts-upside-screen.html">Alts screen →</a></li>
-        <li><span class="chip tweak">Tweak</span> &nbsp; <strong>Donchian 10/5 on ETH</strong> — still beats hold full-sample (~$31.8k vs ~$17.7k) but walk-forward 11/27 fails truth serum. Not KEEP.</li>
-        <li><span class="chip drop">Drop vs hold</span> &nbsp; <strong>SMA 5/20 on BTC and ETH</strong> — old “baseline to beat.” Honest BTC $12,163 and ETH $13,054 both trail hold. Old SMA $124k was look-ahead.</li>
-        <li><span class="chip drop">Drop vs hold</span> &nbsp; <strong>Donchian-hold 10/10 confirm=1</strong> — prior grid winner. Now $10,389 vs BTC hold $19,879.</li>
-      </ul>
+    <section class="card">
+      <p class="qnum">1 · What was tested</p>
+      <h2>Trend rules vs just holding</h2>
+      <p>The lab compared simple paper strategies on daily prices: buy-and-hold, a fast moving-average cross (SMA 5/20), and Donchian breakouts (buy a fresh N-day high, sell an M-day low) on <strong>BTC</strong>, <strong>ALGO</strong>, and <strong>ETH</strong>. Same $1,000 start, 15 bps round-trip fees, 95% sizing. After a bug fix, a signal on today’s close fills at <strong>tomorrow’s open</strong> — no peeking.</p>
+      <p>Windows: BTC and ETH 2019-01-01 → 2026-09-08; ALGO 2019-06-21 → 2026-09-08.</p>
     </section>
 
-    <section aria-labelledby="drop-title">
-      <h2 id="drop-title" style="margin:1.2rem 0 .65rem;font-size:1.125rem">What did not survive (earlier)</h2>
-      <ul class="plain">
-        <li><span class="chip drop">Drop</span> &nbsp; <strong>Trend + RSI</strong> as configured — mostly never traded, sat at $1,000.</li>
-        <li><span class="chip drop">Drop</span> &nbsp; <strong>Sticky SMA</strong> as a Bitcoin rule — matched hold dollars, missed bulls, lost to the old fast rule.</li>
-        <li><span class="chip drop">Drop</span> &nbsp; <strong>Hold-protect defaults (25/10)</strong> — fewer BTC units than holding.</li>
-        <li><span class="chip drop">Drop</span> &nbsp; <strong>Going live with any of this</strong> — paper only; no explicit OK.</li>
-      </ul>
+    <section class="card">
+      <p class="qnum">2 · What it means</p>
+      <h2>The old winners were an accident</h2>
+      <p>On Bitcoin, <strong>doing nothing beat the overlays</strong> we had crowned. Fast SMA and Donchian 10/5 both finish with less paper money than hold. On Algorand, holding the coin is a wreck — a calmer Donchian (20/10) is the only active rule that actually grows the $1,000. On Ether, Donchian 10/5 still looks good on the one long path, but it fails the rolling out-of-sample test, so it is not a KEEP.</p>
     </section>
-    <!-- gallery:keepers-auto:start -->
-    <!-- gallery:keepers-auto:end -->
+
+    <section class="card">
+      <p class="qnum">3 · Last updated</p>
+      <h2>Publish stamp, to the second</h2>
+      <p>The kicker at the top of this page is the latest publish / rebuild time for <code style="font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.8rem">docs/briefs/</code>, in Europe/Paris. When a new brief lands, that stamp moves. Experiment cards keep their own dates; we do not invent clocks for old nodes.</p>
+    </section>
+
+    <section class="card hero" aria-labelledby="for-you">
+      <p class="qnum">4 · What it means for you</p>
+      <h2 id="for-you">If you put $1,000 this way</h2>
+      <p>Hypothetical paper path only — fees in, no leverage. If you had put <strong>$1,000</strong> this way over this timeframe, you would have about:</p>
+      <div class="metrics">
+        <div class="metric"><span>BTC buy&amp;hold (KEEP)</span><b class="gain">~$19,879</b></div>
+        <div class="metric"><span>Same window, Donchian 10/5</span><b class="loss">~$2,598</b></div>
+        <div class="metric"><span>ALGO Donchian 20/10 (KEEP)</span><b class="gain">~$10,663</b></div>
+        <div class="metric"><span>ALGO just hold</span><b class="loss">~$79</b></div>
+      </div>
+      <p style="margin-top:.85rem">In one sentence: <strong>if you put $1,000 into Bitcoin and held from 2019 through 8 Sep 2026, you’d have ~$19,879</strong> (deepest dip about −76%). <strong>If you put $1,000 into ALGO Donchian 20/10 over its listing window, you’d have ~$10,663 vs hold ~$79.</strong> ETH Donchian 10/5 would have been ~$31.8k vs hold ~$17.7k on the full sample — still a TWEAK because walk-forward fails.</p>
+      <p><span class="chip keep">Keep</span> means paper baseline, not “go trade it.” Nothing here is a live order.</p>
+      <p style="margin-top:.65rem"><a class="open" href="briefs/2026-09-09-harness-revalidation.html">Open the revalidation brief →</a></p>
+    </section>
   </main>
 
   <footer class="site">
-    Paper research · hypothetical $1,000 · <a href="progress.html">See the timeline</a> · <a href="index.html">Overview</a>
+    Paper research · hypothetical $1,000 · not financial advice · <a href="leaderboard.html">Scoreboard</a> · <a href="index.html">Overview</a>
   </footer>
 
   <script>

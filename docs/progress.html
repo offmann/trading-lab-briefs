@@ -105,22 +105,23 @@
   html[data-theme="light"] .icon-sun { display: none; }
   html[data-theme="light"] .icon-moon { display: block; }
   nav.tabs {
-    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: .25rem;
+    display: flex; flex-wrap: wrap; gap: .25rem;
     padding: 0 0 .55rem;
   }
   nav.tabs a {
+    flex: 1 1 calc(33.333% - .2rem);
     display: flex; align-items: center; justify-content: center;
     text-align: center; text-decoration: none; color: var(--ink-muted);
-    font-size: .8125rem; font-weight: 650; padding: .45rem .2rem;
-    min-height: 2.75rem; border-radius: .65rem;
+    font-size: .75rem; font-weight: 650; padding: .4rem .25rem;
+    min-height: 2.5rem; border-radius: .65rem;
   }
   nav.tabs a[aria-current="page"] { color: var(--teal-ink); background: var(--teal-soft); }
   nav.tabs a:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
   main { padding: 1.15rem 0 2.75rem; }
   .kicker {
     font-family: "JetBrains Mono", ui-monospace, monospace;
-    font-size: .6875rem; font-weight: 600; letter-spacing: .06em;
-    text-transform: uppercase; color: var(--teal-ink); margin: 0 0 .4rem;
+    font-size: .6875rem; font-weight: 600; letter-spacing: .02em;
+    color: var(--teal-ink); margin: 0 0 .4rem;
   }
   h1 {
     font-size: 1.625rem; line-height: 1.15; letter-spacing: -.03em;
@@ -209,6 +210,7 @@
   }
   .handoff li.drop { border-left-color: var(--chip-drop); }
   .handoff li.park { border-left-color: var(--chip-park); }
+  .handoff li.tweak { border-left-color: var(--chip-tweak); }
   .handoff .champ-top { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem; }
   .handoff .when {
     font-family: "JetBrains Mono", ui-monospace, monospace;
@@ -251,14 +253,16 @@
         <a href="index.html">Overview</a>
         <a href="progress.html" aria-current="page">Progress</a>
         <a href="keepers.html">Keepers</a>
+        <a href="investor.html">Investor</a>
+        <a href="leaderboard.html">Leaderboard</a>
       </nav>
     </div>
   </header>
 
   <main id="main" class="wrap">
-    <p class="kicker">Time-series · 6–7 Sep 2026 · paper $1,000</p>
+    <p class="kicker"><!-- gallery:updated:start -->Updated 2026-09-09 13:54:16 CEST · hypothetical $1,000<!-- gallery:updated:end --></p>
     <h1>How the research moved</h1>
-    <p class="lede">Five public beats, then the experiment cards. Each node has a date, a verdict, and how a hypothetical $1,000 moved — so after a week you can see which models are actually progressing.</p>
+    <p class="lede">Each node has a date, a verdict, and how a hypothetical $1,000 moved. The 9 Sep harness revalidation is the truth-serum beat — it supersedes the million-dollar Donchian KEEPs that came before.</p>
 
     <section class="champion" aria-labelledby="champ-title">
       <h2 id="champ-title">Champion so far</h2>
@@ -266,10 +270,10 @@
         <li>
           <div class="champ-top">
             <span class="when">6 Sep 2026</span>
-            <span class="chip keep">Keep</span>
+            <span class="chip keep">Keep · later dropped</span>
           </div>
-          <span class="who">SMA 5/20 · BTC paper baseline</span>
-          <span class="bucks">First screen $1,000 → <strong>$6,196</strong> vs hold <strong>$4,619</strong>. Year-by-year stress kept it as the Bitcoin bar (6 of 7 years beat hold).</span>
+          <span class="who">SMA 5/20 · old BTC paper baseline</span>
+          <span class="bucks">First-screen KEEP on the old engine. Honest revalidation: SMA <strong>$12,163</strong> vs hold <strong>$19,879</strong> — drop vs hold.</span>
         </li>
         <li class="drop">
           <div class="champ-top">
@@ -277,7 +281,7 @@
             <span class="chip drop">Drop</span>
           </div>
           <span class="who">Sticky SMA · dropped for BTC core</span>
-          <span class="bucks">Best sticky <strong>$17,520</strong> vs fast <strong>$48,827</strong> vs hold <strong>$10,558</strong> (2020–26). Knobs helped; family still not close.</span>
+          <span class="bucks">Family still dropped. Do not reuse old-engine sticky grids as a live bar.</span>
         </li>
         <li class="park">
           <div class="champ-top">
@@ -285,31 +289,39 @@
             <span class="chip park">Parked</span>
           </div>
           <span class="who">Hold-protect family · parked</span>
-          <span class="bucks">Best recipe 20/15: <strong>$16,783</strong> vs hold <strong>$10,558</strong> vs fast <strong>$48,827</strong>. Documented. Stop the same two knobs.</span>
+          <span class="bucks">Documented crash-exit recipe. Stop the same two knobs. Not re-run on the honest engine here.</span>
         </li>
-        <li>
+        <li class="drop">
           <div class="champ-top">
             <span class="when">6 Sep 2026 · later</span>
-            <span class="chip keep">Keep</span>
+            <span class="chip drop">Drop · look-ahead</span>
           </div>
-          <span class="who">Donchian 10/5 · alts KEEP</span>
-          <span class="bucks">Paper/historical compound from $1,000 — <strong>not a live promise</strong>: ALGO <strong>$8.8M</strong> vs hold <strong>$77</strong>; ETH <strong>$81.4M</strong> vs hold <strong>$17,661</strong>.</span>
+          <span class="who">Donchian 10/5 · old alts KEEP</span>
+          <span class="bucks">Old paper/historical <strong>$8.8M / $81.4M</strong> are look-ahead artefacts. Honest: ALGO 10/5 <strong>$886</strong> (DROP); ETH 10/5 TWEAK, not KEEP.</span>
+        </li>
+        <li class="tweak">
+          <div class="champ-top">
+            <span class="when">7–9 Sep 2026</span>
+            <span class="chip tweak">Tweak</span>
+          </div>
+          <span class="who">Paper-live Donchian · started under old KEEP</span>
+          <span class="bucks">ALGO / ETH / BTC $1,000 books opened on Donchian 10/5. Revalidation supersedes those paper dollars.</span>
         </li>
         <li>
           <div class="champ-top">
-            <span class="when">7 Sep 2026</span>
-            <span class="chip tweak">Tweak</span>
+            <span class="when">9 Sep 2026</span>
+            <span class="chip keep">Keep</span>
           </div>
-          <span class="who">Paper-live Donchian · forward watch</span>
-          <span class="bucks">$1,000 books open — no P&amp;L yet. Day 0: ALGO <strong>OUT</strong> (cash), ETH <strong>IN</strong> (buy at next open). Not a new KEEP.</span>
+          <span class="who">Harness revalidation · new scorecard</span>
+          <span class="bucks">BTC bar = buy&amp;hold <strong>$19,879</strong> (dip −76%). Only active KEEP: ALGO Donchian 20/10 <strong>$10,663</strong> vs hold <strong>$79</strong>.</span>
         </li>
       </ol>
-      <p class="now">This strip is the public story. Update it when a KEEP, DROP, or PARK actually changes — paper-live is a forward clock, not a new KEEP. Today: Donchian 10/5 leads on alts; Fast SMA 5/20 remains the Bitcoin bar.</p>
+      <p class="now">This strip is the public story after the honest engine. Buy&amp;hold leads Bitcoin. ALGO Donchian 20/10 is the only active KEEP. Paper-live is a forward clock, not a new KEEP.</p>
     </section>
 
     <section class="arc">
       <h2>The one-sentence arc</h2>
-      <p>SMA 5/20 became the Bitcoin paper KEEP. Sticky was dropped for BTC core. Hold-protect was parked. <strong>Donchian 10/5 became the alts KEEP</strong>. Paper-live then started watching it — ALGO out, ETH in on day 0; still not a live order.</p>
+      <p>SMA 5/20 was crowned the Bitcoin paper KEEP, sticky was dropped, hold-protect was parked, and Donchian 10/5 looked like an alts KEEP — until the 9 Sep look-ahead fix. <strong>Those million-dollar KEEPs were artefacts.</strong> Honest scorecard: Bitcoin bar is buy&amp;hold; the only active KEEP is Donchian 20/10 on ALGO.</p>
     </section>
 
     <ol class="timeline">
@@ -397,17 +409,17 @@
           <a class="open" href="briefs/2026-09-06-btc-hold-protect-dd20-re15.html">Open brief →</a>
         </article>
       </li>
-      <li class="node">
+      <li class="node drop">
         <div class="dot" aria-hidden="true"></div>
         <article class="card">
           <div class="meta">
             <span class="date">6 Sep 2026</span>
             <span class="step">7 · Alts</span>
-            <span class="chip keep">Keep Donchian</span>
+            <span class="chip drop">Keep · later dropped</span>
           </div>
           <h2>Alts upside screen</h2>
-          <p class="learned"><strong>Learned:</strong> Across 6 strategy families on ALGO and ETH, Donchian breakout (buy at an N-day high, sell at an M-day low) beat every baseline. 8/8 years vs hold; walk-forward 24/25 ALGO and 22/27 ETH. Trend-RSI never traded on ALGO. Vol-filter collapsed to plain SMA. Donchian is the new family that landed after Bitcoin knobs were parked.</p>
-          <p class="paper">Paper/historical compound from $1,000 — <strong>not a live promise</strong>: ALGO Donchian <strong>$8.8M</strong> vs hold <strong>$77</strong>; ETH Donchian <strong>$81.4M</strong> vs hold <strong>$17,661</strong>.</p>
+          <p class="learned"><strong>Learned:</strong> Across 6 strategy families on ALGO and ETH, Donchian breakout (buy at an N-day high, sell at an M-day low) beat every baseline <em>on the old engine</em>. That KEEP did not survive the 9 Sep look-ahead fix. History node — keep the write-up; do not use the million-dollar figures.</p>
+          <p class="paper">Old paper/historical compound from $1,000 — <strong>look-ahead artefacts</strong>: ALGO Donchian <strong>$8.8M</strong> vs hold <strong>$77</strong>; ETH Donchian <strong>$81.4M</strong> vs hold <strong>$17,661</strong>. Honest scorecard is the 9 Sep revalidation node below.</p>
           <a class="open" href="briefs/2026-09-06-alts-upside-screen.html">Open brief →</a>
         </article>
       </li>
@@ -420,23 +432,22 @@
             <span class="chip tweak">Tweak — paper-live start</span>
           </div>
           <h2>Paper-live start</h2>
-          <p class="learned"><strong>Learned:</strong> This is path step Paper-live, not a new KEEP and not a real order. Two separate $1,000 paper books are open. Day 0: ALGO is <strong>OUT</strong> (cash); ETH is <strong>IN</strong> (buy queued at the next daily open). Watch the daily signal for 1–2 months and record fills on paper only.</p>
-          <p class="paper">$1,000 books open — no P&amp;L yet. ALGO OUT · ETH IN.</p>
+          <p class="learned"><strong>Learned:</strong> Path step Paper-live, not a new KEEP and not a real order. Two $1,000 paper books opened on Donchian 10/5. Day 0: ALGO <strong>OUT</strong> (cash); ETH <strong>IN</strong> (buy queued at the next daily open). Started under the old KEEP; the 9 Sep revalidation supersedes those paper dollars.</p>
+          <p class="paper">$1,000 books open on old KEEP configs — no P&amp;L yet. ALGO OUT · ETH IN. Revalidation supersedes these paper dollars.</p>
           <a class="open" href="briefs/2026-09-07-paper-live-donchian.html">Open brief →</a>
         </article>
       </li>
-      <!-- gallery:progress-auto:start -->
-      <li class="node">
+      <li class="node drop">
         <div class="dot" aria-hidden="true"></div>
         <article class="card">
           <div class="meta">
             <span class="date">8 Sep 2026</span>
-            <span class="step">9 · Brief</span>
-            <span class="chip keep">Keep Donchian 10/5</span>
+            <span class="step">9 · Transfer</span>
+            <span class="chip drop">Keep · later dropped</span>
           </div>
           <h2>BTC Donchian transfer</h2>
-          <p class="learned"><strong>Learned:</strong> Question: does the alts winner donchian_breakout (buy at N-day high, sell at M-day low) work on BTC-USD where the goal is grow wealth and soften crashes — not just chase dollars? Answer: yes for 10/5 . Full sample, every calendar year, and walk-forward all beat buy&amp;hold; it…</p>
-          <p class="paper">No single $1,000 figure in this brief — open for tables.</p>
+          <p class="learned"><strong>Learned:</strong> On the old engine, Donchian 10/5 looked like it transferred from alts to BTC ($3.41M vs hold, 8/8 years). That KEEP is invalid. Honest engine: <strong>$2,598</strong> vs hold <strong>$19,879</strong>; 2/8 years; walk-forward 8/27. Demoted to DROP.</p>
+          <p class="paper">Old claim $1,000 → <strong>$3.41M</strong> (look-ahead). Honest: <strong>$2,598</strong> vs hold <strong>$19,879</strong>.</p>
           <a class="open" href="briefs/2026-09-08-btc-donchian-transfer.html">Open brief →</a>
         </article>
       </li>
@@ -445,12 +456,12 @@
         <article class="card">
           <div class="meta">
             <span class="date">9 Sep 2026</span>
-            <span class="step">10 · Brief</span>
+            <span class="step">10 · Hybrid</span>
             <span class="chip tweak">Tweak family</span>
           </div>
           <h2>BTC Donchian hold hybrid</h2>
-          <p class="learned"><strong>Learned:</strong> Idea: keep the same “buy the breakout” rule as Donchian 10/5 (price makes a new 10-day high), but sell less often — wait for a slower low, or require a deeper dip below that low. That matches a stay-invested BTC posture better than flipping 88 times. Result: time in the market…</p>
-          <p class="paper">No single $1,000 figure in this brief — open for tables.</p>
+          <p class="learned"><strong>Learned:</strong> Same “buy the breakout” idea with stickier exits. Old-engine winner (10/10, confirm=1) now <strong>loses to hold</strong> ($10,389 vs $19,879). Honest $ / Sharpe winner (entry=10, exit=15, confirm=2) can beat hold in-sample ($26,148) but walk-forward is still 11/27. TWEAK, not KEEP.</p>
+          <p class="paper">Old 10/10 winner now <strong>$10,389</strong> vs hold <strong>$19,879</strong> (DROP vs hold). Honest in-sample winner <strong>$26,148</strong> — still fails walk-forward.</p>
           <a class="open" href="briefs/2026-09-09-btc-donchian-hold.html">Open brief →</a>
         </article>
       </li>
@@ -459,12 +470,12 @@
         <article class="card">
           <div class="meta">
             <span class="date">9 Sep 2026</span>
-            <span class="step">11 · Brief</span>
+            <span class="step">11 · Paper-live</span>
             <span class="chip tweak">Tweak — paper-live path step</span>
           </div>
-          <h2>Paper-live</h2>
-          <p class="learned"><strong>Learned:</strong> This is path step Paper-live , not a new KEEP and not a real order . BTC Donchian 10/5 (KEEP’d Sep 8) now has its own $1,000 paper ledger beside the existing ALGO and ETH books.</p>
-          <p class="paper">$1,000 books open — no P&amp;L yet</p>
+          <h2>Paper-live BTC Donchian</h2>
+          <p class="learned"><strong>Learned:</strong> BTC Donchian 10/5 (KEEP’d Sep 8 on the old engine) got its own $1,000 paper ledger beside ALGO and ETH. Started under the old KEEP. Revalidation supersedes those paper dollars. Path-step log, not proof, not a KEEP.</p>
+          <p class="paper">$1,000 book opened under old KEEP — no P&amp;L yet. Revalidation supersedes these paper dollars.</p>
           <a class="open" href="briefs/2026-09-09-paper-live-btc-donchian.html">Open brief →</a>
         </article>
       </li>
@@ -473,15 +484,16 @@
         <article class="card">
           <div class="meta">
             <span class="date">9 Sep 2026</span>
-            <span class="step">12 · Brief</span>
+            <span class="step">12 · Truth serum</span>
             <span class="chip drop">Drop prior Donchian 10/5 KEEPs</span>
           </div>
-          <h2>Harness revalidation</h2>
-          <p class="learned"><strong>Learned:</strong> This brief supersedes earlier Donchian and SMA paper dollars (BTC transfer, alts screen, Donchian-hold hybrid). Those numbers were produced by an engine that traded on the same bar it decided — peeking at the close, then filling as if you already knew it. After PR #16, a…</p>
-          <p class="paper">No single $1,000 figure in this brief — open for tables.</p>
+          <h2>Harness revalidation — the new scorecard</h2>
+          <p class="learned"><strong>Learned:</strong> The engine was peeking: it traded on the same bar it decided. After the fill-timing fix, prior Donchian 10/5 KEEPs on BTC and ALGO are dropped, and the old million-dollar figures ($8.8M / $81.4M / SMA $124k) are look-ahead artefacts. BTC bar is <strong>buy&amp;hold</strong>. Only active KEEP is <strong>Donchian 20/10 on ALGO</strong>. ETH Donchian 10/5 still beats hold on the full sample but fails walk-forward — TWEAK, not KEEP.</p>
+          <p class="paper">From $1,000, honest full sample: BTC hold <strong>$19,879</strong> (dip −76%) vs Donchian 10/5 <strong>$2,598</strong>. ALGO 20/10 KEEP <strong>$10,663</strong> vs hold <strong>$79</strong>. ETH 10/5 TWEAK <strong>$31,808</strong> vs hold <strong>$17,691</strong>.</p>
           <a class="open" href="briefs/2026-09-09-harness-revalidation.html">Open brief →</a>
         </article>
       </li>
+      <!-- gallery:progress-auto:start -->
       <!-- gallery:progress-auto:end -->
     </ol>
   </main>
