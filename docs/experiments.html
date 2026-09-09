@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-cache">
+<!-- hub-build: 20260909b -->
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Trading Lab — Experiments</title>
 <meta name="description" content="Paper experiment cards. Current KEEP / TWEAK first; superseded briefs collapsed. Hypothetical $1,000. Not advice.">
@@ -142,7 +144,8 @@
   .date {
     font-family: "JetBrains Mono", ui-monospace, monospace;
     font-size: .6875rem; color: var(--ink-faint);
-    background: var(--bg-soft); border-radius: 999px; padding: .18rem .45rem;
+    background: var(--bg-soft); border-radius: .45rem; padding: .18rem .45rem;
+    white-space: normal; line-height: 1.35;
   }
   .brief h3 { font-size: .95rem; margin: 0; letter-spacing: -.015em; }
   .brief .teaser {
@@ -150,6 +153,11 @@
     font-size: .8rem;
     color: var(--ink-muted);
     line-height: 1.4;
+  }
+  .brief .when {
+    margin: .35rem 0 0;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: .6875rem; color: var(--ink-faint); line-height: 1.35;
   }
   .chip {
     display: inline-flex; align-items: center;
@@ -205,9 +213,9 @@
         </button>
       </div>
       <nav class="tabs" aria-label="Lab sections">
-        <a href="index.html">Investor</a>
-        <a href="leaderboard.html">Leaderboard</a>
-        <a href="experiments.html" aria-current="page">Experiments</a>
+        <a href="index.html?v=20260909b">Investor</a>
+        <a href="leaderboard.html?v=20260909b">Leaderboard</a>
+        <a href="experiments.html?v=20260909b" aria-current="page">Experiments</a>
       </nav>
     </div>
   </header>
@@ -221,14 +229,16 @@
       <h2 id="current-title">Current</h2>
       <div class="briefs">
         <!-- gallery:briefs:start -->
-        <a class="brief" href="briefs/2026-09-09-harness-revalidation.html">
-          <div class="brief-top"><span class="date">9 Sep 2026</span><span class="chip drop">Drop prior Donchian 10/5 KEEPs</span></div>
+        <a class="brief" href="briefs/2026-09-09-harness-revalidation.html?v=20260909b">
+          <div class="brief-top"><time class="date" datetime="2026-09-09T11:54:16+00:00">2026-09-09 13:54:16 CEST</time><span class="chip drop">Drop prior Donchian 10/5 KEEPs</span></div>
           <h3>Harness revalidation</h3>
           <p class="teaser">Honest engine: BTC hold $19,879 · ALGO 20/10 KEEP $10,663</p>
+          <p class="when">Published 2026-09-09 13:54:16 CEST</p>
         </a>
-        <a class="brief" href="briefs/2026-09-09-btc-donchian-hold.html">
-          <div class="brief-top"><span class="date">9 Sep 2026</span><span class="chip tweak">Tweak family</span></div>
+        <a class="brief" href="briefs/2026-09-09-btc-donchian-hold.html?v=20260909b">
+          <div class="brief-top"><time class="date" datetime="2026-09-09T06:36:06+00:00">2026-09-09 08:36:06 CEST</time><span class="chip tweak">Tweak family</span></div>
           <h3>BTC Donchian hold hybrid</h3>
+          <p class="when">Published 2026-09-09 08:36:06 CEST</p>
         </a>
         <!-- gallery:briefs:end -->
       </div>
@@ -239,47 +249,57 @@
       <p class="hint">Earlier cards. The 9 Sep revalidation is the scorecard — open those only if you want the write-up history.</p>
       <div class="briefs">
         <!-- gallery:superseded:start -->
-        <a class="brief" href="briefs/2026-09-06-first-grids.html">
-          <div class="brief-top"><span class="date">6 Sep 2026</span><span class="chip keep">Keep</span></div>
+        <a class="brief" href="briefs/2026-09-06-first-grids.html?v=20260909b">
+          <div class="brief-top"><time class="date" datetime="2026-09-06T17:02:20+00:00">2026-09-06 19:02:20 CEST</time><span class="chip keep">Keep</span></div>
           <h3>First screen — BTC &amp; ALGO grids</h3>
+          <p class="when">Published 2026-09-06 19:02:20 CEST</p>
         </a>
-        <a class="brief" href="briefs/2026-09-06-sma520-stress.html">
-          <div class="brief-top"><span class="date">6 Sep 2026</span><span class="chip tweak">Tweak</span></div>
+        <a class="brief" href="briefs/2026-09-06-sma520-stress.html?v=20260909b">
+          <div class="brief-top"><time class="date" datetime="2026-09-06T17:02:20+00:00">2026-09-06 19:02:20 CEST</time><span class="chip tweak">Tweak</span></div>
           <h3>SMA 5/20 stress — BTC</h3>
+          <p class="when">Published 2026-09-06 19:02:20 CEST</p>
         </a>
-        <a class="brief" href="briefs/2026-09-06-sma-sticky-vs-fast.html">
-          <div class="brief-top"><span class="date">6 Sep 2026</span><span class="chip tweak">Tweak family</span></div>
+        <a class="brief" href="briefs/2026-09-06-sma-sticky-vs-fast.html?v=20260909b">
+          <div class="brief-top"><time class="date" datetime="2026-09-06T17:02:20+00:00">2026-09-06 19:02:20 CEST</time><span class="chip tweak">Tweak family</span></div>
           <h3>Sticky SMA vs Fast 5/20 — BTC</h3>
+          <p class="when">Published 2026-09-06 19:02:20 CEST</p>
         </a>
-        <a class="brief" href="briefs/2026-09-06-sma-sticky-grid.html">
-          <div class="brief-top"><span class="date">6 Sep 2026</span><span class="chip drop">Tweak → Drop</span></div>
+        <a class="brief" href="briefs/2026-09-06-sma-sticky-grid.html?v=20260909b">
+          <div class="brief-top"><time class="date" datetime="2026-09-06T17:02:20+00:00">2026-09-06 19:02:20 CEST</time><span class="chip drop">Tweak → Drop</span></div>
           <h3>Sticky SMA grid — BTC</h3>
+          <p class="when">Published 2026-09-06 19:02:20 CEST</p>
         </a>
-        <a class="brief" href="briefs/2026-09-06-btc-hold-protect.html">
-          <div class="brief-top"><span class="date">6 Sep 2026</span><span class="chip tweak">Tweak family</span></div>
+        <a class="brief" href="briefs/2026-09-06-btc-hold-protect.html?v=20260909b">
+          <div class="brief-top"><time class="date" datetime="2026-09-06T17:02:20+00:00">2026-09-06 19:02:20 CEST</time><span class="chip tweak">Tweak family</span></div>
           <h3>BTC hold-protect vs B&amp;H &amp; fast SMA</h3>
+          <p class="when">Published 2026-09-06 19:02:20 CEST</p>
         </a>
-        <a class="brief" href="briefs/2026-09-06-btc-hold-protect-dd20-re15.html">
-          <div class="brief-top"><span class="date">6 Sep 2026</span><span class="chip park">Parked</span></div>
+        <a class="brief" href="briefs/2026-09-06-btc-hold-protect-dd20-re15.html?v=20260909b">
+          <div class="brief-top"><time class="date" datetime="2026-09-06T17:02:20+00:00">2026-09-06 19:02:20 CEST</time><span class="chip park">Parked</span></div>
           <h3>BTC hold-protect dd20/re15 stress</h3>
+          <p class="when">Published 2026-09-06 19:02:20 CEST</p>
         </a>
-        <a class="brief" href="briefs/2026-09-06-alts-upside-screen.html">
-          <div class="brief-top"><span class="date">6 Sep 2026</span><span class="chip keep">Keep Donchian</span></div>
+        <a class="brief" href="briefs/2026-09-06-alts-upside-screen.html?v=20260909b">
+          <div class="brief-top"><time class="date" datetime="2026-09-06T19:08:29+00:00">2026-09-06 21:08:29 CEST</time><span class="chip keep">Keep Donchian</span></div>
           <h3>Alts upside screen</h3>
+          <p class="when">Published 2026-09-06 21:08:29 CEST</p>
         </a>
-        <a class="brief" href="briefs/2026-09-07-paper-live-donchian.html">
-          <div class="brief-top"><span class="date">7 Sep 2026</span><span class="chip tweak">Tweak — paper-live start</span></div>
+        <a class="brief" href="briefs/2026-09-07-paper-live-donchian.html?v=20260909b">
+          <div class="brief-top"><time class="date" datetime="2026-09-07T06:34:52+00:00">2026-09-07 08:34:52 CEST</time><span class="chip tweak">Tweak — paper-live start</span></div>
           <h3>Paper-live start</h3>
           <p class="teaser">$1,000 books open — no P&amp;L yet</p>
+          <p class="when">Published 2026-09-07 08:34:52 CEST</p>
         </a>
-        <a class="brief" href="briefs/2026-09-08-btc-donchian-transfer.html">
-          <div class="brief-top"><span class="date">8 Sep 2026</span><span class="chip keep">Keep Donchian 10/5</span></div>
+        <a class="brief" href="briefs/2026-09-08-btc-donchian-transfer.html?v=20260909b">
+          <div class="brief-top"><time class="date" datetime="2026-09-09T06:36:06+00:00">2026-09-09 08:36:06 CEST</time><span class="chip keep">Keep Donchian 10/5</span></div>
           <h3>BTC Donchian transfer</h3>
+          <p class="when">Published 2026-09-09 08:36:06 CEST</p>
         </a>
-        <a class="brief" href="briefs/2026-09-09-paper-live-btc-donchian.html">
-          <div class="brief-top"><span class="date">9 Sep 2026</span><span class="chip tweak">Tweak — paper-live path step</span></div>
+        <a class="brief" href="briefs/2026-09-09-paper-live-btc-donchian.html?v=20260909b">
+          <div class="brief-top"><time class="date" datetime="2026-09-09T06:36:06+00:00">2026-09-09 08:36:06 CEST</time><span class="chip tweak">Tweak — paper-live path step</span></div>
           <h3>Paper-live</h3>
           <p class="teaser">$1,000 books open — no P&amp;L yet</p>
+          <p class="when">Published 2026-09-09 08:36:06 CEST</p>
         </a>
         <!-- gallery:superseded:end -->
       </div>
@@ -287,7 +307,7 @@
   </main>
 
   <footer class="site">
-    Paper research · hypothetical $1,000 · not financial advice · <a href="index.html">Investor</a>
+    Paper research · hypothetical $1,000 · not financial advice · build 20260909b · <a href="index.html?v=20260909b">Investor</a>
   </footer>
 
   <script>

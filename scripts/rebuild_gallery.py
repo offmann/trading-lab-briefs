@@ -6,6 +6,13 @@ last-updated to the second (Europe/Paris) on Investor (index.html),
 Leaderboard, and Experiments, and appends newer research drops on
 leaderboard.html when a brief is not already linked.
 
+Also keeps hub IA honest: three-tab chrome only (Investor / Leaderboard /
+Experiments), cache-busts internal .html links, copies Investor onto
+investor.html, and writes Experiments-equivalent alias pages for the
+old progress.html / keepers.html URLs so they are never blank stubs.
+Injects a compact Back to Investor · Leaderboard · Experiments bar on
+each brief.
+
 Editorial IA (Investor copy, rank tables, plot data) is left alone.
 
 Privacy: paper $1,000 / $1000 is allowed. Holdings, RISK_PROFILE, “0.15 BTC”,
@@ -36,6 +43,59 @@ BRIEFS_DIR = DOCS / "briefs"
 INDEX_HTML = DOCS / "index.html"
 EXPERIMENTS_HTML = DOCS / "experiments.html"
 LEADERBOARD_HTML = DOCS / "leaderboard.html"
+INVESTOR_HTML = DOCS / "investor.html"
+PROGRESS_HTML = DOCS / "progress.html"
+KEEPERS_HTML = DOCS / "keepers.html"
+
+# Bump this string when hub HTML must win against a cached GH Pages client.
+CACHE_BUSTER = "20260909b"
+CACHE_META = '<meta http-equiv="Cache-Control" content="no-cache">'
+BUILD_COMMENT = f"<!-- hub-build: {CACHE_BUSTER} -->"
+
+HUB_JUMP_CSS_START = "  /* gallery:hub-jump */"
+HUB_JUMP_CSS_END = "  /* gallery:hub-jump:end */"
+HUB_JUMP_CSS = f"""{HUB_JUMP_CSS_START}
+  nav.hub-jump {{
+    display: flex; flex-wrap: wrap; align-items: center; gap: .15rem .5rem;
+    margin: 0 0 .85rem; font-size: .8rem; font-weight: 650;
+  }}
+  nav.hub-jump a {{
+    color: var(--teal-ink, #115e59); text-decoration: none;
+    min-height: 2.5rem; display: inline-flex; align-items: center;
+  }}
+  nav.hub-jump a:focus-visible {{
+    outline: 2px solid var(--teal, #0f766e); outline-offset: 2px;
+  }}
+  nav.hub-jump .sep {{ color: var(--ink-faint, #64748b); font-weight: 500; }}
+{HUB_JUMP_CSS_END}"""
+HUB_JUMP_HTML = (
+    '    <nav class="hub-jump" aria-label="Lab sections">\n'
+    f'      <a href="../index.html?v={CACHE_BUSTER}">Back to Investor</a>\n'
+    '      <span class="sep" aria-hidden="true">·</span>\n'
+    f'      <a href="../leaderboard.html?v={CACHE_BUSTER}">Leaderboard</a>\n'
+    '      <span class="sep" aria-hidden="true">·</span>\n'
+    f'      <a href="../experiments.html?v={CACHE_BUSTER}">Experiments</a>\n'
+    "    </nav>"
+)
+
+MOVED_NOTES = {
+    "progress.html": (
+        "This address moved. You are on <strong>Experiments</strong> "
+        "(the old Progress URL)."
+    ),
+    "keepers.html": (
+        "This address moved. You are on <strong>Experiments</strong> "
+        "(the old Keepers URL)."
+    ),
+}
+
+HUB_TAB_ITEMS = (
+    ("index.html", "Investor"),
+    ("leaderboard.html", "Leaderboard"),
+    ("experiments.html", "Experiments"),
+)
+FORBIDDEN_NAV_LABELS = {"overview", "progress", "keepers"}
+STUB_MAX_BYTES = 2048
 
 PARIS_TZ = ZoneInfo("Europe/Paris")
 REVALIDATION_DAY = dt.date(2026, 9, 9)
@@ -167,6 +227,10 @@ class Brief:
     chip_label: str
     summary: str
     teaser: str
+    published_at: dt.datetime = field(
+        default_factory=lambda: dt.datetime(1970, 1, 1, tzinfo=dt.timezone.utc)
+    )
+    published_source: str = "unset"
     href: str = field(init=False)
 
     def __post_init__(self) -> None:
@@ -277,12 +341,17 @@ def date_from_text(text: str) -> dt.date | None:
 
 
 def public_date_label(day: dt.date) -> str:
-    """Full date on Experiment cards, e.g. '6 Sep 2026'."""
+    """Legacy date-only label. Cards must use format_updated_stamp instead."""
     return f"{day.day} {day.strftime('%b')} {day.year}"
 
 
 def card_date_label(day: dt.date) -> str:
     return public_date_label(day)
+
+
+def card_published_label(when: dt.datetime) -> str:
+    """Second-precision card clock, e.g. '2026-09-09 13:54:16 CEST'."""
+    return format_updated_stamp(when)
 
 
 def format_updated_stamp(when: dt.datetime) -> str:
@@ -467,11 +536,374 @@ def pick_chips(html_src: str) -> list[Chip]:
     return chips
 
 
+GALLERY_PUBLISHED_RE = re.compile(
+    r"""<!--\s*gallery-published\b(.*?)-->""",
+    re.I | re.S,
+)
+PUBLISHED_START = "<!-- gallery:published:start -->"
+PUBLISHED_END = "<!-- gallery:published:end -->"
+PUBLISHED_CSS_START = "  /* gallery:published */"
+PUBLISHED_CSS_END = "  /* gallery:published:end */"
+PUBLISHED_CSS = f"""{PUBLISHED_CSS_START}
+  p.published {{
+    font-family: var(--mono, "JetBrains Mono", ui-monospace, monospace);
+    font-size: .72rem; color: var(--ink-faint, #64748b);
+    margin: 0 0 .85rem; line-height: 1.4;
+  }}
+{PUBLISHED_CSS_END}"""
+
+NAV_BLOCK_RE = re.compile(
+    r'[ \t]*<nav class="tabs"[^>]*>.*?</nav>',
+    re.S,
+)
+HUB_JUMP_NAV_RE = re.compile(
+    r"\s*<nav class=\"hub-jump\"[^>]*>.*?</nav>",
+    re.S,
+)
+HEAD_REDIRECT_RE = re.compile(
+    r"<head\b[\s\S]*?location\.replace\([\s\S]*?</head>",
+    re.I,
+)
+SECOND_STAMP_RE = re.compile(
+    r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} (?:CEST|CET)"
+)
+
+
+def bust_href(href: str) -> str:
+    """Append or refresh ?v=CACHE_BUSTER on relative .html links."""
+    if not href or href.startswith(("http://", "https://", "mailto:", "#", "data:", "javascript:")):
+        return href
+    path, hashfrag = (href.split("#", 1) + [""])[:2]
+    if ".html" not in path:
+        return href
+    if "?" in path:
+        base, query = path.split("?", 1)
+        params = [p for p in query.split("&") if p and not p.startswith("v=") and p != "v"]
+        params.append(f"v={CACHE_BUSTER}")
+        path = base + "?" + "&".join(params)
+    else:
+        path = path + f"?v={CACHE_BUSTER}"
+    return path + (f"#{hashfrag}" if hashfrag else "")
+
+
+def bust_internal_html_hrefs(src: str) -> str:
+    def repl(match: re.Match[str]) -> str:
+        quote = match.group(1)
+        return f"href={quote}{bust_href(match.group(2))}{quote}"
+
+    return re.sub(
+        r"""href=(["'])([^"']+\.html(?:\?[^"']*)?(?:#[^"']*)?)(\1)""",
+        repl,
+        src,
+    )
+
+
+def ensure_cache_headers(src: str) -> str:
+    if 'http-equiv="Cache-Control"' not in src:
+        src = src.replace(
+            '<meta charset="utf-8">',
+            f'<meta charset="utf-8">\n{CACHE_META}\n{BUILD_COMMENT}',
+            1,
+        )
+    elif BUILD_COMMENT not in src:
+        if re.search(r"<!-- hub-build:.*?-->", src):
+            src = re.sub(r"<!-- hub-build:.*?-->", BUILD_COMMENT, src, count=1)
+        else:
+            src = src.replace(CACHE_META, f"{CACHE_META}\n{BUILD_COMMENT}", 1)
+    return src
+
+
+def ensure_footer_build(src: str) -> str:
+    src = re.sub(r"(?: ·)? build \S+", "", src)
+    return re.sub(
+        r"(not financial advice)",
+        rf"\1 · build {CACHE_BUSTER}",
+        src,
+        count=1,
+    )
+
+
+def render_hub_tabs(current: str) -> str:
+    links: list[str] = []
+    for href, label in HUB_TAB_ITEMS:
+        attr = ' aria-current="page"' if label == current else ""
+        links.append(f'        <a href="{bust_href(href)}"{attr}>{label}</a>')
+    return (
+        '      <nav class="tabs" aria-label="Lab sections">\n'
+        + "\n".join(links)
+        + "\n      </nav>"
+    )
+
+
+def set_hub_tabs(src: str, current: str) -> str:
+    if not NAV_BLOCK_RE.search(src):
+        raise SystemExit("hub page is missing nav.tabs")
+    return NAV_BLOCK_RE.sub(render_hub_tabs(current), src, count=1)
+
+
+def insert_style_block(src: str, start: str, end: str, block: str) -> str:
+    region = re.compile(re.escape(start) + r".*?" + re.escape(end), re.S)
+    if region.search(src):
+        return region.sub(block, src, count=1)
+    if "</style>" not in src:
+        return src
+    return src.replace("</style>", block + "\n</style>", 1)
+
+
+def ensure_brief_hub_jump(src: str) -> str:
+    src = insert_style_block(src, HUB_JUMP_CSS_START, HUB_JUMP_CSS_END, HUB_JUMP_CSS)
+    src = insert_style_block(src, PUBLISHED_CSS_START, PUBLISHED_CSS_END, PUBLISHED_CSS)
+    src = HUB_JUMP_NAV_RE.sub("", src, count=1)
+    if "<header class=\"top\">" not in src:
+        raise SystemExit("brief is missing <header class=\"top\">")
+    return src.replace("<header class=\"top\">", HUB_JUMP_HTML + "\n    <header class=\"top\">", 1)
+
+
+def parse_gallery_published(src: str) -> tuple[dt.datetime, str] | None:
+    match = GALLERY_PUBLISHED_RE.search(src)
+    if not match:
+        return None
+    attrs = parse_attrs(match.group(1))
+    iso = (attrs.get("iso") or "").strip()
+    if not iso:
+        return None
+    when = dt.datetime.fromisoformat(iso.replace("Z", "+00:00"))
+    if when.tzinfo is None:
+        when = when.replace(tzinfo=dt.timezone.utc)
+    source = (attrs.get("source") or "gallery-published").strip()
+    return when, source or "gallery-published"
+
+
+def git_first_add(path: Path) -> tuple[dt.datetime, str] | None:
+    """Committer clock of the first add of this path. No --follow (avoids rename ghosts)."""
+    rel = str(path.relative_to(ROOT)) if path.is_absolute() else str(path)
+    try:
+        raw = subprocess.check_output(
+            ["git", "log", "--diff-filter=A", "--format=%cI\t%h\t%s", "--", rel],
+            cwd=ROOT,
+            text=True,
+            stderr=subprocess.DEVNULL,
+        ).strip()
+    except (OSError, subprocess.CalledProcessError):
+        return None
+    if not raw:
+        return None
+    line = raw.splitlines()[-1]
+    parts = line.split("\t", 2)
+    if len(parts) < 2:
+        return None
+    when = dt.datetime.fromisoformat(parts[0])
+    if when.tzinfo is None:
+        when = when.replace(tzinfo=dt.timezone.utc)
+    sha = parts[1]
+    subject = parts[2] if len(parts) > 2 else ""
+    source = f"git-add:{sha}"
+    lab = re.search(r"trading-lab@([0-9a-f]+)", subject, re.I)
+    if lab:
+        source += f" trading-lab@{lab.group(1)}"
+    return when, source
+
+
+def resolve_brief_published(path: Path, src: str) -> tuple[dt.datetime, str]:
+    """Second-precision publish clock. Never invent seconds from a date-only name.
+
+    Resolution order (documented in scripts/brief_timestamps.md):
+    1. <!-- gallery-published iso="..." source="..." --> already in the brief
+    2. git committer date of the first add of this file (no --follow)
+    3. fail the rebuild
+    """
+    embedded = parse_gallery_published(src)
+    if embedded:
+        return embedded
+    added = git_first_add(path)
+    if added:
+        return added
+    raise SystemExit(
+        f"{path}: no second-precision publish time. Add "
+        '<!-- gallery-published iso="YYYY-MM-DDTHH:MM:SS+00:00" source="..." --> '
+        "or commit the file so `git log --diff-filter=A` has a committer clock."
+    )
+
+
+def ensure_brief_published_meta(src: str, when: dt.datetime, source: str) -> str:
+    iso = when.isoformat()
+    comment = f'<!-- gallery-published iso="{iso}" source="{esc(source)}" -->'
+    if GALLERY_PUBLISHED_RE.search(src):
+        src = GALLERY_PUBLISHED_RE.sub(comment, src, count=1)
+    else:
+        src = src.replace("<body>", f"<body>\n  {comment}", 1)
+    stamp = format_updated_stamp(when)
+    visible = (
+        f'<p class="published">Published {PUBLISHED_START}{stamp}{PUBLISHED_END}'
+        f' · {esc(source)}</p>'
+    )
+    region = re.compile(
+        r'<p class="published">.*?</p>',
+        re.S,
+    )
+    if region.search(src):
+        src = region.sub(visible, src, count=1)
+    elif "<header class=\"top\">" in src:
+        src = re.sub(
+            r"(<header class=\"top\">.*?</header>)",
+            rf"\1\n    {visible}",
+            src,
+            count=1,
+            flags=re.S,
+        )
+    else:
+        src = src.replace("<body>", f"<body>\n  {visible}", 1)
+    return src
+
+
+def polish_hub_page(src: str, current: str) -> str:
+    src = ensure_cache_headers(src)
+    src = set_hub_tabs(src, current)
+    src = ensure_footer_build(src)
+    src = bust_internal_html_hrefs(src)
+    return src
+
+
+def write_if_changed(path: Path, new: str) -> bool:
+    old = path.read_text(encoding="utf-8") if path.is_file() else ""
+    if new == old:
+        return False
+    path.write_text(new, encoding="utf-8")
+    return True
+
+
+def add_alias_head(src: str, canonical: str, refresh_to: str | None) -> str:
+    src = re.sub(r'[ \t]*<link rel="canonical"[^>]*>\n?', "", src)
+    src = re.sub(r'[ \t]*<meta http-equiv="refresh"[^>]*>\n?', "", src)
+    extras = [f'<link rel="canonical" href="{canonical}">']
+    if refresh_to:
+        extras.append(f'<meta http-equiv="refresh" content="1; url={refresh_to}">')
+    blob = "\n".join(extras) + "\n"
+    return src.replace('<meta charset="utf-8">\n', '<meta charset="utf-8">\n' + blob, 1)
+
+
+def insert_moved_note(src: str, note_html: str) -> str:
+    src = re.sub(
+        r'[ \t]*<p class="lede" role="status"><!-- alias:moved -->.*?</p>\n?',
+        "",
+        src,
+        count=1,
+        flags=re.S,
+    )
+    note = (
+        f'    <p class="lede" role="status"><!-- alias:moved -->{note_html}'
+        f"<!-- /alias:moved --></p>\n"
+    )
+    marker = '<main id="main" class="wrap">'
+    if marker not in src:
+        raise SystemExit("experiments clone is missing <main id=\"main\">")
+    return src.replace(marker, marker + "\n" + note, 1)
+
+
+def append_alias_redirect(src: str, target: str) -> str:
+    src = re.sub(
+        r"\s*<script>\s*setTimeout\(function \(\) \{\s*location\.replace\([^)]+\);\s*\}, \d+\);\s*</script>",
+        "",
+        src,
+        count=1,
+    )
+    script = (
+        "  <script>\n"
+        "    setTimeout(function () {\n"
+        f'      location.replace("{target}");\n'
+        "    }, 400);\n"
+        "  </script>\n"
+    )
+    if "</body>" not in src:
+        return src + script
+    return src.replace("</body>", script + "</body>", 1)
+
+
+def sync_alias_pages() -> list[Path]:
+    changed: list[Path] = []
+    index = INDEX_HTML.read_text(encoding="utf-8")
+    investor = add_alias_head(index, "index.html", None)
+    if write_if_changed(INVESTOR_HTML, investor):
+        changed.append(INVESTOR_HTML)
+
+    experiments = EXPERIMENTS_HTML.read_text(encoding="utf-8")
+    for path, note in (
+        (PROGRESS_HTML, MOVED_NOTES["progress.html"]),
+        (KEEPERS_HTML, MOVED_NOTES["keepers.html"]),
+    ):
+        html = insert_moved_note(experiments, note)
+        html = add_alias_head(html, "experiments.html", None)
+        if write_if_changed(path, html):
+            changed.append(path)
+    return changed
+
+
+def nav_link_labels(src: str) -> list[str]:
+    labels: list[str] = []
+    for nav in re.finditer(r"<nav\b[^>]*>(.*?)</nav>", src, re.S | re.I):
+        for anchor in re.findall(r"<a\b[^>]*>(.*?)</a>", nav.group(1), re.S | re.I):
+            labels.append(html_text(anchor))
+    return labels
+
+
+def check_hub_ia() -> list[str]:
+    """Fail CI if old 5-tab chrome or blank redirect stubs come back."""
+    errors: list[str] = []
+    for path in (
+        INDEX_HTML,
+        INVESTOR_HTML,
+        LEADERBOARD_HTML,
+        EXPERIMENTS_HTML,
+        PROGRESS_HTML,
+        KEEPERS_HTML,
+    ):
+        if not path.is_file():
+            errors.append(f"missing {path.relative_to(ROOT)}")
+            continue
+        src = path.read_text(encoding="utf-8")
+        rel = str(path.relative_to(ROOT))
+        if len(src.encode("utf-8")) < STUB_MAX_BYTES:
+            errors.append(f"{rel} is a blank/stub page ({len(src)} bytes)")
+        if HEAD_REDIRECT_RE.search(src) and 'class="tabs"' not in src:
+            errors.append(f"{rel} redirects from <head> with no 3-tab chrome")
+        if 'http-equiv="Cache-Control"' not in src:
+            errors.append(f"{rel} is missing Cache-Control: no-cache")
+        if 'class="tabs"' not in src:
+            errors.append(f"{rel} is missing the 3-tab nav")
+        for label in nav_link_labels(src):
+            if label.lower().strip() in FORBIDDEN_NAV_LABELS:
+                errors.append(f"{rel} still has {label!r} as a nav label")
+        if path in {INDEX_HTML, INVESTOR_HTML}:
+            if "$19,879" not in src or "$10,663" not in src:
+                errors.append(f"{rel} lost the BTC hold / ALGO KEEP truth rails")
+    experiments = EXPERIMENTS_HTML.read_text(encoding="utf-8") if EXPERIMENTS_HTML.is_file() else ""
+    if experiments:
+        cards = re.findall(
+            r'<a class="brief".*?</a>',
+            experiments,
+            re.S,
+        )
+        for card in cards:
+            if not SECOND_STAMP_RE.search(card):
+                errors.append("experiments card missing YYYY-MM-DD HH:MM:SS CEST stamp")
+                break
+            if re.search(r'<span class="date">\d{1,2} [A-Z][a-z]{2} \d{4}</span>', card):
+                errors.append("experiments card still uses a date-only chip")
+                break
+    for brief in sorted(BRIEFS_DIR.glob("*.html")):
+        src = brief.read_text(encoding="utf-8")
+        for label in nav_link_labels(src):
+            if label.lower().strip() in FORBIDDEN_NAV_LABELS:
+                errors.append(f"{brief.name} still has {label!r} as a nav label")
+    return errors
+
+
 def parse_brief(path: Path) -> Brief:
     src = path.read_text(encoding="utf-8")
     chips = pick_chips(src)
     kind, label = headline_chip(chips)
     day = date_from_filename(path.name) or date_from_text(src) or dt.date.today()
+    published_at, published_source = resolve_brief_published(path, src)
     return Brief(
         filename=path.name,
         path=path,
@@ -481,6 +913,8 @@ def parse_brief(path: Path) -> Brief:
         chip_label=label,
         summary=pick_summary(src),
         teaser=pick_teaser(src),
+        published_at=published_at,
+        published_source=published_source,
     )
 
 
@@ -494,7 +928,7 @@ def scan_briefs() -> list[Brief]:
 
 
 def existing_brief_order(html: str) -> list[str]:
-    return re.findall(r"""href=["']briefs/([^"']+\.html)["']""", html)
+    return re.findall(r"""href=["']briefs/([^"'?#]+\.html)""", html)
 
 
 def existing_brief_order_in_region(source: str, start: str, end: str) -> list[str]:
@@ -577,17 +1011,26 @@ def split_current_superseded(briefs: list[Brief], experiments_html: str) -> tupl
 def render_brief_cards(briefs: list[Brief]) -> str:
     cards: list[str] = []
     for brief in briefs:
+        stamp = card_published_label(brief.published_at)
+        iso = brief.published_at.isoformat()
         teaser_html = ""
         if brief.teaser:
             teaser_html = (
                 "\n          <p class=\"teaser\">" + esc(brief.teaser) + "</p>"
             )
+        when_html = (
+            "\n          <p class=\"when\">Published "
+            + esc(stamp)
+            + "</p>"
+        )
         cards.append(
             "        <a class=\"brief\" href=\""
-            + esc(brief.href)
-            + "\">\n          <div class=\"brief-top\"><span class=\"date\">"
-            + esc(card_date_label(brief.date))
-            + "</span><span class=\"chip "
+            + esc(bust_href(brief.href))
+            + "\">\n          <div class=\"brief-top\"><time class=\"date\" datetime=\""
+            + esc(iso)
+            + "\">"
+            + esc(stamp)
+            + "</time><span class=\"chip "
             + esc(brief.chip_kind)
             + "\">"
             + esc(brief.chip_label)
@@ -595,6 +1038,7 @@ def render_brief_cards(briefs: list[Brief]) -> str:
             + esc(brief.title)
             + "</h3>"
             + teaser_html
+            + when_html
             + "\n        </a>"
         )
     return "\n".join(cards)
@@ -625,7 +1069,7 @@ def hrefs_outside_region(source: str, start: str, end: str) -> set[str]:
         clipped = pattern.sub("", source)
     else:
         clipped = source
-    return set(re.findall(r"""href=["'](briefs/[^"']+\.html)["']""", clipped))
+    return set(re.findall(r"""href=["'](briefs/[^"'?#]+\.html)""", clipped))
 
 
 def paper_line(brief: Brief) -> str:
@@ -640,12 +1084,15 @@ def render_leaderboard_drops(briefs: list[Brief]) -> str:
     items: list[str] = []
     for brief in briefs:
         teaser = paper_line(brief)
+        stamp = card_published_label(brief.published_at)
         items.append(
             "      <article class=\"drop-card\">\n"
             "        <div class=\"top\">\n"
-            "          <span class=\"date\">"
-            + esc(card_date_label(brief.date))
-            + "</span>\n"
+            "          <time class=\"date\" datetime=\""
+            + esc(brief.published_at.isoformat())
+            + "\">"
+            + esc(stamp)
+            + "</time>\n"
             "          <span class=\"chip "
             + esc(brief.chip_kind)
             + "\">"
@@ -658,8 +1105,11 @@ def render_leaderboard_drops(briefs: list[Brief]) -> str:
             "        <p>"
             + esc(teaser)
             + "</p>\n"
+            "        <p class=\"when\">Published "
+            + esc(stamp)
+            + "</p>\n"
             "        <a class=\"open\" href=\""
-            + esc(brief.href)
+            + esc(bust_href(brief.href))
             + "\">Open brief →</a>\n"
             "      </article>"
         )
@@ -687,8 +1137,8 @@ def update_hub_pages(briefs: list[Brief]) -> list[Path]:
 
     index_src = INDEX_HTML.read_text(encoding="utf-8")
     index_new = stamp_updated_region(index_src, published, INDEX_HTML)
-    if index_new != index_src:
-        INDEX_HTML.write_text(index_new, encoding="utf-8")
+    index_new = polish_hub_page(index_new, "Investor")
+    if write_if_changed(INDEX_HTML, index_new):
         changed.append(INDEX_HTML)
 
     experiments_src = EXPERIMENTS_HTML.read_text(encoding="utf-8")
@@ -708,8 +1158,8 @@ def update_hub_pages(briefs: list[Brief]) -> list[Path]:
         render_brief_cards(superseded),
         EXPERIMENTS_HTML,
     )
-    if experiments_new != experiments_src:
-        EXPERIMENTS_HTML.write_text(experiments_new, encoding="utf-8")
+    experiments_new = polish_hub_page(experiments_new, "Experiments")
+    if write_if_changed(EXPERIMENTS_HTML, experiments_new):
         changed.append(EXPERIMENTS_HTML)
 
     board_src = LEADERBOARD_HTML.read_text(encoding="utf-8")
@@ -720,7 +1170,9 @@ def update_hub_pages(briefs: list[Brief]) -> list[Path]:
     board_extras = [
         b
         for b in sorted(briefs, key=lambda x: (x.date, x.filename))
-        if b.href not in known_board and b.date > REVALIDATION_DAY
+        if b.href.split("?")[0] not in known_board
+        and bust_href(b.href).split("?")[0] not in {h.split("?")[0] for h in known_board}
+        and b.date > REVALIDATION_DAY
     ]
     board_new = replace_region(
         board_new,
@@ -729,10 +1181,18 @@ def update_hub_pages(briefs: list[Brief]) -> list[Path]:
         render_leaderboard_drops(board_extras),
         LEADERBOARD_HTML,
     )
-    if board_new != board_src:
-        LEADERBOARD_HTML.write_text(board_new, encoding="utf-8")
+    board_new = polish_hub_page(board_new, "Leaderboard")
+    if write_if_changed(LEADERBOARD_HTML, board_new):
         changed.append(LEADERBOARD_HTML)
 
+    for brief in briefs:
+        src = brief.path.read_text(encoding="utf-8")
+        new = ensure_brief_hub_jump(src)
+        new = ensure_brief_published_meta(new, brief.published_at, brief.published_source)
+        if write_if_changed(brief.path, new):
+            changed.append(brief.path)
+
+    changed.extend(p for p in sync_alias_pages() if p not in changed)
     return changed
 
 
@@ -865,6 +1325,18 @@ def self_test() -> None:
     )
     assert "ALGO $8.8M" in pick_teaser(teaser_src)
 
+    pub_src = (
+        '<!-- gallery-published iso="2026-09-06T17:02:20+00:00" '
+        'source="git-add:502d31b" -->'
+    )
+    when, source = parse_gallery_published(pub_src)
+    assert when is not None
+    assert format_updated_stamp(when) == "2026-09-06 19:02:20 CEST"
+    assert source == "git-add:502d31b"
+    assert bust_href("index.html") == f"index.html?v={CACHE_BUSTER}"
+    assert bust_href("briefs/x.html?v=old") == f"briefs/x.html?v={CACHE_BUSTER}"
+    assert "Overview" not in {label for _, label in HUB_TAB_ITEMS}
+
     live_src = (
         "<p class='lede'>This is path step Paper-live. Two separate $1,000 paper "
         "books are open. Day 0 does not pretend we traded.</p>"
@@ -939,7 +1411,14 @@ def main(argv: list[str] | None = None) -> int:
             report_hits(hits)
             print(f"{len(hits)} privacy hit(s)", file=sys.stderr)
             return 1
+        ia = check_hub_ia()
+        if ia:
+            for err in ia:
+                print(f"IA  {err}", file=sys.stderr)
+            print(f"{len(ia)} hub IA error(s)", file=sys.stderr)
+            return 1
         print("privacy scan clean")
+        print("hub IA clean")
         return 0
 
     if args.strip:
@@ -973,6 +1452,12 @@ def main(argv: list[str] | None = None) -> int:
         print("wrote " + ", ".join(str(p.relative_to(ROOT)) for p in changed))
     else:
         print("hub pages already up to date")
+    ia = check_hub_ia()
+    if ia:
+        for err in ia:
+            print(f"IA  {err}", file=sys.stderr)
+        print(f"{len(ia)} hub IA error(s)", file=sys.stderr)
+        return 1
     return 0
 
 

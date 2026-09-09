@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-cache">
+<!-- hub-build: 20260909b -->
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Trading Lab — Leaderboard</title>
 <meta name="description" content="Paper scoreboard by sleeve: BTC, ALGO, ETH vs buy-and-hold from $1,000. KEEP / TWEAK / DROP. Not advice.">
@@ -23,7 +25,7 @@
     --chip-drop: #b91c1c; --chip-drop-bg: #fee2e2;
     --shadow: 0 1px 2px rgba(15,23,42,.06), 0 8px 24px rgba(15,23,42,.06);
     --head-bg: color-mix(in srgb, var(--bg) 86%, transparent);
-    --s-btc: #0f766e; --s-algo: #b45309; --s-eth: #0369a1;
+    --s-btc: #b45309; --s-algo: #0f766e; --s-eth: #4f46e5; --s-hold: #64748b;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
@@ -38,7 +40,7 @@
       --chip-tweak: #fbbf24; --chip-tweak-bg: #422006;
       --chip-drop: #f87171; --chip-drop-bg: #450a0a;
       --shadow: 0 1px 2px rgba(0,0,0,.35), 0 12px 28px rgba(0,0,0,.35);
-      --s-btc: #2dd4bf; --s-algo: #fbbf24; --s-eth: #7dd3fc;
+      --s-btc: #fbbf24; --s-algo: #2dd4bf; --s-eth: #a5b4fc; --s-hold: #94a3b8;
     }
   }
   html[data-theme="dark"] {
@@ -53,7 +55,7 @@
     --chip-tweak: #fbbf24; --chip-tweak-bg: #422006;
     --chip-drop: #f87171; --chip-drop-bg: #450a0a;
     --shadow: 0 1px 2px rgba(0,0,0,.35), 0 12px 28px rgba(0,0,0,.35);
-    --s-btc: #2dd4bf; --s-algo: #fbbf24; --s-eth: #7dd3fc;
+    --s-btc: #fbbf24; --s-algo: #2dd4bf; --s-eth: #a5b4fc; --s-hold: #94a3b8;
   }
   *, *::before, *::after { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
@@ -159,9 +161,22 @@
     color: var(--teal-ink); background: var(--teal-soft); border-color: transparent;
   }
   .filters button:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
-  .plot-wrap { width: 100%; overflow: visible; }
-  .plot-wrap svg { width: 100%; height: auto; display: block; }
-  .plot-wrap .pt { cursor: pointer; }
+  .plot-stack { display: grid; gap: .85rem; width: 100%; }
+  .plot-panel {
+    margin: 0; padding: .55rem .55rem .4rem;
+    background: var(--bg-soft); border-radius: 12px;
+  }
+  .plot-panel figcaption {
+    font-size: .75rem; font-weight: 700; letter-spacing: -.01em;
+    margin: 0 0 .35rem; color: var(--ink);
+  }
+  .plot-panel figcaption span {
+    display: block; font-weight: 550; color: var(--ink-faint);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: .65rem; margin-top: .15rem;
+  }
+  .plot-panel svg { width: 100%; height: auto; display: block; }
+  .plot-panel .pt { cursor: pointer; }
   .plot-caption {
     min-height: 2.6rem; margin: .55rem 0 0;
     font-size: .85rem; color: var(--ink-muted);
@@ -172,12 +187,31 @@
     margin: .55rem 0 0; font-size: .72rem; color: var(--ink-faint); font-weight: 650;
   }
   .legend i {
-    display: inline-block; width: .55rem; height: .55rem; border-radius: 99px;
-    margin-right: .28rem; vertical-align: -0.05rem;
+    display: inline-block; width: .7rem; height: .7rem;
+    margin-right: .28rem; vertical-align: -0.12rem;
+    border: 2px solid currentColor; box-sizing: border-box;
   }
-  .legend .btc { background: var(--s-btc); }
-  .legend .algo { background: var(--s-algo); }
-  .legend .eth { background: var(--s-eth); }
+  .legend .keep { border-radius: 99px; background: var(--ink); border-color: var(--ink); }
+  .legend .tweak { border-radius: 2px; background: var(--ink); border-color: var(--ink); }
+  .legend .drop { border-radius: 99px; background: transparent; border-color: var(--ink); }
+  .legend .btc { color: var(--s-btc); }
+  .legend .algo { color: var(--s-algo); }
+  .legend .eth { color: var(--s-eth); }
+  .legend .hold-swatch {
+    width: 1rem; height: 0; border: 0; border-top: 2px dashed var(--s-hold);
+    vertical-align: .35rem; background: transparent;
+  }
+  .date {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: .6875rem; color: var(--ink-faint);
+    background: var(--bg-soft); border-radius: .45rem; padding: .18rem .45rem;
+    white-space: normal; line-height: 1.35;
+  }
+  .when {
+    margin: .35rem 0 0;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: .6875rem; color: var(--ink-faint); line-height: 1.35;
+  }
   .table-wrap {
     overflow-x: auto; -webkit-overflow-scrolling: touch;
     margin: .35rem 0 0; border-radius: 10px; border: 1px solid var(--line);
@@ -234,9 +268,9 @@
         </button>
       </div>
       <nav class="tabs" aria-label="Lab sections">
-        <a href="index.html">Investor</a>
-        <a href="leaderboard.html" aria-current="page">Leaderboard</a>
-        <a href="experiments.html">Experiments</a>
+        <a href="index.html?v=20260909b">Investor</a>
+        <a href="leaderboard.html?v=20260909b" aria-current="page">Leaderboard</a>
+        <a href="experiments.html?v=20260909b">Experiments</a>
       </nav>
     </div>
   </header>
@@ -244,27 +278,30 @@
   <main id="main" class="wrap">
     <p class="kicker"><!-- gallery:updated:start -->Updated 2026-09-09 16:16:48 CEST · hypothetical $1,000<!-- gallery:updated:end --></p>
     <h1>Paper scoreboard</h1>
-    <p class="lede">Each point is one experiment: <strong>$1,000</strong> start, honest engine, ending paper dollars. Ranked vs hold. A high dollar figure is not a KEEP if the rolling test fails.</p>
+    <p class="lede">Each sleeve is its own linear scale from a <strong>$1,000</strong> start. Honest engine only. A high dollar figure is not a KEEP if the rolling test fails.</p>
 
     <section class="card" aria-labelledby="plot-title">
-      <h2 id="plot-title">$1,000 over time</h2>
-      <p class="sleeve-meta">X = experiment date · Y = paper end $ · same start, separate sleeves</p>
+      <h2 id="plot-title">Honest $1,000 scorecard</h2>
+      <p class="sleeve-meta">X = paper end $ · Y = strategy · one publish clock · no mixed log axis</p>
       <div class="filters" role="group" aria-label="Sleeve filter">
         <button type="button" data-sleeve="ALL" aria-pressed="true">All</button>
         <button type="button" data-sleeve="BTC">BTC</button>
         <button type="button" data-sleeve="ALGO">ALGO</button>
         <button type="button" data-sleeve="ETH">ETH</button>
       </div>
-      <div class="plot-wrap" id="plot"></div>
-      <p class="plot-caption" id="plotCap">Tap a point for the name. All = log scale so $79 and $31k can share a chart.</p>
+      <div class="plot-stack" id="plot"></div>
+      <p class="plot-caption" id="plotCap">Tap a marker. All = three small multiples, each on its own linear $ scale. Scorecard 2026-09-09 13:54:16 CEST.</p>
       <div class="legend" aria-hidden="true">
-        <span><i class="btc"></i>BTC</span>
-        <span><i class="algo"></i>ALGO</span>
-        <span><i class="eth"></i>ETH</span>
-        <span>filled KEEP · faded TWEAK · hollow DROP · ◆ hold</span>
+        <span class="btc"><i class="keep"></i>KEEP</span>
+        <span><i class="tweak"></i>TWEAK</span>
+        <span><i class="drop"></i>DROP</span>
+        <span><i class="hold-swatch"></i>hold</span>
+        <span class="btc">BTC amber</span>
+        <span class="algo">ALGO teal</span>
+        <span class="eth">ETH indigo</span>
       </div>
       <noscript>
-        <p>JavaScript draws the scatter. The ranked tables below have the same paper dollars.</p>
+        <p>JavaScript draws the lollipops. The ranked tables below have the same paper dollars.</p>
       </noscript>
     </section>
 
@@ -407,7 +444,7 @@
           </div>
           <h3>Harness revalidation</h3>
           <p>BTC bar = buy&amp;hold $19,879. Only active KEEP = ALGO Donchian 20/10 $10,663. ETH 10/5 is a TWEAK.</p>
-          <a class="open" href="briefs/2026-09-09-harness-revalidation.html">Open brief →</a>
+          <a class="open" href="briefs/2026-09-09-harness-revalidation.html?v=20260909b">Open brief →</a>
         </article>
         <!-- gallery:leaderboard-auto:start -->
         <!-- gallery:leaderboard-auto:end -->
@@ -416,7 +453,7 @@
   </main>
 
   <footer class="site">
-    Paper research · hypothetical $1,000 · not financial advice · <a href="index.html">Investor</a>
+    Paper research · hypothetical $1,000 · not financial advice · build 20260909b · <a href="index.html?v=20260909b">Investor</a>
   </footer>
 
   <script>
@@ -438,29 +475,33 @@
       }
 
       // Honest full-sample end $ from docs/briefs/2026-09-09-harness-revalidation.html.
-      // Skip briefs with no comparable $1,000 path. Do not mix windows on one series.
+      // One publish clock — do not invent a multi-day scatter. Invalid pre-fix $ omitted.
+      var SCORECARD_AT = "2026-09-09 13:54:16 CEST";
       var POINTS = [
-        {sleeve:"BTC", name:"Buy & hold", y:19879, date:"2026-09-09", verdict:"keep", hold:true},
-        {sleeve:"BTC", name:"Donchian-hold 10/15 c2", y:26148, date:"2026-09-09", verdict:"tweak", hold:false},
-        {sleeve:"BTC", name:"Donchian 20/10", y:17595, date:"2026-09-09", verdict:"tweak", hold:false},
-        {sleeve:"BTC", name:"SMA 5/20", y:12163, date:"2026-09-09", verdict:"drop", hold:false},
-        {sleeve:"BTC", name:"Donchian-hold 10/10", y:10389, date:"2026-09-09", verdict:"drop", hold:false},
-        {sleeve:"BTC", name:"Donchian 10/5", y:2598, date:"2026-09-09", verdict:"drop", hold:false},
-        {sleeve:"ALGO", name:"Donchian 20/10", y:10663, date:"2026-09-09", verdict:"keep", hold:false},
-        {sleeve:"ALGO", name:"SMA 5/20", y:1177, date:"2026-09-09", verdict:"tweak", hold:false},
-        {sleeve:"ALGO", name:"Donchian 10/5", y:886, date:"2026-09-09", verdict:"drop", hold:false},
-        {sleeve:"ALGO", name:"Buy & hold", y:79, date:"2026-09-09", verdict:"drop", hold:true},
-        {sleeve:"ETH", name:"Donchian 10/5", y:31808, date:"2026-09-09", verdict:"tweak", hold:false},
-        {sleeve:"ETH", name:"Buy & hold", y:17691, date:"2026-09-09", verdict:"bar", hold:true},
-        {sleeve:"ETH", name:"SMA 5/20", y:13054, date:"2026-09-09", verdict:"drop", hold:false},
-        {sleeve:"ETH", name:"Donchian 20/10", y:11566, date:"2026-09-09", verdict:"drop", hold:false}
+        {sleeve:"BTC", name:"Donchian-hold 10/15 c2", short:"Don-hold 10/15", y:26148, verdict:"tweak", hold:false},
+        {sleeve:"BTC", name:"Buy & hold", short:"Hold", y:19879, verdict:"keep", hold:true},
+        {sleeve:"BTC", name:"Donchian 20/10", short:"Don 20/10", y:17595, verdict:"tweak", hold:false},
+        {sleeve:"BTC", name:"SMA 5/20", short:"SMA 5/20", y:12163, verdict:"drop", hold:false},
+        {sleeve:"BTC", name:"Donchian-hold 10/10", short:"Don-hold 10/10", y:10389, verdict:"drop", hold:false},
+        {sleeve:"BTC", name:"Donchian 10/5", short:"Don 10/5", y:2598, verdict:"drop", hold:false},
+        {sleeve:"ALGO", name:"Donchian 20/10", short:"Don 20/10", y:10663, verdict:"keep", hold:false},
+        {sleeve:"ALGO", name:"SMA 5/20", short:"SMA 5/20", y:1177, verdict:"tweak", hold:false},
+        {sleeve:"ALGO", name:"Donchian 10/5", short:"Don 10/5", y:886, verdict:"drop", hold:false},
+        {sleeve:"ALGO", name:"Buy & hold", short:"Hold", y:79, verdict:"drop", hold:true},
+        {sleeve:"ETH", name:"Donchian 10/5", short:"Don 10/5", y:31808, verdict:"tweak", hold:false},
+        {sleeve:"ETH", name:"Buy & hold", short:"Hold", y:17691, verdict:"bar", hold:true},
+        {sleeve:"ETH", name:"SMA 5/20", short:"SMA 5/20", y:13054, verdict:"drop", hold:false},
+        {sleeve:"ETH", name:"Donchian 20/10", short:"Don 20/10", y:11566, verdict:"drop", hold:false}
       ];
       var HOLD = {BTC:19879, ALGO:79, ETH:17691};
+      var XMAX = {BTC:28000, ALGO:12000, ETH:35000};
+      var WINDOWS = {
+        BTC:"2019-01-01 → 2026-09-08",
+        ALGO:"2019-06-21 → 2026-09-08",
+        ETH:"2019-01-01 → 2026-09-08"
+      };
       var COLORS = {BTC:"--s-btc", ALGO:"--s-algo", ETH:"--s-eth"};
-      var X0 = Date.parse("2026-09-06T00:00:00Z");
-      var X1 = Date.parse("2026-09-10T00:00:00Z");
       var currentSleeve = "ALL";
-      var selected = -1;
 
       function cssVar(name) {
         return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -468,126 +509,150 @@
       function money(n) {
         return "$" + Math.round(n).toLocaleString("en-US");
       }
-      function niceMax(v) {
-        if (v <= 1000) return 1200;
-        if (v <= 12000) return 12000;
-        if (v <= 22000) return 28000;
-        return 35000;
-      }
-      function yAt(v, yMin, yMax, useLog, padT, plotH) {
-        var t;
-        if (useLog) {
-          t = (Math.log(v) - Math.log(yMin)) / (Math.log(yMax) - Math.log(yMin));
-        } else {
-          t = (v - yMin) / (yMax - yMin);
-        }
-        if (t < 0) t = 0;
-        if (t > 1) t = 1;
-        return padT + (1 - t) * plotH;
-      }
-      function xAt(ms, padL, plotW) {
-        return padL + ((ms - X0) / (X1 - X0)) * plotW;
+      function verdictWord(v) {
+        if (v === "bar") return "hold bar";
+        return v.toUpperCase();
       }
 
       function draw(filter) {
         currentSleeve = filter;
         var host = document.getElementById("plot");
         if (!host) return;
-        var data = POINTS.filter(function (p) {
-          return filter === "ALL" || p.sleeve === filter;
+        host.innerHTML = "";
+        var sleeves = filter === "ALL" ? ["BTC", "ALGO", "ETH"] : [filter];
+        var compact = filter === "ALL";
+        sleeves.forEach(function (sleeve) {
+          host.appendChild(drawPanel(sleeve, compact));
         });
-        var W = 360, H = 210;
-        var padL = 44, padR = 10, padT = 12, padB = 28;
-        var plotW = W - padL - padR, plotH = H - padT - padB;
-        var useLog = filter === "ALL";
-        var yMin = useLog ? 50 : 0;
-        var yMax = useLog ? 40000 : niceMax(Math.max.apply(null, data.map(function (p) { return p.y; })));
-        var ink = cssVar("--ink-faint") || "#64748b";
-        var line = cssVar("--line") || "#cbd5e1";
-        var ticks = useLog ? [100, 1000, 10000, 30000] : (yMax <= 12000 ? [0, 3000, 6000, 9000, 12000] : [0, 10000, 20000, 30000].filter(function (t) { return t <= yMax; }));
+        if (filter === "ALL") {
+          document.getElementById("plotCap").textContent =
+            "All = three linear panels (not one log axis). Scorecard " + SCORECARD_AT +
+            ". X = paper end $ from $1,000. Dashed line = buy&hold. Tap a marker.";
+        } else {
+          document.getElementById("plotCap").textContent =
+            filter + " · linear 0–" + money(XMAX[filter]) +
+            " · hold " + money(HOLD[filter]) +
+            " · " + SCORECARD_AT + ". Tap a marker.";
+        }
+      }
 
-        var groups = {BTC:[], ALGO:[], ETH:[]};
-        data.forEach(function (p) { groups[p.sleeve].push(p); });
-        var sleeveShift = {BTC: -16, ALGO: 0, ETH: 16};
-        var laid = [];
-        ["BTC","ALGO","ETH"].forEach(function (s) {
-          var arr = groups[s];
-          arr.forEach(function (p, i) {
-            var ms = Date.parse(p.date + "T12:00:00Z");
-            var jitter = (i - (arr.length - 1) / 2) * 7;
-            var shift = filter === "ALL" ? sleeveShift[s] : 0;
-            laid.push({
-              p: p,
-              x: xAt(ms, padL, plotW) + jitter + shift,
-              y: yAt(p.y, yMin, yMax, useLog, padT, plotH),
-              color: cssVar(COLORS[s])
-            });
-          });
-        });
-
+      function drawPanel(sleeve, compact) {
+        var rows = POINTS.filter(function (p) { return p.sleeve === sleeve; })
+          .sort(function (a, b) { return b.y - a.y; });
+        var top = rows[0];
+        var keep = rows.filter(function (p) { return p.verdict === "keep"; })[0];
+        var W = 360;
+        var rowH = compact ? 28 : 34;
+        var padT = 18, padB = 8, padL = 92, padR = 86;
+        var H = padT + rows.length * rowH + padB;
+        var track0 = padL;
+        var track1 = W - padR;
+        var trackW = track1 - track0;
+        var ink = cssVar("--ink") || "#0f172a";
+        var faint = cssVar("--ink-faint") || "#64748b";
+        var holdCol = cssVar("--s-hold") || "#64748b";
+        var color = cssVar(COLORS[sleeve]);
+        var xmax = XMAX[sleeve];
         var ns = "http://www.w3.org/2000/svg";
-        var svg = document.createElementNS(ns, "svg");
-        svg.setAttribute("viewBox", "0 0 " + W + " " + H);
-        svg.setAttribute("role", "img");
-        svg.setAttribute("aria-label", "Paper end dollars from $1,000 by experiment date, " + (filter === "ALL" ? "all sleeves" : filter));
 
         function el(name, attrs) {
           var n = document.createElementNS(ns, name);
-          Object.keys(attrs).forEach(function (k) { n.setAttribute(k, attrs[k]); });
+          Object.keys(attrs || {}).forEach(function (k) { n.setAttribute(k, attrs[k]); });
           return n;
         }
-
-        ticks.forEach(function (t) {
-          var y = yAt(t, yMin, yMax, useLog, padT, plotH);
-          svg.appendChild(el("line", {x1: padL, x2: W - padR, y1: y, y2: y, stroke: line, "stroke-width": "1"}));
-          var lab = el("text", {x: padL - 6, y: y + 3, fill: ink, "font-size": "8", "text-anchor": "end", "font-family": "JetBrains Mono, ui-monospace, monospace"});
-          lab.textContent = t >= 1000 ? (t / 1000) + "k" : String(t);
-          svg.appendChild(lab);
-        });
-
-        if (filter !== "ALL" && HOLD[filter] != null) {
-          var hy = yAt(HOLD[filter], yMin, yMax, useLog, padT, plotH);
-          svg.appendChild(el("line", {
-            x1: padL, x2: W - padR, y1: hy, y2: hy,
-            stroke: cssVar(COLORS[filter]), "stroke-width": "1.4", "stroke-dasharray": "4 3", opacity: "0.85"
-          }));
+        function xAt(v) {
+          return track0 + (Math.max(0, v) / xmax) * trackW;
         }
 
-        svg.appendChild(el("line", {x1: padL, x2: W - padR, y1: padT + plotH, y2: padT + plotH, stroke: ink, "stroke-width": "1"}));
-        [["6 Sep", "2026-09-06T00:00:00Z"], ["9 Sep", "2026-09-09T12:00:00Z"]].forEach(function (pair) {
-          var x = xAt(Date.parse(pair[1]), padL, plotW);
-          var lab = el("text", {x: x, y: H - 8, fill: ink, "font-size": "8", "text-anchor": "middle", "font-family": "JetBrains Mono, ui-monospace, monospace"});
-          lab.textContent = pair[0];
+        var figure = document.createElement("figure");
+        figure.className = "plot-panel";
+        var cap = document.createElement("figcaption");
+        cap.innerHTML = sleeve + " · hold " + money(HOLD[sleeve]) +
+          " <span>linear 0–" + money(xmax) + " · " + WINDOWS[sleeve] + "</span>";
+        figure.appendChild(cap);
+
+        var svg = el("svg", {
+          viewBox: "0 0 " + W + " " + H,
+          role: "img",
+          "aria-label": sleeve + " paper end dollars from $1,000, linear scale to " + money(xmax)
+        });
+
+        [0, xmax / 2, xmax].forEach(function (t) {
+          var x = xAt(t);
+          svg.appendChild(el("line", {
+            x1: x, x2: x, y1: padT - 6, y2: H - padB,
+            stroke: cssVar("--line") || "#cbd5e1", "stroke-width": "1"
+          }));
+          var lab = el("text", {
+            x: x, y: 11, fill: faint, "font-size": "8",
+            "text-anchor": "middle",
+            "font-family": "JetBrains Mono, ui-monospace, monospace"
+          });
+          lab.textContent = t >= 1000 ? (t / 1000) + "k" : String(Math.round(t));
           svg.appendChild(lab);
         });
 
-        laid.forEach(function (item, idx) {
-          var g = el("g", {class: "pt", tabindex: "0", role: "button", "aria-label": item.p.sleeve + " " + item.p.name + " " + money(item.p.y)});
-          var opacity = item.p.verdict === "tweak" ? "0.55" : "1";
-          var fill = item.p.verdict === "drop" ? "none" : item.color;
-          var stroke = item.color;
-          if (item.p.hold) {
-            var d = el("rect", {
-              x: item.x - 5, y: item.y - 5, width: "10", height: "10",
-              fill: fill === "none" ? "transparent" : item.color,
-              stroke: stroke, "stroke-width": "1.6",
-              transform: "rotate(45 " + item.x + " " + item.y + ")",
-              opacity: opacity
-            });
-            g.appendChild(d);
+        var hx = xAt(HOLD[sleeve]);
+        svg.appendChild(el("line", {
+          x1: hx, x2: hx, y1: padT - 4, y2: H - padB,
+          stroke: holdCol, "stroke-width": "1.6", "stroke-dasharray": "4 3"
+        }));
+
+        rows.forEach(function (p, i) {
+          var y = padT + i * rowH + rowH / 2;
+          var x = xAt(p.y);
+          var g = el("g", {
+            class: "pt", tabindex: "0", role: "button",
+            "aria-label": sleeve + " " + p.name + " " + money(p.y) + " " + verdictWord(p.verdict)
+          });
+          g.appendChild(el("line", {
+            x1: track0, x2: x, y1: y, y2: y,
+            stroke: color, "stroke-width": p.verdict === "keep" ? "3" : "2",
+            opacity: p.verdict === "drop" ? "0.45" : "0.85"
+          }));
+          var name = el("text", {
+            x: 4, y: y + 3.5, fill: ink, "font-size": compact ? "8" : "9",
+            "font-weight": p.verdict === "keep" || p === top ? "700" : "550",
+            "font-family": "DM Sans, system-ui, sans-serif"
+          });
+          name.textContent = p.short;
+          g.appendChild(name);
+
+          var markFill = p.verdict === "drop" ? "none" : color;
+          if (p.hold) {
+            g.appendChild(el("rect", {
+              x: x - 6, y: y - 6, width: "12", height: "12",
+              fill: markFill === "none" ? "transparent" : holdCol,
+              stroke: holdCol, "stroke-width": "1.8",
+              transform: "rotate(45 " + x + " " + y + ")"
+            }));
+          } else if (p.verdict === "tweak") {
+            g.appendChild(el("rect", {
+              x: x - 6, y: y - 6, width: "12", height: "12",
+              fill: color, stroke: color, "stroke-width": "1.6"
+            }));
           } else {
             g.appendChild(el("circle", {
-              cx: item.x, cy: item.y, r: "5.2",
-              fill: fill, stroke: stroke, "stroke-width": "1.8", opacity: opacity
+              cx: x, cy: y, r: "7",
+              fill: markFill, stroke: color, "stroke-width": "2"
             }));
           }
+
+          var right = el("text", {
+            x: W - 4, y: y + 3.5, fill: ink, "font-size": compact ? "8" : "9",
+            "text-anchor": "end",
+            "font-family": "JetBrains Mono, ui-monospace, monospace"
+          });
+          var tag = p.verdict === "keep" ? " KEEP" : (p === top ? " top $" : "");
+          right.textContent = money(p.y) + tag;
+          g.appendChild(right);
+
           function pick() {
-            selected = idx;
-            var p = item.p;
-            var v = p.verdict === "bar" ? "hold bar" : p.verdict.toUpperCase();
+            var extra = p.verdict === "keep" ? "KEEP baseline." :
+              (p === top ? "Highest $ on this sleeve — not a KEEP unless marked." : verdictWord(p.verdict) + ".");
             document.getElementById("plotCap").innerHTML =
-              "<b>" + p.sleeve + " · " + p.name + "</b> — " + money(p.y) +
-              " from $1,000 · " + v + " · 9 Sep 2026";
+              "<b>" + sleeve + " · " + p.name + "</b> — " + money(p.y) +
+              " from $1,000 · " + extra + " " + SCORECARD_AT + ".";
           }
           g.addEventListener("click", pick);
           g.addEventListener("keydown", function (e) {
@@ -596,15 +661,18 @@
           svg.appendChild(g);
         });
 
-        host.innerHTML = "";
-        host.appendChild(svg);
-        if (filter === "ALL") {
-          document.getElementById("plotCap").textContent =
-            "Tap a point for the name. All = log scale so $79 and $31k can share a chart. Filter a sleeve for a linear view vs hold.";
-        } else {
-          document.getElementById("plotCap").textContent =
-            filter + " sleeve · dashed line is buy&hold " + money(HOLD[filter]) + ". Tap a point for the name.";
+        if (keep) {
+          var note = el("text", {
+            x: track1, y: H - 1, fill: faint, "font-size": "7.5",
+            "text-anchor": "end",
+            "font-family": "DM Sans, system-ui, sans-serif"
+          });
+          note.textContent = "KEEP " + keep.short + " " + money(keep.y);
+          svg.appendChild(note);
         }
+
+        figure.appendChild(svg);
+        return figure;
       }
 
       document.querySelectorAll(".filters button").forEach(function (b) {

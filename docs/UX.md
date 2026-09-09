@@ -13,11 +13,11 @@ This file is for future agents. The reader of the live site is **not a trader**.
 | `index.html` | **Investor (home / default)** | Plain English: what was tested that matters, last updated to the second, what it means for an investor, and “$1,000 → $X vs hold over a clear timeframe.” Lead with the two big numbers when they still hold: BTC hold **$19,879** · ALGO KEEP **$10,663**. |
 | `leaderboard.html` | Scoreboard + plot | Ranked paper strategies by sleeve (**BTC / ALGO / ETH**) vs buy&hold, KEEP/TWEAK/DROP. Plus a scatter: each point = an experiment; X = time; Y = paper end $ from $1,000. Sleeve filters; do not mix incompatible windows on one series. |
 | `experiments.html` | Brief gallery | Dive into individual experiment cards. Revalidation + current KEEP/TWEAK first. Superseded / invalidated briefs in a collapsed **Superseded** section. |
-| `investor.html` | Redirect | → `index.html` (old URL). |
-| `progress.html`, `keepers.html` | Redirects | → `experiments.html`. Not in primary nav. |
-| `briefs/*.html` | Detail | One experiment. Linked from Experiments (and Leaderboard). Do not unlist them. |
+| `investor.html` | Investor alias | Full duplicate of `index.html` (Investor tab current). Old `/investor.html` bookmarks always show content. |
+| `progress.html`, `keepers.html` | Experiments aliases | Full 3-tab Experiments page plus a one-line “this address moved” note, then a short redirect to `experiments.html`. Never a blank stub. Not in primary nav. |
+| `briefs/*.html` | Detail | One experiment. Compact top bar: **Back to Investor · Leaderboard · Experiments**. Do not unlist them. Do not resurrect Overview / Progress / Keepers. |
 
-Hub pages use a **three-tab** nav: **Investor / Leaderboard / Experiments**. One row on a phone (~390px). Briefs get no hub tabs.
+Hub pages use a **three-tab** nav: **Investor / Leaderboard / Experiments**. One row on a phone (~390px). Internal hub links carry `?v=20260909b`. Hub `<head>` includes `Cache-Control: no-cache` and a visible `build 20260909b` footer stamp.
 
 ## Copy rules (hubs)
 
@@ -29,9 +29,7 @@ Hub pages use a **three-tab** nav: **Investor / Leaderboard / Experiments**. One
 
 **Site last-updated** (Investor home, Leaderboard, Experiments kickers) must be **second precision**, like `2026-09-09 13:54:16 CEST` (Europe/Paris) — **not date-only**. Source of truth: the latest git commit that touched `docs/briefs/` (CI rebuild time is the fallback). CI writes this via `<!-- gallery:updated:start -->` … `end`.
 
-Every **Experiments card** must show the experiment date in full, like `6 Sep 2026` — not `Sep 6`. Include time-of-day **only** if that clock is already written in the brief. Do not invent hours for individual old experiment nodes.
-
-CI uses the same card format (`scripts/rebuild_gallery.py` → `public_date_label`). Filename date (`2026-09-06-…`) is the fallback when the brief body has no date.
+Every **Experiments card** must show a clock **to the second**, like `2026-09-06 19:02:20 CEST` — in the card’s date chip **and** in a “Published …” summary line. The same stamp is written on each `docs/briefs/*.html` top meta row. **Never invent seconds** from a date-only filename. Source: `<!-- gallery-published iso source -->` or the first git add of that file. Mapping: [`scripts/brief_timestamps.md`](../scripts/brief_timestamps.md). CI regenerates both surfaces via `format_updated_stamp` / `card_published_label`.
 
 ## Truth rails (post harness revalidation)
 
@@ -44,9 +42,7 @@ Verify from `docs/briefs/2026-09-09-harness-revalidation.html` — do not invent
 
 ## Leaderboard plot
 
-Build from **post-revalidation / honest** paper end equities you can verify in published briefs (especially the revalidation brief). Each point: experiment date + ending $ from $1,000 for that comparable path. Separate BTC / ALGO / ETH series (or filter chips). Include buy&hold reference points where the brief has them. If a brief has no comparable full-sample end $, **skip it** rather than inventing. Do not mix incompatible windows on one series.
-
-Prefer lightweight inline SVG or tiny vanilla JS (no bundler). A CDN chart lib is OK only with a self-contained fallback. Phone-first ~390px.
+Build from **post-revalidation / honest** paper end equities you can verify in published briefs (especially the revalidation brief). **Omit** invalidated pre–look-ahead figures. All honest comparable points today share one publish clock (`2026-09-09 13:54:16 CEST`) — do **not** fake a multi-day scatter. **All** = small multiples (BTC / ALGO / ETH), each with its **own linear $ scale**. Sleeve filter = one larger linear panel. X = paper end $ from $1,000 (lollipop). Y = ranked strategy. Hold = gray dashed reference. Palette: BTC amber, ALGO teal, ETH indigo. Shapes: KEEP ● / TWEAK ■ / DROP ○. Label the KEEP and the $ leader. Phone-first ~390px. Inline SVG/JS only.
 
 ## Verdict words (use these, not synonyms)
 
