@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Paper-live start · Donchian 10/5 · Sep 7, 2026</title>
-<meta name="description" content="Day 0 paper-live tracking for Donchian breakout 10/5 on ALGO-USD and ETH-USD. Path step Paper-live, not a new KEEP, not a real order.">
+<title>Paper-live · BTC Day 0 + alts marks · Sep 9, 2026</title>
+<meta name="description" content="Path step Paper-live: bootstrap Donchian 10/5 on BTC-USD beside ALGO/ETH daily marks. Not a new KEEP. Not a real order.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Cpath d='M8 22 L14 12 L18 18 L24 8' fill='none' stroke='%2399f6e4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='8' r='2' fill='%23fbbf24'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -89,7 +89,7 @@
   .statgrid {
     display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; margin-top: .85rem;
   }
-  @media (min-width: 480px) { .statgrid { grid-template-columns: repeat(4, 1fr); } }
+  @media (min-width: 480px) { .statgrid { grid-template-columns: repeat(3, 1fr); } }
   .stat {
     background: var(--bg-soft); border-radius: var(--radius-sm); padding: .7rem .75rem;
   }
@@ -140,6 +140,21 @@
   }
   .signal-card h3 { margin: 0 0 .35rem; font-size: 1rem; }
   .signal-card p { margin: 0; }
+  .book-grid {
+    display: grid; gap: .55rem; margin-top: .75rem;
+  }
+  .book-row {
+    display: grid; grid-template-columns: 4.2rem 1fr 1fr 1fr; gap: .35rem;
+    align-items: center; font-size: .82rem;
+    padding: .55rem .6rem; background: var(--bg-soft); border-radius: var(--radius-sm);
+  }
+  .book-row .sym { font-weight: 700; color: var(--ink); }
+  .book-row .num { font-family: var(--mono); font-size: .78rem; color: var(--ink-muted); }
+  .book-head {
+    display: grid; grid-template-columns: 4.2rem 1fr 1fr 1fr; gap: .35rem;
+    font-size: .68rem; text-transform: uppercase; letter-spacing: .04em;
+    color: var(--ink-faint); font-weight: 600; padding: 0 .6rem;
+  }
 </style>
 </head>
 <body>
@@ -150,52 +165,94 @@
       </div>
       <div>
         <div class="brand">Trading Lab · Experiment brief</div>
-        <div class="sub">Mon Sep 7, 2026 · paper only · Donchian 10/5</div>
+        <div class="sub">Wed Sep 9, 2026 · paper only · Donchian 10/5</div>
       </div>
     </header>
 
     <section class="card">
       <div class="chips">
-        <span class="chip tweak">Tweak — paper-live start</span>
-        <span class="chip keep">Prior KEEP stands</span>
+        <span class="chip tweak">Tweak — paper-live path step</span>
+        <span class="chip keep">Prior KEEPs stand</span>
       </div>
-      <h1>Paper clock is running — Donchian 10/5 on ALGO and ETH</h1>
+      <h1>BTC paper book opens · ALGO &amp; ETH marks refresh</h1>
       <p class="lede">
         This is <b>path step Paper-live</b>, not a new KEEP and <b>not a real order</b>.
-        Two separate $1,000 paper books are open. We will watch the daily signal for 1–2 months
-        and record fills on paper only.
+        BTC Donchian 10/5 (KEEP’d Sep 8) now has its own $1,000 paper ledger beside the existing ALGO and ETH books.
       </p>
       <div class="meta">
-        <span class="pill">last bar · Sat Sep 5, 2026</span>
+        <span class="pill">last bar · Mon Sep 7, 2026</span>
         <span class="pill">$1,000 each</span>
         <span class="pill">15 bps costs</span>
         <span class="pill">next-open fills</span>
       </div>
       <div class="statgrid">
+        <div class="stat"><div class="k">BTC signal</div><div class="v good">IN</div></div>
         <div class="stat"><div class="k">ALGO signal</div><div class="v">OUT</div></div>
         <div class="stat"><div class="k">ETH signal</div><div class="v good">IN</div></div>
-        <div class="stat"><div class="k">Paper books</div><div class="v">$1,000</div></div>
-        <div class="stat"><div class="k">Fills today</div><div class="v">none</div></div>
       </div>
     </section>
 
     <section class="card">
       <h2>Today in plain English</h2>
-      <p>Latest complete daily bar on the tape is <b>Saturday Sep 5, 2026</b>. Both books still hold $1,000 cash — Day 0 does not pretend we traded the last seven years.</p>
+      <p>
+        Factory ran on Wed Sep 9. Yahoo’s latest complete daily bar for all three is still
+        <b>Monday Sep 7, 2026</b> (Tue/Wed bars not on the tape yet). One new day was appended to ALGO and ETH; BTC started fresh.
+      </p>
 
       <div class="signal-card">
-        <div class="chips"><span class="chip out">ALGO · out</span></div>
-        <h3>Sit in cash</h3>
-        <p>Donchian 10/5 says <b>out</b>. No paper buy is scheduled. Close was about $0.094. Stay flat until price makes a fresh 10-day high.</p>
+        <div class="chips"><span class="chip in">BTC · Day 0 · in</span></div>
+        <h3>Bootstrap — buy at the next daily open</h3>
+        <p>
+          New ledger <code>donchian_breakout_BTCUSD_entry10_exit5</code>.
+          Signal is <b>in</b> (close ≈ $79,116). Paper book is still $1,000 cash.
+          A <b>BUY of 95% of cash</b> is queued for the next daily open — paper only.
+          Same-window buy&amp;hold also waits for that open ($1,000 / $1,000).
+        </p>
       </div>
       <div class="signal-card">
-        <div class="chips"><span class="chip in">ETH · in</span></div>
-        <h3>Buy at the next daily open</h3>
-        <p>Donchian 10/5 says <b>in</b>. Close was about $2,481. The paper book will buy 95% of the $1,000 at the <b>next daily open</b> (same 15 bps cost as every backtest). Still not a real order.</p>
+        <div class="chips"><span class="chip out">ALGO · out</span></div>
+        <h3>Still sitting in cash</h3>
+        <p>
+          Signal stays <b>out</b>. Paper equity <b>$1,000.00</b>. Same-window buy&amp;hold is
+          <b>$1,028.64</b> (paper is behind by about $29 while the rule stays flat). No fill pending.
+        </p>
+      </div>
+      <div class="signal-card">
+        <div class="chips"><span class="chip in">ETH · in · held</span></div>
+        <h3>Long since Sep 6 paper buy</h3>
+        <p>
+          Still <b>in</b> and held. Paper equity <b>$1,002.45</b> — even with same-window buy&amp;hold
+          ($1,002.45). No new fill today. Entry was the Sep 6 next-open paper buy (~$2,484.55).
+        </p>
       </div>
 
       <div class="callout warn" style="margin-top: .85rem;">
-        <strong>Same-window buy &amp; hold.</strong> The comparison from here is a fresh $1,000 hold starting at that same next open — not the 7-year backtest numbers. Both paper books and both hold books are even at $1,000 until that first open prints.
+        <strong>$1k equity vs buy&amp;hold (same paper window).</strong>
+        These are forward paper marks from each book’s start — not the multi-year backtest numbers from the KEEP briefs.
+      </div>
+
+      <div class="book-head" style="margin-top:.85rem;">
+        <div>Book</div><div>Equity</div><div>B&amp;H</div><div>Pending</div>
+      </div>
+      <div class="book-grid">
+        <div class="book-row">
+          <div class="sym">BTC</div>
+          <div class="num">$1,000.00</div>
+          <div class="num">$1,000.00</div>
+          <div class="num">BUY next open</div>
+        </div>
+        <div class="book-row">
+          <div class="sym">ALGO</div>
+          <div class="num">$1,000.00</div>
+          <div class="num">$1,028.64</div>
+          <div class="num">none</div>
+        </div>
+        <div class="book-row">
+          <div class="sym">ETH</div>
+          <div class="num">$1,002.45</div>
+          <div class="num">$1,002.45</div>
+          <div class="num">none</div>
+        </div>
       </div>
     </section>
 
@@ -208,9 +265,9 @@
         <div class="step future">Real</div>
       </div>
       <p style="margin-top:.75rem">
-        Screen + year-split + walk-forward already passed for this config
-        (see the Sep 6 alts screen brief). This step only asks: does the live daily signal
-        stay usable for 1–2 months — not laggy, not a whip-saw machine.
+        BTC already passed Screen + Stress + walk-forward (Sep 8 KEEP brief).
+        ALGO/ETH KEEP from the Sep 6 alts screen still stands.
+        Paper-live only asks: does the live daily signal stay usable for 1–2 months.
         <b>Do not ship to real without an explicit OK.</b>
       </p>
     </section>
@@ -218,28 +275,29 @@
     <section class="card">
       <h2>Keep · Tweak · Drop</h2>
       <div class="row-verdicts">
-        <div class="verdict-row"><span class="chip tweak">Watch</span><div class="txt"><b>This brief is not a new score.</b> Paper-live start does not Keep, Tweak, or Drop Donchian. It starts the forward clock.</div></div>
-        <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>donchian_breakout 10/5 (ALGO + ETH)</b> — already KEEP from the alts screen. Unchanged. We did not re-grid.</div></div>
-        <div class="verdict-row"><span class="chip drop">Don't</span><div class="txt"><b>Treat Day 0 as a trade.</b> ALGO is cash. ETH’s buy waits for the next open on paper. Nobody should click a live ticket from this card.</div></div>
+        <div class="verdict-row"><span class="chip tweak">Watch</span><div class="txt"><b>Path step, not a new score.</b> Bootstrapping BTC paper-live and refreshing ALGO/ETH does not Keep, Tweak, or Drop Donchian. It advances the forward clock.</div></div>
+        <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>donchian_breakout 10/5</b> — alts KEEP (Sep 6) and BTC KEEP (Sep 8) unchanged. SMA 5/20 remains the BTC paper baseline for comparison.</div></div>
+        <div class="verdict-row"><span class="chip drop">Don't</span><div class="txt"><b>Treat Day 0 as a trade.</b> BTC’s buy waits for the next open on paper. Nobody should click a live ticket from this card.</div></div>
       </div>
     </section>
 
     <section class="card next">
       <h2>How to watch</h2>
-      <p>Re-run the same command when a new daily bar is in. It marks the books, fills a pending next-open trade if one was queued, and prints a phone card.</p>
-      <p><code>python -m trading_lab paper_live --strategy donchian_breakout --symbol ALGO-USD,ETH-USD --params '{"entry_period":10,"exit_period":5}' --start 2019-01-01</code></p>
-      <p style="margin-top:.65rem"><b>Next:</b> 1–2 months of daily snapshots. Only then talk about a tiny real size — and only with an explicit OK.</p>
+      <p>Re-run when a newer daily bar is in. It marks all three books, fills a pending next-open trade if queued, and prints a phone card.</p>
+      <p><code>python -m trading_lab paper_live --strategy donchian_breakout --symbol ALGO-USD,ETH-USD,BTC-USD --params '{"entry_period":10,"exit_period":5}' --start 2019-01-01</code></p>
+      <p style="margin-top:.65rem"><b>Next:</b> keep daily marks until BTC’s queued paper buy fills and a few weeks of snapshots accumulate. Only then talk about tiny real size — and only with an explicit OK.</p>
     </section>
 
     <section class="card">
       <h2>Traceability</h2>
       <ul class="plain">
-        <li><b>Prior KEEP:</b> <code>briefs/2026-09-06-alts-upside-screen.html</code></li>
-        <li><b>Paper books:</b> <code>experiments/paper_live/donchian_breakout_ALGOUSD_entry10_exit5/</code> · <code>…_ETHUSD_entry10_exit5/</code></li>
-        <li><b>Day 0 log:</b> <code>experiments/runs/paper_live_20260907T063202Z/</code></li>
-        <li><b>Ledger:</b> <code>experiments/results.tsv</code> (verdict <code>paper_live_start</code>)</li>
-        <li><b>Data:</b> ALGO from 2019-06-21 · ETH from 2019-01-01 · last bar 2026-09-05</li>
-        <li><b>Costs:</b> 10 bps fee + 5 bps slippage per fill · 95% sizing · next-open (unchanged)</li>
+        <li><b>BTC KEEP:</b> <code>briefs/2026-09-08-btc-donchian-transfer.html</code></li>
+        <li><b>Alts paper-live start:</b> <code>briefs/2026-09-07-paper-live-donchian.html</code></li>
+        <li><b>Paper books:</b> <code>experiments/paper_live/donchian_breakout_{BTC,ALGO,ETH}USD_entry10_exit5/</code></li>
+        <li><b>Run log:</b> <code>experiments/runs/paper_live_20260909T062403Z/</code></li>
+        <li><b>Ledger:</b> <code>experiments/results.tsv</code> (BTC <code>paper_live_start</code>; ALGO/ETH daily rows)</li>
+        <li><b>Data:</b> last bar 2026-09-07 for all three · BTC started_on 2026-09-07</li>
+        <li><b>Costs:</b> 10 bps fee + 5 bps slippage · 95% sizing · next-open (unchanged)</li>
       </ul>
     </section>
 

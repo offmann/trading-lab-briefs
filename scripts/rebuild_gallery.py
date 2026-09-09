@@ -104,11 +104,11 @@ FORBIDDEN_RULES: list[tuple[str, re.Pattern[str]]] = [
     (
         "personal ~$14k-style total",
         re.compile(
-            # Round k/m or ~$14,000 — not paper shorthand like ~$10.2k / $6,196.
-            r"~\s*\$\s*\d{1,3},\d{3}\b"
-            r"|~\s*\$\s*\d+\s*[kKmMbB]\b"
-            r"|\$\s*14(?:k\b|,000\b)"
-            r"|\$\s*\d{2,3}\s*[kKmM]\b"
+            # Known Revolut snapshot totals only — not paper $1k KPIs / entry prices
+            # ($124k, ~$2,484, ~$1,011). Source of truth: trading-lab scrubber.
+            r"~?\s*\$\s*14(?:k\b|,?000\b)"
+            r"|~?\s*\$\s*13,?197\b"
+            r"|~?\s*\$\s*12,?237\b"
         ),
     ),
     (
@@ -761,7 +761,8 @@ def self_test() -> None:
     clean = (
         "Paper-only BTC screen. Start $1,000 (also $1000). "
         "Ended $6,196 vs hold $4,619. Units 0.219 vs 0.132. "
-        "Sticky ~$10.2k ≈ hold ~$10.6k; fast ~$48.8k."
+        "Sticky ~$10.2k ≈ hold ~$10.6k; fast ~$48.8k. "
+        "Donchian vs SMA $124k. Paper BUY ~$2,484.55; book ~$1,011.47; hold ~$1,019."
     )
     assert find_hits_in_text(clean, Path("ok.html")) == []
 
