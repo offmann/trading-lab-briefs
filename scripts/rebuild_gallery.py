@@ -3,7 +3,7 @@
 
 Scans docs/briefs/*.html, refreshes the Overview card list on docs/index.html,
 stamps last-updated to the second (Europe/Paris) on Overview / Progress /
-Investor / Leaderboard, and appends data-driven nodes on progress.html,
+Keepers / Investor / Leaderboard, and appends data-driven nodes on progress.html,
 keepers.html, and leaderboard.html when a brief is not already linked.
 Editorial IA (family board, “Right now”, investor digest, rank tables) is
 left alone.
@@ -702,6 +702,7 @@ def ensure_markers() -> None:
         (INDEX_HTML, UPDATED_START, UPDATED_END),
         (PROGRESS_HTML, UPDATED_START, UPDATED_END),
         (PROGRESS_HTML, PROGRESS_START, PROGRESS_END),
+        (KEEPERS_HTML, UPDATED_START, UPDATED_END),
         (KEEPERS_HTML, KEEPERS_START, KEEPERS_END),
         (INVESTOR_HTML, UPDATED_START, UPDATED_END),
         (LEADERBOARD_HTML, UPDATED_START, UPDATED_END),
@@ -746,7 +747,8 @@ def update_hub_pages(briefs: list[Brief]) -> list[Path]:
         changed.append(PROGRESS_HTML)
 
     keepers_src = KEEPERS_HTML.read_text(encoding="utf-8")
-    known_k = hrefs_outside_region(keepers_src, KEEPERS_START, KEEPERS_END)
+    keepers_new = stamp_updated_region(keepers_src, published, KEEPERS_HTML)
+    known_k = hrefs_outside_region(keepers_new, KEEPERS_START, KEEPERS_END)
     # Skip briefs already told on the hand-written timeline — those ideas
     # already have editorial keeper cards. Only new files get a stub.
     known_story = hrefs_outside_region(progress_new, PROGRESS_START, PROGRESS_END)
@@ -758,7 +760,7 @@ def update_hub_pages(briefs: list[Brief]) -> list[Path]:
         and b.href not in known_story
     ]
     keepers_new = replace_region(
-        keepers_src,
+        keepers_new,
         KEEPERS_START,
         KEEPERS_END,
         render_keepers_section(keeper_extras),

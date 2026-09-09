@@ -27,7 +27,7 @@ Hub pages use a five-tab nav (Overview / Progress / Keepers / Investor / Leaderb
 
 ## Dates (required)
 
-**Site last-updated** (Overview, Progress, Investor, Leaderboard kickers) must be **second precision**, like `2026-09-09 13:54:16 CEST` (Europe/Paris) — **not date-only**. Source of truth: the latest git commit that touched `docs/briefs/` (CI rebuild time is the fallback). CI writes this via `<!-- gallery:updated:start -->` … `end`.
+**Site last-updated** (Overview, Progress, Keepers, Investor, Leaderboard kickers) must be **second precision**, like `2026-09-09 13:54:16 CEST` (Europe/Paris) — **not date-only**. Source of truth: the latest git commit that touched `docs/briefs/` (CI rebuild time is the fallback). CI writes this via `<!-- gallery:updated:start -->` … `end`.
 
 Every **Progress node** and every **Overview brief card** must show the experiment date in full, like `6 Sep 2026` — not `Sep 6`. Include time-of-day **only** if that clock is already written in the brief. Do not invent hours for individual old experiment nodes.
 
@@ -89,7 +89,7 @@ When a new brief lands, update:
 **Preserve these markers** (the script fails if they are missing):
 
 - `<!-- gallery:briefs:start -->` … `<!-- gallery:briefs:end -->` on Overview  
-- `<!-- gallery:updated:start -->` … `<!-- gallery:updated:end -->` on Overview, Progress, Investor, and Leaderboard (second-precision stamp)  
+- `<!-- gallery:updated:start -->` … `<!-- gallery:updated:end -->` on Overview, Progress, Keepers, Investor, and Leaderboard (second-precision stamp)  
 - `<!-- gallery:progress-auto:start -->` … `<!-- gallery:progress-auto:end -->` on Progress  
 - `<!-- gallery:keepers-auto:start -->` … `<!-- gallery:keepers-auto:end -->` on Keepers  
 - `<!-- gallery:leaderboard-auto:start -->` … `<!-- gallery:leaderboard-auto:end -->` on Leaderboard (newer research drops)  
