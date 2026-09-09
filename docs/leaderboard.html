@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Trading Lab — Leaderboard</title>
-<meta name="description" content="Paper scoreboard by sleeve after the 9 Sep look-ahead fix: BTC, ALGO, ETH vs buy-and-hold. KEEP / TWEAK / DROP. Not advice.">
+<meta name="description" content="Paper scoreboard by sleeve: BTC, ALGO, ETH vs buy-and-hold from $1,000. KEEP / TWEAK / DROP. Not advice.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Cpath d='M8 22 L14 12 L18 18 L24 8' fill='none' stroke='%2399f6e4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='8' r='2' fill='%23fbbf24'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,9 +21,9 @@
     --chip-keep: #047857; --chip-keep-bg: #d1fae5;
     --chip-tweak: #b45309; --chip-tweak-bg: #fef3c7;
     --chip-drop: #b91c1c; --chip-drop-bg: #fee2e2;
-    --chip-park: #0369a1; --chip-park-bg: #e0f2fe;
     --shadow: 0 1px 2px rgba(15,23,42,.06), 0 8px 24px rgba(15,23,42,.06);
     --head-bg: color-mix(in srgb, var(--bg) 86%, transparent);
+    --s-btc: #0f766e; --s-algo: #b45309; --s-eth: #0369a1;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
@@ -37,8 +37,8 @@
       --chip-keep: #34d399; --chip-keep-bg: #064e3b;
       --chip-tweak: #fbbf24; --chip-tweak-bg: #422006;
       --chip-drop: #f87171; --chip-drop-bg: #450a0a;
-      --chip-park: #7dd3fc; --chip-park-bg: #0c4a6e;
       --shadow: 0 1px 2px rgba(0,0,0,.35), 0 12px 28px rgba(0,0,0,.35);
+      --s-btc: #2dd4bf; --s-algo: #fbbf24; --s-eth: #7dd3fc;
     }
   }
   html[data-theme="dark"] {
@@ -52,8 +52,8 @@
     --chip-keep: #34d399; --chip-keep-bg: #064e3b;
     --chip-tweak: #fbbf24; --chip-tweak-bg: #422006;
     --chip-drop: #f87171; --chip-drop-bg: #450a0a;
-    --chip-park: #7dd3fc; --chip-park-bg: #0c4a6e;
     --shadow: 0 1px 2px rgba(0,0,0,.35), 0 12px 28px rgba(0,0,0,.35);
+    --s-btc: #2dd4bf; --s-algo: #fbbf24; --s-eth: #7dd3fc;
   }
   *, *::before, *::after { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
@@ -104,15 +104,12 @@
   html[data-theme="dark"] .icon-moon { display: none; }
   html[data-theme="light"] .icon-sun { display: none; }
   html[data-theme="light"] .icon-moon { display: block; }
-  nav.tabs {
-    display: flex; flex-wrap: wrap; gap: .25rem;
-    padding: 0 0 .55rem;
-  }
+  nav.tabs { display: flex; gap: .25rem; padding: 0 0 .55rem; }
   nav.tabs a {
-    flex: 1 1 calc(33.333% - .2rem);
+    flex: 1 1 0;
     display: flex; align-items: center; justify-content: center;
     text-align: center; text-decoration: none; color: var(--ink-muted);
-    font-size: .75rem; font-weight: 650; padding: .4rem .25rem;
+    font-size: .8rem; font-weight: 650; padding: .4rem .25rem;
     min-height: 2.5rem; border-radius: .65rem;
   }
   nav.tabs a[aria-current="page"] { color: var(--teal-ink); background: var(--teal-soft); }
@@ -124,21 +121,21 @@
     color: var(--teal-ink); margin: 0 0 .4rem;
   }
   h1 {
-    font-size: 1.625rem; line-height: 1.15; letter-spacing: -.03em;
-    margin: 0 0 .55rem; font-weight: 700;
+    font-size: 1.5rem; line-height: 1.15; letter-spacing: -.03em;
+    margin: 0 0 .45rem; font-weight: 700;
   }
-  .lede { margin: 0 0 1.1rem; color: var(--ink-muted); font-size: 1.02rem; }
+  .lede { margin: 0 0 1rem; color: var(--ink-muted); font-size: 1.02rem; }
   .lede strong { color: var(--ink); font-weight: 650; }
   .card {
     background: var(--bg-elev); border: 1px solid var(--line); border-radius: 14px;
     box-shadow: var(--shadow); padding: 1rem 1.1rem; margin-bottom: .85rem;
   }
-  h2 { font-size: 1.125rem; margin: 0 0 .45rem; letter-spacing: -.02em; }
+  h2 { font-size: 1.05rem; margin: 0 0 .4rem; letter-spacing: -.02em; }
   h3 { font-size: 1rem; margin: 0 0 .3rem; letter-spacing: -.015em; }
-  p { margin: 0 0 .7rem; color: var(--ink-muted); }
+  p { margin: 0 0 .65rem; color: var(--ink-muted); }
   p:last-child { margin-bottom: 0; }
   .sleeve-meta {
-    font-size: .8rem; color: var(--ink-faint); margin: 0 0 .65rem;
+    font-size: .75rem; color: var(--ink-faint); margin: 0 0 .55rem;
     font-family: "JetBrains Mono", ui-monospace, monospace;
   }
   .chip {
@@ -149,11 +146,38 @@
   .chip.keep { color: var(--chip-keep); background: var(--chip-keep-bg); }
   .chip.tweak { color: var(--chip-tweak); background: var(--chip-tweak-bg); }
   .chip.drop { color: var(--chip-drop); background: var(--chip-drop-bg); }
-  .date {
-    font-family: "JetBrains Mono", ui-monospace, monospace;
-    font-size: .6875rem; color: var(--ink-faint);
-    background: var(--bg-soft); border-radius: 999px; padding: .18rem .45rem;
+  .filters {
+    display: flex; gap: .3rem; flex-wrap: wrap; margin: 0 0 .7rem;
   }
+  .filters button {
+    flex: 1 1 0; min-width: 3.5rem; min-height: 2.5rem;
+    border: 1px solid var(--line); background: var(--bg-soft); color: var(--ink-muted);
+    border-radius: .65rem; font: inherit; font-size: .8rem; font-weight: 650;
+    cursor: pointer;
+  }
+  .filters button[aria-pressed="true"] {
+    color: var(--teal-ink); background: var(--teal-soft); border-color: transparent;
+  }
+  .filters button:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+  .plot-wrap { width: 100%; overflow: visible; }
+  .plot-wrap svg { width: 100%; height: auto; display: block; }
+  .plot-wrap .pt { cursor: pointer; }
+  .plot-caption {
+    min-height: 2.6rem; margin: .55rem 0 0;
+    font-size: .85rem; color: var(--ink-muted);
+  }
+  .plot-caption b { color: var(--ink); font-weight: 650; }
+  .legend {
+    display: flex; flex-wrap: wrap; gap: .45rem .75rem;
+    margin: .55rem 0 0; font-size: .72rem; color: var(--ink-faint); font-weight: 650;
+  }
+  .legend i {
+    display: inline-block; width: .55rem; height: .55rem; border-radius: 99px;
+    margin-right: .28rem; vertical-align: -0.05rem;
+  }
+  .legend .btc { background: var(--s-btc); }
+  .legend .algo { background: var(--s-algo); }
+  .legend .eth { background: var(--s-eth); }
   .table-wrap {
     overflow-x: auto; -webkit-overflow-scrolling: touch;
     margin: .35rem 0 0; border-radius: 10px; border: 1px solid var(--line);
@@ -176,6 +200,11 @@
   }
   .drop-card .top { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; margin-bottom: .3rem; }
   .drop-card p { margin: 0 0 .5rem; font-size: .9rem; }
+  .date {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: .6875rem; color: var(--ink-faint);
+    background: var(--bg-soft); border-radius: 999px; padding: .18rem .45rem;
+  }
   a.open { font-size: .85rem; font-weight: 650; color: var(--teal-ink); text-decoration: none; }
   a.open:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
   footer.site {
@@ -184,7 +213,7 @@
     text-align: center; line-height: 1.5;
   }
   footer.site a { color: var(--teal); }
-  @media (min-width: 480px) { h1 { font-size: 1.875rem; } }
+  @media (min-width: 480px) { h1 { font-size: 1.75rem; } }
 </style>
 </head>
 <body>
@@ -205,11 +234,9 @@
         </button>
       </div>
       <nav class="tabs" aria-label="Lab sections">
-        <a href="index.html">Overview</a>
-        <a href="progress.html">Progress</a>
-        <a href="keepers.html">Keepers</a>
-        <a href="investor.html">Investor</a>
+        <a href="index.html">Investor</a>
         <a href="leaderboard.html" aria-current="page">Leaderboard</a>
+        <a href="experiments.html">Experiments</a>
       </nav>
     </div>
   </header>
@@ -217,7 +244,29 @@
   <main id="main" class="wrap">
     <p class="kicker"><!-- gallery:updated:start -->Updated 2026-09-09 16:16:48 CEST · hypothetical $1,000<!-- gallery:updated:end --></p>
     <h1>Paper scoreboard</h1>
-    <p class="lede">Ranked by ending paper $ vs that sleeve’s buy&amp;hold, after the 9 Sep look-ahead fix. A high dollar figure is not a KEEP if walk-forward fails. Last run: <strong>9 Sep 2026</strong> revalidation.</p>
+    <p class="lede">Each point is one experiment: <strong>$1,000</strong> start, honest engine, ending paper dollars. Ranked vs hold. A high dollar figure is not a KEEP if the rolling test fails.</p>
+
+    <section class="card" aria-labelledby="plot-title">
+      <h2 id="plot-title">$1,000 over time</h2>
+      <p class="sleeve-meta">X = experiment date · Y = paper end $ · same start, separate sleeves</p>
+      <div class="filters" role="group" aria-label="Sleeve filter">
+        <button type="button" data-sleeve="ALL" aria-pressed="true">All</button>
+        <button type="button" data-sleeve="BTC">BTC</button>
+        <button type="button" data-sleeve="ALGO">ALGO</button>
+        <button type="button" data-sleeve="ETH">ETH</button>
+      </div>
+      <div class="plot-wrap" id="plot"></div>
+      <p class="plot-caption" id="plotCap">Tap a point for the name. All = log scale so $79 and $31k can share a chart.</p>
+      <div class="legend" aria-hidden="true">
+        <span><i class="btc"></i>BTC</span>
+        <span><i class="algo"></i>ALGO</span>
+        <span><i class="eth"></i>ETH</span>
+        <span>filled KEEP · faded TWEAK · hollow DROP · ◆ hold</span>
+      </div>
+      <noscript>
+        <p>JavaScript draws the scatter. The ranked tables below have the same paper dollars.</p>
+      </noscript>
+    </section>
 
     <section class="card" aria-labelledby="btc-board">
       <h2 id="btc-board">BTC sleeve</h2>
@@ -225,7 +274,7 @@
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>Strategy</th><th>End $</th><th>Vs hold</th><th>Verdict</th><th>Last run</th></tr>
+            <tr><th>Strategy</th><th>End $</th><th>Vs hold</th><th>Verdict</th></tr>
           </thead>
           <tbody>
             <tr>
@@ -233,47 +282,41 @@
               <td class="mono">$26,148</td>
               <td class="mono beat">beat</td>
               <td><span class="chip tweak">Tweak</span></td>
-              <td class="mono">9 Sep 2026</td>
             </tr>
             <tr>
               <td><b>Buy &amp; hold</b></td>
               <td class="mono beat">$19,879</td>
               <td class="mono">bar</td>
               <td><span class="chip keep">Keep</span></td>
-              <td class="mono">9 Sep 2026</td>
             </tr>
             <tr>
               <td>Donchian 20/10</td>
               <td class="mono">$17,595</td>
               <td class="mono lost">trail</td>
               <td><span class="chip tweak">Tweak</span></td>
-              <td class="mono">9 Sep 2026</td>
             </tr>
             <tr>
               <td>SMA 5/20</td>
               <td class="mono">$12,163</td>
               <td class="mono lost">trail</td>
               <td><span class="chip drop">Drop vs hold</span></td>
-              <td class="mono">9 Sep 2026</td>
             </tr>
             <tr>
               <td>Donchian-hold 10/10</td>
               <td class="mono">$10,389</td>
               <td class="mono lost">trail</td>
               <td><span class="chip drop">Drop vs hold</span></td>
-              <td class="mono">9 Sep 2026</td>
             </tr>
             <tr>
               <td>Donchian 10/5</td>
               <td class="mono lost">$2,598</td>
               <td class="mono lost">trail</td>
               <td><span class="chip drop">Drop</span></td>
-              <td class="mono">9 Sep 2026</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <p style="margin-top:.65rem">Donchian-hold 10/15 confirm=2 beats hold in-sample but walk-forward is 11/27 — not a KEEP. Buy&amp;hold is the Bitcoin bar (deepest dip −76%).</p>
+      <p style="margin-top:.6rem">Buy&amp;hold is the Bitcoin bar (dip −76%). The in-sample overlay that beats it still fails the rolling test.</p>
     </section>
 
     <section class="card" aria-labelledby="algo-board">
@@ -282,7 +325,7 @@
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>Strategy</th><th>End $</th><th>Vs hold</th><th>Verdict</th><th>Last run</th></tr>
+            <tr><th>Strategy</th><th>End $</th><th>Vs hold</th><th>Verdict</th></tr>
           </thead>
           <tbody>
             <tr>
@@ -290,33 +333,29 @@
               <td class="mono beat">$10,663</td>
               <td class="mono beat">beat</td>
               <td><span class="chip keep">Keep</span></td>
-              <td class="mono">9 Sep 2026</td>
             </tr>
             <tr>
               <td>SMA 5/20</td>
               <td class="mono">$1,177</td>
               <td class="mono beat">beat</td>
               <td><span class="chip tweak">Tweak</span></td>
-              <td class="mono">9 Sep 2026</td>
             </tr>
             <tr>
               <td>Donchian 10/5</td>
               <td class="mono">$886</td>
               <td class="mono beat">beat</td>
               <td><span class="chip drop">Drop</span></td>
-              <td class="mono">9 Sep 2026</td>
             </tr>
             <tr>
               <td>Buy &amp; hold</td>
               <td class="mono lost">$79</td>
               <td class="mono">bar</td>
               <td><span class="chip drop">Drop</span></td>
-              <td class="mono">9 Sep 2026</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <p style="margin-top:.65rem">Donchian 10/5 beats a crashed hold but loses vs the $1,000 start — not a growth rule. 20/10 is the only active KEEP (6/8 years, WF 17/25).</p>
+      <p style="margin-top:.6rem">20/10 is the only active KEEP. 10/5 beats a crashed hold but loses vs the $1,000 start.</p>
     </section>
 
     <section class="card" aria-labelledby="eth-board">
@@ -325,7 +364,7 @@
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>Strategy</th><th>End $</th><th>Vs hold</th><th>Verdict</th><th>Last run</th></tr>
+            <tr><th>Strategy</th><th>End $</th><th>Vs hold</th><th>Verdict</th></tr>
           </thead>
           <tbody>
             <tr>
@@ -333,56 +372,42 @@
               <td class="mono beat">$31,808</td>
               <td class="mono beat">beat</td>
               <td><span class="chip tweak">Tweak</span></td>
-              <td class="mono">9 Sep 2026</td>
             </tr>
             <tr>
               <td>Buy &amp; hold</td>
               <td class="mono">$17,691</td>
               <td class="mono">bar</td>
               <td class="mono">—</td>
-              <td class="mono">9 Sep 2026</td>
             </tr>
             <tr>
               <td>SMA 5/20</td>
               <td class="mono">$13,054</td>
               <td class="mono lost">trail</td>
               <td><span class="chip drop">Drop vs hold</span></td>
-              <td class="mono">9 Sep 2026</td>
             </tr>
             <tr>
               <td>Donchian 20/10</td>
               <td class="mono">$11,566</td>
               <td class="mono lost">trail</td>
               <td><span class="chip drop">Drop vs hold</span></td>
-              <td class="mono">9 Sep 2026</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <p style="margin-top:.65rem">ETH Donchian 10/5 still beats hold on the full sample (~$31.8k vs ~$17.7k) but walk-forward is 11/27 — TWEAK, not KEEP.</p>
+      <p style="margin-top:.6rem">Donchian 10/5 beats hold on the long path but fails the rolling test — TWEAK, not KEEP.</p>
     </section>
 
     <section aria-labelledby="drops-title">
-      <h2 id="drops-title" style="margin:1.15rem 0 .55rem">Scoreboard history · research drops</h2>
-      <p style="margin-bottom:.7rem">Chronological beats after the truth serum — so this page shows progress over time, not only a static champion strip.</p>
+      <h2 id="drops-title" style="margin:1.1rem 0 .5rem">Latest beat</h2>
       <div class="history">
         <article class="drop-card">
           <div class="top">
             <span class="date">9 Sep 2026</span>
-            <span class="chip drop">Drop prior KEEPs</span>
+            <span class="chip drop">New scorecard</span>
           </div>
           <h3>Harness revalidation</h3>
-          <p>Look-ahead fix. BTC bar = buy&amp;hold $19,879. Only active KEEP = ALGO Donchian 20/10 $10,663. ETH 10/5 demoted to TWEAK. Old $8.8M / $81.4M / SMA $124k retired as artefacts.</p>
+          <p>BTC bar = buy&amp;hold $19,879. Only active KEEP = ALGO Donchian 20/10 $10,663. ETH 10/5 is a TWEAK.</p>
           <a class="open" href="briefs/2026-09-09-harness-revalidation.html">Open brief →</a>
-        </article>
-        <article class="drop-card">
-          <div class="top">
-            <span class="date">7–9 Sep 2026</span>
-            <span class="chip tweak">Paper-live</span>
-          </div>
-          <h3>Books started under the old KEEP</h3>
-          <p>ALGO / ETH / BTC $1,000 ledgers opened on Donchian 10/5. Path-step logs, not proof. Revalidation supersedes those paper dollars — they stay as history, not as the scoreboard.</p>
-          <a class="open" href="briefs/2026-09-09-paper-live-btc-donchian.html">BTC paper-live →</a>
         </article>
         <!-- gallery:leaderboard-auto:start -->
         <!-- gallery:leaderboard-auto:end -->
@@ -391,7 +416,7 @@
   </main>
 
   <footer class="site">
-    Paper research · hypothetical $1,000 · not financial advice · <a href="investor.html">Investor digest</a> · <a href="index.html">Overview</a>
+    Paper research · hypothetical $1,000 · not financial advice · <a href="index.html">Investor</a>
   </footer>
 
   <script>
@@ -401,14 +426,196 @@
       var saved = localStorage.getItem(KEY);
       if (saved === "light" || saved === "dark") root.setAttribute("data-theme", saved);
       var btn = document.getElementById("themeBtn");
-      if (!btn) return;
-      btn.addEventListener("click", function () {
-        var now = root.getAttribute("data-theme");
-        if (!now) now = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-        var next = now === "dark" ? "light" : "dark";
-        root.setAttribute("data-theme", next);
-        localStorage.setItem(KEY, next);
+      if (btn) {
+        btn.addEventListener("click", function () {
+          var now = root.getAttribute("data-theme");
+          if (!now) now = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+          var next = now === "dark" ? "light" : "dark";
+          root.setAttribute("data-theme", next);
+          localStorage.setItem(KEY, next);
+          draw(currentSleeve);
+        });
+      }
+
+      // Honest full-sample end $ from docs/briefs/2026-09-09-harness-revalidation.html.
+      // Skip briefs with no comparable $1,000 path. Do not mix windows on one series.
+      var POINTS = [
+        {sleeve:"BTC", name:"Buy & hold", y:19879, date:"2026-09-09", verdict:"keep", hold:true},
+        {sleeve:"BTC", name:"Donchian-hold 10/15 c2", y:26148, date:"2026-09-09", verdict:"tweak", hold:false},
+        {sleeve:"BTC", name:"Donchian 20/10", y:17595, date:"2026-09-09", verdict:"tweak", hold:false},
+        {sleeve:"BTC", name:"SMA 5/20", y:12163, date:"2026-09-09", verdict:"drop", hold:false},
+        {sleeve:"BTC", name:"Donchian-hold 10/10", y:10389, date:"2026-09-09", verdict:"drop", hold:false},
+        {sleeve:"BTC", name:"Donchian 10/5", y:2598, date:"2026-09-09", verdict:"drop", hold:false},
+        {sleeve:"ALGO", name:"Donchian 20/10", y:10663, date:"2026-09-09", verdict:"keep", hold:false},
+        {sleeve:"ALGO", name:"SMA 5/20", y:1177, date:"2026-09-09", verdict:"tweak", hold:false},
+        {sleeve:"ALGO", name:"Donchian 10/5", y:886, date:"2026-09-09", verdict:"drop", hold:false},
+        {sleeve:"ALGO", name:"Buy & hold", y:79, date:"2026-09-09", verdict:"drop", hold:true},
+        {sleeve:"ETH", name:"Donchian 10/5", y:31808, date:"2026-09-09", verdict:"tweak", hold:false},
+        {sleeve:"ETH", name:"Buy & hold", y:17691, date:"2026-09-09", verdict:"bar", hold:true},
+        {sleeve:"ETH", name:"SMA 5/20", y:13054, date:"2026-09-09", verdict:"drop", hold:false},
+        {sleeve:"ETH", name:"Donchian 20/10", y:11566, date:"2026-09-09", verdict:"drop", hold:false}
+      ];
+      var HOLD = {BTC:19879, ALGO:79, ETH:17691};
+      var COLORS = {BTC:"--s-btc", ALGO:"--s-algo", ETH:"--s-eth"};
+      var X0 = Date.parse("2026-09-06T00:00:00Z");
+      var X1 = Date.parse("2026-09-10T00:00:00Z");
+      var currentSleeve = "ALL";
+      var selected = -1;
+
+      function cssVar(name) {
+        return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+      }
+      function money(n) {
+        return "$" + Math.round(n).toLocaleString("en-US");
+      }
+      function niceMax(v) {
+        if (v <= 1000) return 1200;
+        if (v <= 12000) return 12000;
+        if (v <= 22000) return 28000;
+        return 35000;
+      }
+      function yAt(v, yMin, yMax, useLog, padT, plotH) {
+        var t;
+        if (useLog) {
+          t = (Math.log(v) - Math.log(yMin)) / (Math.log(yMax) - Math.log(yMin));
+        } else {
+          t = (v - yMin) / (yMax - yMin);
+        }
+        if (t < 0) t = 0;
+        if (t > 1) t = 1;
+        return padT + (1 - t) * plotH;
+      }
+      function xAt(ms, padL, plotW) {
+        return padL + ((ms - X0) / (X1 - X0)) * plotW;
+      }
+
+      function draw(filter) {
+        currentSleeve = filter;
+        var host = document.getElementById("plot");
+        if (!host) return;
+        var data = POINTS.filter(function (p) {
+          return filter === "ALL" || p.sleeve === filter;
+        });
+        var W = 360, H = 210;
+        var padL = 44, padR = 10, padT = 12, padB = 28;
+        var plotW = W - padL - padR, plotH = H - padT - padB;
+        var useLog = filter === "ALL";
+        var yMin = useLog ? 50 : 0;
+        var yMax = useLog ? 40000 : niceMax(Math.max.apply(null, data.map(function (p) { return p.y; })));
+        var ink = cssVar("--ink-faint") || "#64748b";
+        var line = cssVar("--line") || "#cbd5e1";
+        var ticks = useLog ? [100, 1000, 10000, 30000] : (yMax <= 12000 ? [0, 3000, 6000, 9000, 12000] : [0, 10000, 20000, 30000].filter(function (t) { return t <= yMax; }));
+
+        var groups = {BTC:[], ALGO:[], ETH:[]};
+        data.forEach(function (p) { groups[p.sleeve].push(p); });
+        var sleeveShift = {BTC: -16, ALGO: 0, ETH: 16};
+        var laid = [];
+        ["BTC","ALGO","ETH"].forEach(function (s) {
+          var arr = groups[s];
+          arr.forEach(function (p, i) {
+            var ms = Date.parse(p.date + "T12:00:00Z");
+            var jitter = (i - (arr.length - 1) / 2) * 7;
+            var shift = filter === "ALL" ? sleeveShift[s] : 0;
+            laid.push({
+              p: p,
+              x: xAt(ms, padL, plotW) + jitter + shift,
+              y: yAt(p.y, yMin, yMax, useLog, padT, plotH),
+              color: cssVar(COLORS[s])
+            });
+          });
+        });
+
+        var ns = "http://www.w3.org/2000/svg";
+        var svg = document.createElementNS(ns, "svg");
+        svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+        svg.setAttribute("role", "img");
+        svg.setAttribute("aria-label", "Paper end dollars from $1,000 by experiment date, " + (filter === "ALL" ? "all sleeves" : filter));
+
+        function el(name, attrs) {
+          var n = document.createElementNS(ns, name);
+          Object.keys(attrs).forEach(function (k) { n.setAttribute(k, attrs[k]); });
+          return n;
+        }
+
+        ticks.forEach(function (t) {
+          var y = yAt(t, yMin, yMax, useLog, padT, plotH);
+          svg.appendChild(el("line", {x1: padL, x2: W - padR, y1: y, y2: y, stroke: line, "stroke-width": "1"}));
+          var lab = el("text", {x: padL - 6, y: y + 3, fill: ink, "font-size": "8", "text-anchor": "end", "font-family": "JetBrains Mono, ui-monospace, monospace"});
+          lab.textContent = t >= 1000 ? (t / 1000) + "k" : String(t);
+          svg.appendChild(lab);
+        });
+
+        if (filter !== "ALL" && HOLD[filter] != null) {
+          var hy = yAt(HOLD[filter], yMin, yMax, useLog, padT, plotH);
+          svg.appendChild(el("line", {
+            x1: padL, x2: W - padR, y1: hy, y2: hy,
+            stroke: cssVar(COLORS[filter]), "stroke-width": "1.4", "stroke-dasharray": "4 3", opacity: "0.85"
+          }));
+        }
+
+        svg.appendChild(el("line", {x1: padL, x2: W - padR, y1: padT + plotH, y2: padT + plotH, stroke: ink, "stroke-width": "1"}));
+        [["6 Sep", "2026-09-06T00:00:00Z"], ["9 Sep", "2026-09-09T12:00:00Z"]].forEach(function (pair) {
+          var x = xAt(Date.parse(pair[1]), padL, plotW);
+          var lab = el("text", {x: x, y: H - 8, fill: ink, "font-size": "8", "text-anchor": "middle", "font-family": "JetBrains Mono, ui-monospace, monospace"});
+          lab.textContent = pair[0];
+          svg.appendChild(lab);
+        });
+
+        laid.forEach(function (item, idx) {
+          var g = el("g", {class: "pt", tabindex: "0", role: "button", "aria-label": item.p.sleeve + " " + item.p.name + " " + money(item.p.y)});
+          var opacity = item.p.verdict === "tweak" ? "0.55" : "1";
+          var fill = item.p.verdict === "drop" ? "none" : item.color;
+          var stroke = item.color;
+          if (item.p.hold) {
+            var d = el("rect", {
+              x: item.x - 5, y: item.y - 5, width: "10", height: "10",
+              fill: fill === "none" ? "transparent" : item.color,
+              stroke: stroke, "stroke-width": "1.6",
+              transform: "rotate(45 " + item.x + " " + item.y + ")",
+              opacity: opacity
+            });
+            g.appendChild(d);
+          } else {
+            g.appendChild(el("circle", {
+              cx: item.x, cy: item.y, r: "5.2",
+              fill: fill, stroke: stroke, "stroke-width": "1.8", opacity: opacity
+            }));
+          }
+          function pick() {
+            selected = idx;
+            var p = item.p;
+            var v = p.verdict === "bar" ? "hold bar" : p.verdict.toUpperCase();
+            document.getElementById("plotCap").innerHTML =
+              "<b>" + p.sleeve + " · " + p.name + "</b> — " + money(p.y) +
+              " from $1,000 · " + v + " · 9 Sep 2026";
+          }
+          g.addEventListener("click", pick);
+          g.addEventListener("keydown", function (e) {
+            if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(); }
+          });
+          svg.appendChild(g);
+        });
+
+        host.innerHTML = "";
+        host.appendChild(svg);
+        if (filter === "ALL") {
+          document.getElementById("plotCap").textContent =
+            "Tap a point for the name. All = log scale so $79 and $31k can share a chart. Filter a sleeve for a linear view vs hold.";
+        } else {
+          document.getElementById("plotCap").textContent =
+            filter + " sleeve · dashed line is buy&hold " + money(HOLD[filter]) + ". Tap a point for the name.";
+        }
+      }
+
+      document.querySelectorAll(".filters button").forEach(function (b) {
+        b.addEventListener("click", function () {
+          document.querySelectorAll(".filters button").forEach(function (x) {
+            x.setAttribute("aria-pressed", x === b ? "true" : "false");
+          });
+          draw(b.getAttribute("data-sleeve"));
+        });
       });
+      draw("ALL");
     })();
   </script>
 </body>
