@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Harness revalidation · Sep 9, 2026</title>
+<meta name="description" content="Paper-only: after the look-ahead fix, prior Donchian and SMA paper dollars are invalid. Buy-and-hold wins on BTC. Only ALGO Donchian 20/10 stays a KEEP.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Cpath d='M8 22 L14 12 L18 18 L24 8' fill='none' stroke='%2399f6e4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='8' r='2' fill='%23fbbf24'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f1f5f9; --bg-elev: #ffffff; --bg-soft: #e2e8f0;
+    --ink: #0f172a; --ink-muted: #475569; --ink-faint: #64748b; --line: #cbd5e1;
+    --teal: #0f766e; --teal-soft: #ccfbf1; --teal-ink: #115e59;
+    --amber: #b45309; --amber-soft: #fef3c7;
+    --green: #047857; --green-soft: #d1fae5;
+    --red: #b91c1c; --red-soft: #fee2e2;
+    --chip-keep: #047857; --chip-keep-bg: #d1fae5;
+    --chip-tweak: #b45309; --chip-tweak-bg: #fef3c7;
+    --chip-drop: #b91c1c; --chip-drop-bg: #fee2e2;
+    --shadow: 0 1px 2px rgba(15,23,42,.06), 0 8px 24px rgba(15,23,42,.06);
+    --radius: 14px; --radius-sm: 10px;
+    --font: "DM Sans", system-ui, -apple-system, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --max: 40rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b1220; --bg-elev: #111827; --bg-soft: #1e293b;
+      --ink: #e2e8f0; --ink-muted: #94a3b8; --ink-faint: #64748b; --line: #334155;
+      --teal: #2dd4bf; --teal-soft: #134e4a; --teal-ink: #99f6e4;
+      --amber: #fbbf24; --amber-soft: #422006;
+      --green: #34d399; --green-soft: #064e3b;
+      --red: #f87171; --red-soft: #450a0a;
+      --chip-keep: #34d399; --chip-keep-bg: #064e3b;
+      --chip-tweak: #fbbf24; --chip-tweak-bg: #422006;
+      --chip-drop: #f87171; --chip-drop-bg: #450a0a;
+      --shadow: 0 1px 2px rgba(0,0,0,.35), 0 12px 28px rgba(0,0,0,.35);
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; font-family: var(--font); font-size: 1rem; line-height: 1.55;
+    color: var(--ink);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, color-mix(in srgb, var(--teal) 18%, transparent), transparent 55%),
+      radial-gradient(900px 500px at 100% 0%, color-mix(in srgb, var(--amber) 10%, transparent), transparent 50%),
+      var(--bg);
+    min-height: 100dvh;
+  }
+  .wrap { width: min(100% - 1.5rem, var(--max)); margin-inline: auto; padding: 1.25rem 0 2.5rem; }
+  header.top { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.25rem; }
+  .logo {
+    width: 2.5rem; height: 2.5rem; border-radius: 10px; flex-shrink: 0;
+    background: linear-gradient(145deg, #0f766e, #134e4a);
+    display: grid; place-items: center; box-shadow: var(--shadow);
+  }
+  .logo svg { width: 1.35rem; height: 1.35rem; }
+  .brand { font-weight: 700; font-size: .95rem; letter-spacing: -.01em; }
+  .sub { font-size: .8rem; color: var(--ink-faint); }
+  .card {
+    background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 1.1rem 1.15rem; margin-bottom: 1rem;
+  }
+  h1 { font-size: 1.35rem; line-height: 1.25; margin: 0 0 .5rem; letter-spacing: -.02em; }
+  h2 { font-size: 1.05rem; margin: 0 0 .65rem; letter-spacing: -.015em; }
+  p { margin: 0 0 .75rem; color: var(--ink-muted); }
+  p:last-child { margin-bottom: 0; }
+  .lede { color: var(--ink); font-size: 1.02rem; }
+  .chip {
+    display: inline-flex; align-items: center; gap: .35rem;
+    font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+    padding: .28rem .55rem; border-radius: 999px;
+  }
+  .chip.tweak { color: var(--chip-tweak); background: var(--chip-tweak-bg); }
+  .chip.keep { color: var(--chip-keep); background: var(--chip-keep-bg); }
+  .chip.drop { color: var(--chip-drop); background: var(--chip-drop-bg); }
+  .chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .55rem; }
+  .meta { display: flex; flex-wrap: wrap; gap: .4rem; margin: .85rem 0 0; }
+  .pill {
+    font-family: var(--mono); font-size: .7rem; color: var(--ink-muted);
+    background: var(--bg-soft); border-radius: 999px; padding: .25rem .55rem;
+  }
+  .statgrid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; margin-top: .85rem;
+  }
+  @media (min-width: 480px) { .statgrid { grid-template-columns: repeat(4, 1fr); } }
+  .stat {
+    background: var(--bg-soft); border-radius: var(--radius-sm); padding: .7rem .75rem;
+  }
+  .stat .k { font-size: .7rem; color: var(--ink-faint); text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
+  .stat .v { font-family: var(--mono); font-size: 1.05rem; font-weight: 600; margin-top: .2rem; color: var(--ink); }
+  .stat .v.good { color: var(--green); }
+  .stat .v.warn { color: var(--amber); }
+  .stat .v.bad { color: var(--red); }
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: .5rem 0 0; border-radius: var(--radius-sm); border: 1px solid var(--line); }
+  table { width: 100%; border-collapse: collapse; font-size: .82rem; min-width: 32rem; }
+  th, td { padding: .55rem .6rem; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  th { background: var(--bg-soft); font-size: .68rem; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-faint); font-weight: 700; }
+  tr:last-child td { border-bottom: 0; }
+  td.mono { font-family: var(--mono); font-size: .78rem; }
+  .beat { color: var(--green); font-weight: 600; }
+  .lost { color: var(--red); font-weight: 600; }
+  .good { color: var(--green); }
+  .bad { color: var(--red); }
+  .warn { color: var(--amber); }
+  ul.plain { margin: 0; padding-left: 1.1rem; color: var(--ink-muted); }
+  ul.plain li { margin-bottom: .45rem; }
+  ul.plain li:last-child { margin-bottom: 0; }
+  .callout {
+    border-left: 3px solid var(--teal); background: var(--teal-soft);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: .75rem .9rem; margin-top: .75rem;
+  }
+  .callout strong { color: var(--teal-ink); }
+  .callout.warn-bar {
+    border-left-color: var(--amber); background: var(--amber-soft);
+  }
+  .callout.warn-bar strong { color: var(--amber); }
+  .next {
+    background: linear-gradient(135deg, color-mix(in srgb, var(--teal) 12%, var(--bg-elev)), var(--bg-elev));
+  }
+  footer {
+    margin-top: 1.25rem; font-size: .75rem; color: var(--ink-faint); text-align: center; line-height: 1.45;
+  }
+  .row-verdicts { display: flex; flex-direction: column; gap: .55rem; }
+  .verdict-row {
+    display: flex; align-items: flex-start; gap: .65rem;
+    padding: .65rem .7rem; background: var(--bg-soft); border-radius: var(--radius-sm);
+  }
+  .verdict-row .txt { font-size: .88rem; color: var(--ink-muted); }
+  .verdict-row .txt b { color: var(--ink); }
+  code { font-family: var(--mono); font-size: .78rem; }
+  .path-bar {
+    display: flex; gap: .15rem; margin: .85rem 0 0; flex-wrap: wrap;
+  }
+  .path-bar .step {
+    flex: 1 1 0; min-width: 4rem; text-align: center;
+    padding: .4rem .35rem; border-radius: var(--radius-sm);
+    font-size: .7rem; font-weight: 600; text-transform: uppercase; letter-spacing: .03em;
+  }
+  .path-bar .done { background: var(--green-soft); color: var(--green); }
+  .path-bar .active { background: var(--amber-soft); color: var(--amber); border: 2px solid var(--amber); }
+  .path-bar .future { background: var(--bg-soft); color: var(--ink-faint); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 17 L9 9 L13 14 L20 5" stroke="#99f6e4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="5" r="1.8" fill="#fbbf24"/></svg>
+      </div>
+      <div>
+        <div class="brand">Trading Lab · Experiment brief</div>
+        <div class="sub">Wed Sep 9, 2026 · paper only · honest engine</div>
+      </div>
+    </header>
+
+    <section class="card">
+      <div class="chips">
+        <span class="chip drop">Drop prior Donchian 10/5 KEEPs</span>
+        <span class="chip keep">Keep buy&amp;hold on BTC</span>
+        <span class="chip keep">Keep Donchian 20/10 on ALGO</span>
+      </div>
+      <h1>The look-ahead fix kills the million-dollar paper KEEPs</h1>
+      <p class="lede">
+        This brief <b>supersedes</b> earlier Donchian and SMA paper dollars
+        (BTC transfer, alts screen, Donchian-hold hybrid). Those numbers were
+        produced by an engine that traded on the same bar it decided —
+        peeking at the close, then filling as if you already knew it.
+        After PR #16, a close[t] signal fills at <b>open[t+1]</b>, and
+        year-split / walk-forward keep strategy state across the boundary.
+        Same $1,000 start, same 15 bps round-trip, same 95% size. The story
+        changes completely.
+      </p>
+      <div class="meta">
+        <span class="pill">BTC 2019-01-01 → 2026-09-08</span>
+        <span class="pill">ETH same window</span>
+        <span class="pill">ALGO 2019-06-21 → 2026-09-08</span>
+        <span class="pill">15 bps RT · next-bar open · 95%</span>
+      </div>
+      <div class="statgrid">
+        <div class="stat"><div class="k">BTC Don 10/5 now</div><div class="v bad">$2,598</div></div>
+        <div class="stat"><div class="k">Was (invalid)</div><div class="v">$3.41M</div></div>
+        <div class="stat"><div class="k">BTC buy&amp;hold</div><div class="v good">$19,879</div></div>
+        <div class="stat"><div class="k">ALGO 20/10 KEEP</div><div class="v good">$10,663</div></div>
+      </div>
+      <div class="callout warn-bar"><strong>Read this first:</strong> do not use any KEEP/TWEAK/DROP from briefs dated Sep 6–9 that quote Donchian $3.41M / $8.8M / $81.4M or SMA $124k. Those are look-ahead artefacts. This file is the new scorecard.</div>
+    </section>
+
+    <section class="card">
+      <h2>What $1,000 becomes · full sample</h2>
+      <p>Honest next-open fills. “Units” = how many coins your ending cash pile could buy at the last close.</p>
+      <h2 style="margin-top:1rem;font-size:.95rem">BTC-USD · core sleeve</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Strategy</th><th>End $</th><th>Max DD</th><th>In mkt</th><th>Units</th><th>Trades</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><b>Buy &amp; hold</b></td><td class="mono good">$19,879</td><td class="mono bad">−76%</td><td class="mono">100%</td><td class="mono">0.25</td><td class="mono">1</td></tr>
+            <tr><td>Donchian 20/10</td><td class="mono">$17,595</td><td class="mono">−47%</td><td class="mono">47%</td><td class="mono">0.22</td><td class="mono">41</td></tr>
+            <tr><td>SMA 5/20</td><td class="mono">$12,163</td><td class="mono">−61%</td><td class="mono">54%</td><td class="mono">0.16</td><td class="mono">80</td></tr>
+            <tr><td>Donchian 10/5</td><td class="mono bad">$2,598</td><td class="mono bad">−70%</td><td class="mono">43%</td><td class="mono">0.03</td><td class="mono">88</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:.75rem">On BTC, <b>hold wins</b>. Donchian 10/5 — the old paper KEEP — now finishes with about <b>one-eighth</b> of buy&amp;hold and far fewer coin-units. SMA 5/20 also loses to hold on dollars and units. Donchian 20/10 is the least-bad active rule: slightly under hold on $, softer crash (−47% vs −76%).</p>
+
+      <h2 style="margin-top:1.1rem;font-size:.95rem">ALGO-USD · alts sleeve</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Strategy</th><th>End $</th><th>Max DD</th><th>In mkt</th><th>Trades</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Buy &amp; hold</td><td class="mono bad">$79</td><td class="mono bad">−93%</td><td class="mono">100%</td><td class="mono">1</td></tr>
+            <tr><td>Donchian 10/5</td><td class="mono">$886</td><td class="mono bad">−82%</td><td class="mono">33%</td><td class="mono">70</td></tr>
+            <tr><td>SMA 5/20</td><td class="mono">$1,177</td><td class="mono bad">−89%</td><td class="mono">44%</td><td class="mono">86</td></tr>
+            <tr><td><b>Donchian 20/10</b></td><td class="mono good">$10,663</td><td class="mono">−58%</td><td class="mono">29%</td><td class="mono">32</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:.75rem">ALGO buy&amp;hold is a wreck ($79 from $1,000). Old KEEP Donchian 10/5 still “beats hold” at $886 — but that is a <b>loss vs start</b>, not a growth strategy. The calmer <b>20/10</b> is the one that actually grows the paper $1,000.</p>
+
+      <h2 style="margin-top:1.1rem;font-size:.95rem">ETH-USD · alts candidate</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Strategy</th><th>End $</th><th>Max DD</th><th>In mkt</th><th>Trades</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Buy &amp; hold</td><td class="mono">$17,691</td><td class="mono bad">−79%</td><td class="mono">100%</td><td class="mono">1</td></tr>
+            <tr><td>SMA 5/20</td><td class="mono">$13,054</td><td class="mono">−61%</td><td class="mono">51%</td><td class="mono">79</td></tr>
+            <tr><td>Donchian 20/10</td><td class="mono">$11,566</td><td class="mono">−60%</td><td class="mono">40%</td><td class="mono">41</td></tr>
+            <tr><td>Donchian 10/5</td><td class="mono good">$31,808</td><td class="mono">−50%</td><td class="mono">44%</td><td class="mono">72</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:.75rem">ETH Donchian 10/5 still <b>beats hold on the full sample</b> ($31.8k vs $17.7k, milder dip). That is the only old KEEP that still looks good on dollars. Walk-forward, below, does not confirm it.</p>
+    </section>
+
+    <section class="card">
+      <h2>Old paper $ vs honest $</h2>
+      <p>Same ideas, same fees, same 95% size. Only the fill timing changed.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Claim (old brief)</th><th>Old $</th><th>Honest $</th><th>Now</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>BTC Don 10/5 KEEP</td><td class="mono">$3.41M</td><td class="mono bad">$2,598</td><td class="lost">DROP</td></tr>
+            <tr><td>ALGO Don 10/5 KEEP</td><td class="mono">$8.8M</td><td class="mono">$886</td><td class="lost">DROP</td></tr>
+            <tr><td>ETH Don 10/5 KEEP</td><td class="mono">$81.4M</td><td class="mono">$31,808</td><td class="warn">TWEAK</td></tr>
+            <tr><td>BTC SMA 5/20 baseline</td><td class="mono">$124k</td><td class="mono">$12,163</td><td class="lost">DROP vs hold</td></tr>
+            <tr><td>ALGO Don 20/10 TWEAK</td><td class="mono">$1.0M</td><td class="mono good">$10,663</td><td class="beat">KEEP</td></tr>
+            <tr><td>BTC Don hold 10/10 TWEAK</td><td class="mono">$1.82M</td><td class="mono">$10,389</td><td class="lost">DROP vs hold</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Year-split · each year starts at $1,000</h2>
+      <p>Signals keep pre-January history (PR #16). 2026 is year-to-date through Sep 8. Beat = higher return than that year’s buy&amp;hold.</p>
+      <div class="statgrid">
+        <div class="stat"><div class="k">BTC Don 10/5</div><div class="v bad">2 / 8</div></div>
+        <div class="stat"><div class="k">BTC SMA 5/20</div><div class="v bad">3 / 8</div></div>
+        <div class="stat"><div class="k">ALGO Don 20/10</div><div class="v good">6 / 8</div></div>
+        <div class="stat"><div class="k">ETH Don 10/5</div><div class="v">5 / 8</div></div>
+      </div>
+      <p style="margin-top:.85rem"><b>BTC Donchian 10/5</b> only beats hold in 2022 (lost less in the crash) and 2026 YTD. It <b>loses every bull year</b>. Old brief said 8/8 — that was the look-ahead.</p>
+      <p><b>ALGO 20/10</b> is the clean alts stress: 6/8 years, avg +59%, worst dip −50% vs hold’s −93%. Lost only 2020 and 2021 (hold’s monster bounce years).</p>
+      <p><b>ETH 10/5</b> 5/8 — still mixed. Beats in 2019, 2022, 2024–26 YTD; loses the 2020–21 and 2023 bulls.</p>
+    </section>
+
+    <section class="card">
+      <h2>Walk-forward (out-of-sample)</h2>
+      <p>Train 365 days → test 90 → step 90 · fixed params · fresh $1,000 each fold. Same boundary-state rule as year-split.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Contender</th><th>Folds beat hold</th><th>Mean / fold</th><th>Worst DD</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>BTC SMA 5/20</td><td class="mono lost">9 / 27 (33%)</td><td class="mono">+11%</td><td class="mono">−29%</td></tr>
+            <tr><td>BTC Don 10/5</td><td class="mono lost">8 / 27 (30%)</td><td class="mono">+4%</td><td class="mono">−39%</td></tr>
+            <tr><td>BTC Don 20/10</td><td class="mono">13 / 27 (48%)</td><td class="mono">+13%</td><td class="mono">−25%</td></tr>
+            <tr><td>ALGO SMA 5/20</td><td class="mono">14 / 25 (56%)</td><td class="mono">+9%</td><td class="mono">−50%</td></tr>
+            <tr><td>ALGO Don 10/5</td><td class="mono">15 / 25 (60%)</td><td class="mono">+8%</td><td class="mono">−46%</td></tr>
+            <tr><td><b>ALGO Don 20/10</b></td><td class="mono beat">17 / 25 (68%)</td><td class="mono good">+14%</td><td class="mono">−37%</td></tr>
+            <tr><td>ETH SMA 5/20</td><td class="mono lost">9 / 27 (33%)</td><td class="mono">+13%</td><td class="mono">−48%</td></tr>
+            <tr><td>ETH Don 10/5</td><td class="mono warn">11 / 27 (41%)</td><td class="mono">+15%</td><td class="mono">−28%</td></tr>
+            <tr><td>ETH Don 20/10</td><td class="mono lost">9 / 27 (33%)</td><td class="mono">+14%</td><td class="mono">−35%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout"><strong>Truth serum:</strong> a KEEP needs to beat hold outside the one long path. Only <b>ALGO Donchian 20/10</b> clears that bar (68%). ETH Donchian 10/5’s full-sample win does <b>not</b> show up in rolling tests (41%). BTC Donchian 10/5 is worse than a coin flip (30%).</div>
+    </section>
+
+    <section class="card">
+      <h2>Secondary · Donchian-hold grid on BTC</h2>
+      <p>Same 12-cell exit-stickiness grid as the Sep 9 hybrid brief, re-run on the fixed engine. The old “winner” (10/10, confirm=1, gap=0) now <b>loses to hold</b> ($10.4k vs $19.9k; 2/8 years; WF 11/27).</p>
+      <p>Honest-engine $ / Sharpe winner is <code>entry=10, exit=15, confirm=2, gap=0</code>: $26,148, units 0.33 vs hold 0.25, dip −46% vs −76%, 26 trades. Year-split 4/8. Walk-forward still only <b>11/27 (41%)</b>.</p>
+      <p><b>TWEAK, not KEEP.</b> Full sample can beat hold with slower exits + a 2-bar confirm. Out-of-sample does not. Also: <code>confirm_bars=2</code> is no longer the “trap” the old engine claimed — that was look-ahead talking. Do not promote a 12-cell winner that fails walk-forward.</p>
+    </section>
+
+    <section class="card">
+      <h2>Keep · Tweak · Drop</h2>
+      <div class="row-verdicts">
+        <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>donchian_breakout 10/5 on BTC</b> — prior KEEP. Now $2,598 vs hold $19,879; 2/8 years; WF 8/27. Sells often and still eats a −70% dip. Demoted.</div></div>
+        <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>donchian_breakout 10/5 on ALGO</b> — prior KEEP ($8.8M). Now $886: beats a crashed hold but loses vs the $1,000 start. Not a growth rule. Demoted.</div></div>
+        <div class="verdict-row"><span class="chip drop">Drop vs hold</span><div class="txt"><b>sma_crossover 5/20 on BTC and ETH</b> — old “baseline to beat.” Loses to buy&amp;hold on dollars and coin-units. Family may still be searched on the honest engine (sticky SMA was never re-run here).</div></div>
+        <div class="verdict-row"><span class="chip drop">Drop vs hold</span><div class="txt"><b>donchian_hold 10/10 confirm=1</b> — prior grid winner / TWEAK. Now trails BTC hold on $ and units; 2/8 years.</div></div>
+        <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>buy_and_hold on BTC-USD</b> — new paper baseline for the core sleeve. Deepest dip (−76%), but the active rules we trusted did not grow more coins after honest fills.</div></div>
+        <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>donchian_breakout 20/10 on ALGO-USD</b> — only active rule that grows the $1,000, beats hold 6/8 years and 17/25 walk-forward folds, softer crash than hold. Alts-sleeve paper KEEP. Still 32 round-trips and a −58% dip — paper-live before any real talk.</div></div>
+        <div class="verdict-row"><span class="chip tweak">Tweak</span><div class="txt"><b>donchian_breakout 10/5 on ETH</b> — still beats hold on the full sample ($31.8k vs $17.7k) and 5/8 years, but WF 11/27 fails truth serum. Not a KEEP until OOS improves.</div></div>
+        <div class="verdict-row"><span class="chip tweak">Tweak</span><div class="txt"><b>Donchian family on BTC</b> (20/10, and hold 10/15 confirm=2) — softer dips than hold; 20/10 almost matches $; hold-hybrid beats $ in-sample. Both fail year-split / WF as KEEPs. Search knobs on the <em>fixed</em> engine if we keep this family. Do not reuse old million-dollar grids.</div></div>
+        <div class="verdict-row"><span class="chip tweak">Tweak</span><div class="txt"><b>sma_crossover 5/20 on ALGO</b> — beats crashed hold ($1,177 vs $79) but trails Donchian 20/10 on every score that matters.</div></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Paper-live books</h2>
+      <p>The Donchian 10/5 paper-live ledgers (ALGO / ETH / BTC) were started from the <b>old KEEP</b>. They are path-step logs, not proof, and they do <b>not</b> inherit a KEEP after this revalidation. Do not read a few days of marks as confirmation.</p>
+    </section>
+
+    <section class="card">
+      <h2>Path to real</h2>
+      <div class="path-bar">
+        <div class="step done">Screen</div>
+        <div class="step active">Stress</div>
+        <div class="step future">Paper-live</div>
+        <div class="step future">Real (needs OK)</div>
+      </div>
+      <p style="margin-top:.85rem">BTC core is back at Screen/Stress: hold is the bar. ALGO 20/10 is the only rule that finished Stress. No live orders without an explicit per-trade OK.</p>
+    </section>
+
+    <section class="card next">
+      <h2>Suggested next experiment</h2>
+      <p>On BTC, treat buy&amp;hold as the number to beat and either (a) stop trading overlays until a rule beats it on walk-forward, or (b) re-grid Donchian-hold / sticky SMA <em>on this engine</em> with a tiny knob set — then stress the winner. On alts, start (or restart) paper-live for <b>Donchian 20/10 on ALGO</b>, not 10/5. Leave ETH 10/5 as a TWEAK until OOS is honest.</p>
+    </section>
+
+    <footer>
+      Trading Lab · paper research only · findings scrubbed of personal holdings ·
+      harness: 15 bps RT · next-bar open · 95% sizing ·
+      runs under experiments/runs/reval_20260909T114548Z ·
+      summary experiments/harness_revalidation_20260909.json
+    </footer>
+  </div>
+</body>
+</html>
