@@ -2,9 +2,11 @@
 """Rebuild the public briefs gallery and scrub private-capital leaks.
 
 Scans docs/briefs/*.html, refreshes the Overview card list on docs/index.html,
-and appends data-driven nodes on progress.html / keepers.html when a brief is
-not already linked. Editorial IA (family board, “Right now”, hand-written
-timeline and keepers prose) is left alone.
+stamps last-updated to the second (Europe/Paris) on Overview / Progress /
+Keepers / Investor / Leaderboard, and appends data-driven nodes on progress.html,
+keepers.html, and leaderboard.html when a brief is not already linked.
+Editorial IA (family board, “Right now”, investor digest, rank tables) is
+left alone.
 
 Privacy: paper $1,000 / $1000 is allowed. Holdings, RISK_PROFILE, “0.15 BTC”,
 and personal totals like ~$14k fail the scan (or are stripped with --strip).
@@ -20,10 +22,13 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import html
+import os
 import re
+import subprocess
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
@@ -31,6 +36,10 @@ BRIEFS_DIR = DOCS / "briefs"
 INDEX_HTML = DOCS / "index.html"
 PROGRESS_HTML = DOCS / "progress.html"
 KEEPERS_HTML = DOCS / "keepers.html"
+INVESTOR_HTML = DOCS / "investor.html"
+LEADERBOARD_HTML = DOCS / "leaderboard.html"
+
+PARIS_TZ = ZoneInfo("Europe/Paris")
 
 BRIEFS_START = "<!-- gallery:briefs:start -->"
 BRIEFS_END = "<!-- gallery:briefs:end -->"
@@ -40,6 +49,8 @@ PROGRESS_START = "<!-- gallery:progress-auto:start -->"
 PROGRESS_END = "<!-- gallery:progress-auto:end -->"
 KEEPERS_START = "<!-- gallery:keepers-auto:start -->"
 KEEPERS_END = "<!-- gallery:keepers-auto:end -->"
+LEADERBOARD_START = "<!-- gallery:leaderboard-auto:start -->"
+LEADERBOARD_END = "<!-- gallery:leaderboard-auto:end -->"
 
 GENERIC_TITLES = {
     "trading lab — experiment brief",
@@ -132,6 +143,8 @@ SCRUB_GLOBS = (
     "index.html",
     "progress.html",
     "keepers.html",
+    "investor.html",
+    "leaderboard.html",
 )
 SCRUB_SKIP_NAMES = {"UX.md", "README.md"}
 
@@ -272,8 +285,54 @@ def card_date_label(day: dt.date) -> str:
     return public_date_label(day)
 
 
-def kicker_date_label(day: dt.date) -> str:
-    return public_date_label(day)
+def format_updated_stamp(when: dt.datetime) -> str:
+    """Second-precision local stamp, e.g. '2026-09-09 13:54:16 CEST'."""
+    local = when.astimezone(PARIS_TZ)
+    tzname = local.tzname() or "CET"
+    return local.strftime("%Y-%m-%d %H:%M:%S ") + tzname
+
+
+def briefs_publish_datetime() -> dt.datetime:
+    """Latest publish time: git commit on docs/briefs/, else rebuild now.
+
+    Override with GALLERY_UPDATED_AT (ISO-8601) or SOURCE_DATE_EPOCH (unix).
+    """
+    env = os.environ.get("GALLERY_UPDATED_AT") or os.environ.get("SOURCE_DATE_EPOCH")
+    if env:
+        if env.isdigit():
+            return dt.datetime.fromtimestamp(int(env), tz=dt.timezone.utc)
+        return dt.datetime.fromisoformat(env.replace("Z", "+00:00"))
+    try:
+        raw = subprocess.check_output(
+            ["git", "log", "-1", "--format=%cI", "--", "docs/briefs"],
+            cwd=ROOT,
+            text=True,
+            stderr=subprocess.DEVNULL,
+        ).strip()
+        if raw:
+            return dt.datetime.fromisoformat(raw)
+    except (OSError, subprocess.CalledProcessError):
+        pass
+    return dt.datetime.now(PARIS_TZ)
+
+
+def render_updated_kicker(when: dt.datetime) -> str:
+    return (
+        f"{UPDATED_START}Updated {format_updated_stamp(when)}"
+        f" · hypothetical $1,000{UPDATED_END}"
+    )
+
+
+def stamp_updated_region(source: str, when: dt.datetime, path: Path) -> str:
+    if UPDATED_START not in source or UPDATED_END not in source:
+        raise SystemExit(f"{path}: missing {UPDATED_START} … {UPDATED_END}")
+    return re.sub(
+        re.escape(UPDATED_START) + r".*?" + re.escape(UPDATED_END),
+        render_updated_kicker(when),
+        source,
+        count=1,
+        flags=re.S,
+    )
 
 
 def short_title(raw: str) -> str:
@@ -604,13 +663,50 @@ def render_keepers_section(briefs: list[Brief]) -> str:
     )
 
 
+def render_leaderboard_drops(briefs: list[Brief]) -> str:
+    if not briefs:
+        return ""
+    items: list[str] = []
+    for brief in briefs:
+        teaser = paper_line(brief)
+        items.append(
+            "      <article class=\"drop-card\">\n"
+            "        <div class=\"top\">\n"
+            "          <span class=\"date\">"
+            + esc(card_date_label(brief.date))
+            + "</span>\n"
+            "          <span class=\"chip "
+            + esc(brief.chip_kind)
+            + "\">"
+            + esc(brief.chip_label)
+            + "</span>\n"
+            "        </div>\n"
+            "        <h3>"
+            + esc(brief.title)
+            + "</h3>\n"
+            "        <p>"
+            + esc(teaser)
+            + "</p>\n"
+            "        <a class=\"open\" href=\""
+            + esc(brief.href)
+            + "\">Open brief →</a>\n"
+            "      </article>"
+        )
+    return "\n".join(items)
+
+
 def ensure_markers() -> None:
     """No-op guard used by tests; markers must already be in the hub pages."""
     for path, start, end in (
         (INDEX_HTML, BRIEFS_START, BRIEFS_END),
         (INDEX_HTML, UPDATED_START, UPDATED_END),
+        (PROGRESS_HTML, UPDATED_START, UPDATED_END),
         (PROGRESS_HTML, PROGRESS_START, PROGRESS_END),
+        (KEEPERS_HTML, UPDATED_START, UPDATED_END),
         (KEEPERS_HTML, KEEPERS_START, KEEPERS_END),
+        (INVESTOR_HTML, UPDATED_START, UPDATED_END),
+        (LEADERBOARD_HTML, UPDATED_START, UPDATED_END),
+        (LEADERBOARD_HTML, LEADERBOARD_START, LEADERBOARD_END),
     ):
         text = path.read_text(encoding="utf-8")
         if start not in text or end not in text:
@@ -619,19 +715,10 @@ def ensure_markers() -> None:
 
 def update_hub_pages(briefs: list[Brief]) -> list[Path]:
     changed: list[Path] = []
+    published = briefs_publish_datetime()
     index_src = INDEX_HTML.read_text(encoding="utf-8")
     ordered = order_briefs(briefs, index_src)
-    latest = max(b.date for b in ordered)
-    kicker = f"{UPDATED_START}Updated {kicker_date_label(latest)} · hypothetical $1,000{UPDATED_END}"
-    if UPDATED_START not in index_src or UPDATED_END not in index_src:
-        raise SystemExit(f"{INDEX_HTML}: missing {UPDATED_START} … {UPDATED_END}")
-    index_new = re.sub(
-        re.escape(UPDATED_START) + r".*?" + re.escape(UPDATED_END),
-        kicker,
-        index_src,
-        count=1,
-        flags=re.S,
-    )
+    index_new = stamp_updated_region(index_src, published, INDEX_HTML)
     index_new = replace_region(
         index_new,
         BRIEFS_START,
@@ -644,11 +731,12 @@ def update_hub_pages(briefs: list[Brief]) -> list[Path]:
         changed.append(INDEX_HTML)
 
     progress_src = PROGRESS_HTML.read_text(encoding="utf-8")
-    known = hrefs_outside_region(progress_src, PROGRESS_START, PROGRESS_END)
+    progress_new = stamp_updated_region(progress_src, published, PROGRESS_HTML)
+    known = hrefs_outside_region(progress_new, PROGRESS_START, PROGRESS_END)
     extras = [b for b in ordered if b.href not in known]
-    start_step = count_nodes_outside_region(progress_src, PROGRESS_START, PROGRESS_END)
+    start_step = count_nodes_outside_region(progress_new, PROGRESS_START, PROGRESS_END)
     progress_new = replace_region(
-        progress_src,
+        progress_new,
         PROGRESS_START,
         PROGRESS_END,
         render_progress_nodes(extras, start_step),
@@ -659,10 +747,11 @@ def update_hub_pages(briefs: list[Brief]) -> list[Path]:
         changed.append(PROGRESS_HTML)
 
     keepers_src = KEEPERS_HTML.read_text(encoding="utf-8")
-    known_k = hrefs_outside_region(keepers_src, KEEPERS_START, KEEPERS_END)
+    keepers_new = stamp_updated_region(keepers_src, published, KEEPERS_HTML)
+    known_k = hrefs_outside_region(keepers_new, KEEPERS_START, KEEPERS_END)
     # Skip briefs already told on the hand-written timeline — those ideas
     # already have editorial keeper cards. Only new files get a stub.
-    known_story = hrefs_outside_region(progress_src, PROGRESS_START, PROGRESS_END)
+    known_story = hrefs_outside_region(progress_new, PROGRESS_START, PROGRESS_END)
     keeper_extras = [
         b
         for b in ordered
@@ -671,7 +760,7 @@ def update_hub_pages(briefs: list[Brief]) -> list[Path]:
         and b.href not in known_story
     ]
     keepers_new = replace_region(
-        keepers_src,
+        keepers_new,
         KEEPERS_START,
         KEEPERS_END,
         render_keepers_section(keeper_extras),
@@ -680,6 +769,34 @@ def update_hub_pages(briefs: list[Brief]) -> list[Path]:
     if keepers_new != keepers_src:
         KEEPERS_HTML.write_text(keepers_new, encoding="utf-8")
         changed.append(KEEPERS_HTML)
+
+    investor_src = INVESTOR_HTML.read_text(encoding="utf-8")
+    investor_new = stamp_updated_region(investor_src, published, INVESTOR_HTML)
+    if investor_new != investor_src:
+        INVESTOR_HTML.write_text(investor_new, encoding="utf-8")
+        changed.append(INVESTOR_HTML)
+
+    board_src = LEADERBOARD_HTML.read_text(encoding="utf-8")
+    board_new = stamp_updated_region(board_src, published, LEADERBOARD_HTML)
+    known_board = hrefs_outside_region(board_new, LEADERBOARD_START, LEADERBOARD_END)
+    # Hand-written scoreboard history already links the revalidation story.
+    # Only append briefs that are not already on Progress (hand-written) or
+    # this page — chronological research drops after the truth-serum beat.
+    board_extras = [
+        b
+        for b in ordered
+        if b.href not in known_board and b.href not in known_story
+    ]
+    board_new = replace_region(
+        board_new,
+        LEADERBOARD_START,
+        LEADERBOARD_END,
+        render_leaderboard_drops(board_extras),
+        LEADERBOARD_HTML,
+    )
+    if board_new != board_src:
+        LEADERBOARD_HTML.write_text(board_new, encoding="utf-8")
+        changed.append(LEADERBOARD_HTML)
 
     return changed
 
@@ -800,6 +917,12 @@ def self_test() -> None:
     )
     assert pick_title(keep_src, "2026-09-06-sma520-stress.html") == "SMA 5/20 stress — BTC"
     assert public_date_label(dt.date(2026, 9, 6)) == "6 Sep 2026"
+
+    utc = dt.datetime(2026, 9, 9, 11, 54, 16, tzinfo=dt.timezone.utc)
+    assert format_updated_stamp(utc) == "2026-09-09 13:54:16 CEST"
+    kicker = render_updated_kicker(utc)
+    assert "13:54:16 CEST" in kicker
+    assert UPDATED_START in kicker and UPDATED_END in kicker
 
     teaser_src = (
         '<!-- gallery-card title="Alts upside screen" chip="Keep Donchian" '
