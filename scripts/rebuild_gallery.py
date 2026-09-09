@@ -734,8 +734,7 @@ def ensure_brief_published_meta(src: str, when: dt.datetime, source: str) -> str
         src = src.replace("<body>", f"<body>\n  {comment}", 1)
     stamp = format_updated_stamp(when)
     visible = (
-        f'<p class="published">Published {PUBLISHED_START}{stamp}{PUBLISHED_END}'
-        f' · {esc(source)}</p>'
+        f'<p class="published">Published {PUBLISHED_START}{stamp}{PUBLISHED_END}</p>'
     )
     region = re.compile(
         r'<p class="published">.*?</p>',
