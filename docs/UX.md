@@ -2,68 +2,51 @@
 
 GitHub Pages serves `/docs` on `main` → https://offmann.github.io/trading-lab-briefs/
 
-This file is for future agents. The reader of the live site is **not a trader**. Lead with status, then offer detail. They should be able to see **when the site last published** (to the second), **when** each experiment happened, and how hypothetical **$1,000** moved — not only Keep / Tweak / Drop chips.
+This file is for future agents. The reader of the live site is **not a trader**. Home is the **Investor** digest. They should see **when the site last published** (to the second), what $1,000 would have become vs hold, and then optionally ranks or individual briefs.
+
+**Max 3 tabs.** Do not bring back Overview / Progress / Keepers as top-level nav.
 
 ## Pages
 
 | File | Job | Answers |
 |------|-----|---------|
-| `index.html` | Overview | “What should I care about in under a minute?” KEEP / TWEAK / DROP / PARKED as it stands **now**, plus a slim champion handoff. |
-| `progress.html` | Time-series | The primary timeline: date, step, verdict, title, learned blurb, paper $1,000 line. Champion strip lives here. Harness revalidation is the truth-serum beat. |
-| `keepers.html` | Survivors | What is still worth remembering, in plain English — and what Keep *does not* mean. |
-| `investor.html` | Investor digest | Always: (1) what was tested, (2) what it means, (3) last updated to the second, (4) “if you put $1,000 this way over this timeframe, you’d have ~$X vs hold ~$Y” using **post-revalidation** paper numbers only. |
-| `leaderboard.html` | Scoreboard | Ranked paper strategies by sleeve (**BTC / ALGO / ETH**): score vs buy&hold, verdict KEEP/TWEAK/DROP, last run date. Plus chronological **research drops** after the truth serum — progress over time, not only a static champion strip. |
-| `briefs/*.html` | Detail | One experiment. Linked from the hub pages. Do not unlist them. |
+| `index.html` | **Investor (home / default)** | Plain English: what was tested that matters, last updated to the second, what it means for an investor, and “$1,000 → $X vs hold over a clear timeframe.” Lead with the two big numbers when they still hold: BTC hold **$19,879** · ALGO KEEP **$10,663**. |
+| `leaderboard.html` | Scoreboard + plot | Ranked paper strategies by sleeve (**BTC / ALGO / ETH**) vs buy&hold, KEEP/TWEAK/DROP. Plus a scatter: each point = an experiment; X = time; Y = paper end $ from $1,000. Sleeve filters; do not mix incompatible windows on one series. |
+| `experiments.html` | Brief gallery | Dive into individual experiment cards. Revalidation + current KEEP/TWEAK first. Superseded / invalidated briefs in a collapsed **Superseded** section. |
+| `investor.html` | Redirect | → `index.html` (old URL). |
+| `progress.html`, `keepers.html` | Redirects | → `experiments.html`. Not in primary nav. |
+| `briefs/*.html` | Detail | One experiment. Linked from Experiments (and Leaderboard). Do not unlist them. |
 
-Do **not** go back to a flat card gallery as the homepage.
+Hub pages use a **three-tab** nav: **Investor / Leaderboard / Experiments**. One row on a phone (~390px). Briefs get no hub tabs.
 
-## Reader path
+## Copy rules (hubs)
 
-1. Overview status + family board  
-2. Optional: Progress (time-series), Keepers (why survivors survived), Investor (plain $1,000 digest), or Leaderboard (ranked sleeves)  
-3. Optional: a single brief for tables  
-
-Hub pages use a five-tab nav (Overview / Progress / Keepers / Investor / Leaderboard). Wrap to two rows on a phone (~390px). Briefs get a “← Lab overview” link only — no hub tabs on briefs.
+- Shorten aggressively. Clarity > completeness. No jargon walls.
+- **Do not** quote invalidated pre–look-ahead Donchian/SMA KEEP figures on hub pages (no $8.8M / $81.4M / $3.41M / SMA $124k, and no “ignore the million stuff because it was wrong” prose). If a number is wrong, omit it. Individual old briefs in `docs/briefs/` may keep historical pages.
+- Privacy: paper **$1,000** only. No holdings, `RISK_PROFILE`, Revolut, or real portfolio $.
 
 ## Dates (required)
 
-**Site last-updated** (Overview, Progress, Keepers, Investor, Leaderboard kickers) must be **second precision**, like `2026-09-09 13:54:16 CEST` (Europe/Paris) — **not date-only**. Source of truth: the latest git commit that touched `docs/briefs/` (CI rebuild time is the fallback). CI writes this via `<!-- gallery:updated:start -->` … `end`.
+**Site last-updated** (Investor home, Leaderboard, Experiments kickers) must be **second precision**, like `2026-09-09 13:54:16 CEST` (Europe/Paris) — **not date-only**. Source of truth: the latest git commit that touched `docs/briefs/` (CI rebuild time is the fallback). CI writes this via `<!-- gallery:updated:start -->` … `end`.
 
-Every **Progress node** and every **Overview brief card** must show the experiment date in full, like `6 Sep 2026` — not `Sep 6`. Include time-of-day **only** if that clock is already written in the brief. Do not invent hours for individual old experiment nodes.
+Every **Experiments card** must show the experiment date in full, like `6 Sep 2026` — not `Sep 6`. Include time-of-day **only** if that clock is already written in the brief. Do not invent hours for individual old experiment nodes.
 
 CI uses the same card format (`scripts/rebuild_gallery.py` → `public_date_label`). Filename date (`2026-09-06-…`) is the fallback when the brief body has no date.
 
-## Progress is the time-series surface
+## Truth rails (post harness revalidation)
 
-`progress.html` is where a non-trader watches **progress over time**. Each hand-written (or auto-appended) node shows, in this order:
+Verify from `docs/briefs/2026-09-09-harness-revalidation.html` — do not invent:
 
-1. Date  
-2. Step label (`1 · Screen`, `12 · Truth serum`, …)  
-3. Verdict chip  
-4. Title  
-5. Learned blurb  
-6. Compact **paper $1,000 line** when the brief has a number (end equity and/or vs hold). If there is no single $ figure (year-restart stress, paper-live Day 0), say so plainly — e.g. “$1,000 books open — no P&L yet” or “No single $1,000 path — each year restarts.”
-
-Append new nodes. Do not reorder history. **Do not delete** paper-live or old KEEP nodes when a later brief supersedes them — append/clarify (“started under old KEEP; revalidation supersedes those paper dollars”).
-
-## Champion strip (post-revalidation)
-
-The **Champion so far** strip on Progress (and the slim copy on Overview) is the **public-safe story**, not a dump of every brief. Paper $1,000 only.
-
-**Current public-safe truth** (from `docs/briefs/2026-09-09-harness-revalidation.html` — verify, do not invent):
-
-- Drop prior Donchian 10/5 KEEPs (BTC/ALGO). Demote old million-dollar figures ($8.8M / $81.4M / SMA $124k etc.) as **look-ahead artefacts**.
 - **BTC bar = buy&hold** (~$19,879 from $1,000 on the revalidation full sample; deepest dip ~−76%).
-- **Only active KEEP = Donchian 20/10 on ALGO** (~$10,663 vs wrecked ALGO hold ~$79).
+- **Only active KEEP = Donchian 20/10 on ALGO** (~$10,663 vs ALGO hold ~$79).
 - **ETH Donchian 10/5 = TWEAK** (still beats hold full-sample ~$31.8k vs ~$17.7k, but walk-forward fails — not KEEP).
-- SMA 5/20 on BTC/ETH: drop vs hold on the honest engine.
-- Paper-live books that started on old KEEP configs: history nodes; revalidation supersedes those paper dollars.
+- Paper-live books that started on old KEEP configs: history; revalidation supersedes those paper dollars.
 
-The strip may still show the *handoff* (SMA KEEP → sticky DROP → hold-protect PARK → Donchian 10/5 KEEP → paper-live → **9 Sep revalidation**) so a visitor sees how the story changed. The **now** line must not sell the invalidated Donchian 10/5 KEEP or Fast SMA as the Bitcoin bar.
+## Leaderboard plot
 
-Update the strip when a KEEP, DROP, or PARK actually changes. Paper-live is a forward clock, not a new KEEP.
+Build from **post-revalidation / honest** paper end equities you can verify in published briefs (especially the revalidation brief). Each point: experiment date + ending $ from $1,000 for that comparable path. Separate BTC / ALGO / ETH series (or filter chips). Include buy&hold reference points where the brief has them. If a brief has no comparable full-sample end $, **skip it** rather than inventing. Do not mix incompatible windows on one series.
 
-Do **not** publish `RISK_PROFILE`, holdings, Revolut, or raw `experiments/results.tsv` on hub pages. Do not invent missing briefs for private-lab run folders.
+Prefer lightweight inline SVG or tiny vanilla JS (no bundler). A CDN chart lib is OK only with a self-contained fallback. Phone-first ~390px.
 
 ## Verdict words (use these, not synonyms)
 
@@ -74,13 +57,10 @@ Do **not** publish `RISK_PROFILE`, holdings, Revolut, or raw `experiments/result
 
 When a new brief lands, update:
 
-1. Overview family board + “Right now” paragraph + verdict counts *(hand-written — the story, not the card list)*  
-2. Champion strip if the paper leader changed  
-3. Progress timeline (append a node; do not reorder history)  
-4. Keepers if a champion or reference actually changed  
-5. Investor digest if the $1,000 vs hold story changed  
-6. Leaderboard ranks / research-drops if sleeve scores or verdicts changed  
-7. The compact brief list on `index.html` and the last-updated stamp — **this step is CI**
+1. Investor home if the $1,000 vs hold story changed *(hand-written)*
+2. Leaderboard ranks / plot points if sleeve scores or verdicts changed *(hand-written)*
+3. Experiments current vs superseded placement if a KEEP/TWEAK/DROP actually moved
+4. The Experiments card lists and the last-updated stamp — **this step is CI**
 
 ## CI rebuild
 
@@ -88,21 +68,20 @@ When a new brief lands, update:
 
 **Preserve these markers** (the script fails if they are missing):
 
-- `<!-- gallery:briefs:start -->` … `<!-- gallery:briefs:end -->` on Overview  
-- `<!-- gallery:updated:start -->` … `<!-- gallery:updated:end -->` on Overview, Progress, Keepers, Investor, and Leaderboard (second-precision stamp)  
-- `<!-- gallery:progress-auto:start -->` … `<!-- gallery:progress-auto:end -->` on Progress  
-- `<!-- gallery:keepers-auto:start -->` … `<!-- gallery:keepers-auto:end -->` on Keepers  
-- `<!-- gallery:leaderboard-auto:start -->` … `<!-- gallery:leaderboard-auto:end -->` on Leaderboard (newer research drops)  
+- `<!-- gallery:updated:start -->` … `<!-- gallery:updated:end -->` on Investor (`index.html`), Leaderboard, and Experiments (second-precision stamp)
+- `<!-- gallery:briefs:start -->` … `<!-- gallery:briefs:end -->` on Experiments (**current** cards)
+- `<!-- gallery:superseded:start -->` … `<!-- gallery:superseded:end -->` on Experiments (collapsed archive)
+- `<!-- gallery:leaderboard-auto:start -->` … `<!-- gallery:leaderboard-auto:end -->` on Leaderboard (newer research drops after the revalidation day)
 
 Do not delete them even when a region is empty.
 
-- **Scans** `docs/briefs/*.html` (title, date, KEEP / TWEAK / DROP / PARKED from hero chips or takeaway chips). Optional override on a brief: `<!-- gallery-card title="…" chip="Keep" class="keep" teaser="$6,196 vs hold $4,619" -->`. The `teaser` is the one-line paper $ (or Day-0) line on Overview cards and auto Progress nodes. Never put an invented dollar figure in `teaser`.  
-- **Rewrites** the marked Overview card list and every `gallery:updated` kicker. Stamp format: `Updated 2026-09-09 13:54:16 CEST · hypothetical $1,000` from the latest `docs/briefs/` commit (override with `GALLERY_UPDATED_AT` or `SOURCE_DATE_EPOCH`). Cards show **full date** + chip + title + teaser. Existing card order is kept; new files are appended.  
-- **Does not** overwrite the family board, “Right now” copy, champion strip, investor prose, or leaderboard rank tables. Those stay editorial.  
-- **Progress / Keepers / Leaderboard auto:** hand-written nodes stay. Briefs not already linked on the hand-written Progress timeline are appended inside the auto markers (keepers only for headline Keep / Parked). Auto Progress nodes also get date + paper line.  
+- **Scans** `docs/briefs/*.html` (title, date, KEEP / TWEAK / DROP / PARKED from hero chips or takeaway chips). Optional override on a brief: `<!-- gallery-card title="…" chip="Keep" class="keep" teaser="$10,663 vs hold $79" lane="current" -->`. `lane="superseded"` demotes a new brief. The `teaser` is the one-line paper $ (or Day-0) line on Experiment cards. Never put an invented dollar figure in `teaser`.
+- **Rewrites** the marked Experiments card lists and every `gallery:updated` kicker. Stamp format: `Updated 2026-09-09 13:54:16 CEST · hypothetical $1,000` from the latest `docs/briefs/` commit (override with `GALLERY_UPDATED_AT` or `SOURCE_DATE_EPOCH`). Cards show **full date** + chip + title + teaser. Existing card order is kept; new files are appended (current vs superseded: date before 9 Sep 2026, or paper-live, → superseded unless `lane` overrides). Revalidation is pinned first in Current.
+- **Does not** overwrite Investor prose, leaderboard rank tables, or plot point data. Those stay editorial.
+- **Leaderboard auto:** hand-written “latest beat” stays. Only briefs **after** 9 Sep 2026 that are not already linked get appended.
 - **Scrub:** fails (or `--strip` redacts) if published hub pages or `briefs/*.{html,md}` contain `RISK_PROFILE`, `0.15 BTC`, Revolut holdings/balances, personal totals like `~$14k` / `$14k` / `~$14,000`, or “core wealth sleeve / accumulate bias”. Hypothetical paper `$1,000` / `$1000` is allowed, as is paper shorthand with a decimal (`~$10.2k`). `UX.md` / `README.md` are not scanned (they name the forbidden words).
 
-Do **not** invent missing briefs for raw `experiments/runs/*` batches — those are already summarized in the published briefs. If a published brief is missing from Progress/Overview, wire it in.
+Do **not** invent missing briefs for raw `experiments/runs/*` batches — those are already summarized in the published briefs.
 
 Local:
 
@@ -114,7 +93,7 @@ python3 scripts/rebuild_gallery.py --strip  # redact leaks, then rebuild
 
 On push to `main` that touches `docs/briefs/**` or `scripts/**`, `.github/workflows/rebuild-pages.yml` runs the script with `--strip`. If `git diff` is non-empty, `github-actions[bot]` commits and GitHub Pages is asked to rebuild `/docs`. The same workflow runs `--check` on pull requests that touch those paths. `workflow_dispatch` rebuilds like a main push.
 
-Still update the family board / keepers prose / champion strip / investor digest / leaderboard ranks when the *research story* changes. CI only guarantees every brief has a dated card, the last-updated stamp has seconds, and the site is not leaking personal capital.
+Still update Investor copy / leaderboard ranks and plot when the *research story* changes. CI only guarantees every brief has a dated card, the last-updated stamp has seconds, and the site is not leaking personal capital.
 
 ## Privacy (hard)
 
@@ -124,7 +103,7 @@ Publish **only**:
 - Paper findings vs **buy & hold**  
 - Hypothetical **paper $1,000** (already the brief convention)  
 - Keep / Tweak / Drop / Parked  
-- Progress over time  
+- Progress over time (on Leaderboard plot + Experiments cards)
 
 Never publish:
 
@@ -142,21 +121,20 @@ Source markdown under `briefs/*.md` is also public (same `/docs` tree). Scrub it
 - Self-contained HTML (inline CSS/JS). Phone-first, `rem` type scale, max width ~42rem.  
 - Teal / slate dashboard. Fonts: **DM Sans** + **JetBrains Mono**. Not purple, not Inter.  
 - Light + dark: `prefers-color-scheme` plus `data-theme` + `localStorage` key `tl-theme`.  
-- Target ~390px width. Tap targets ≥2.75rem for the theme control; hub tabs may wrap (three then two).  
-- Overview teasers and Progress paper lines must remain readable at ~390px (wrap; do not hide them).  
+- Target ~390px width. Tap targets ≥2.75rem for the theme control; three hub tabs on one row.  
+- Experiment teasers must remain readable at ~390px (wrap; do not hide them).  
 - Copy tokens from `index.html` when adding a hub page. Do not introduce a bundler.
 
 ## Adding a brief
 
 1. Drop the HTML (and optional `.md`) in `docs/briefs/`.  
 2. Keep the existing teal/slate brief look.  
-3. Add the overview back-link (`../index.html`).  
-4. Prefer a `gallery-card` comment with `teaser` pulled from the brief’s own numbers.  
-5. CI rebuilds Overview cards, the second-precision stamp, and appends missing Progress/Keepers/Leaderboard links. Still hand-update the family board / “Right now” / champion strip / keepers / investor / leaderboard ranks when the story changes.  
-6. Re-read for privacy before merge (or rely on the scrub; do not put holdings in to “see if CI strips them”).
+3. Prefer a `gallery-card` comment with `teaser` pulled from the brief’s own numbers. Add `lane="superseded"` if it should not lead.  
+4. CI rebuilds Experiments cards and the second-precision stamp, and appends missing post-revalidation Leaderboard drops. Still hand-update Investor / leaderboard ranks / plot when the story changes.  
+5. Re-read for privacy before merge (or rely on the scrub; do not put holdings in to “see if CI strips them”).
 
 Private research code lives in `offmann/trading-lab`. Patterns only. Never copy holdings, risk profile, or capital targets into this repo.
 
 ## What “done” looks like for a visitor
 
-Thirty seconds on Overview: they can say what is ahead, what is dead, **when the site last published (to the second)**, and that it is paper $1,000. A minute on Progress: they can follow the champion handoff through the 9 Sep truth serum. A minute on Investor: they can answer “if I put $1,000 this way, ~$X vs hold ~$Y.” Leaderboard shows ranked sleeves and later research drops — then they can ignore the tables.
+Thirty seconds on Investor: two big paper numbers, **when the site last published (to the second)**, and “if I put $1,000 this way, ~$X vs hold ~$Y.” Leaderboard: ranked sleeves plus the $1,000 scatter. Experiments: current cards first, superseded collapsed — then they can ignore the tables.

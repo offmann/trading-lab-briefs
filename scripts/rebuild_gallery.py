@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Rebuild the public briefs gallery and scrub private-capital leaks.
 
-Scans docs/briefs/*.html, refreshes the Overview card list on docs/index.html,
-stamps last-updated to the second (Europe/Paris) on Overview / Progress /
-Keepers / Investor / Leaderboard, and appends data-driven nodes on progress.html,
-keepers.html, and leaderboard.html when a brief is not already linked.
-Editorial IA (family board, “Right now”, investor digest, rank tables) is
-left alone.
+Scans docs/briefs/*.html, refreshes the Experiments card lists, stamps
+last-updated to the second (Europe/Paris) on Investor (index.html),
+Leaderboard, and Experiments, and appends newer research drops on
+leaderboard.html when a brief is not already linked.
+
+Editorial IA (Investor copy, rank tables, plot data) is left alone.
 
 Privacy: paper $1,000 / $1000 is allowed. Holdings, RISK_PROFILE, “0.15 BTC”,
 and personal totals like ~$14k fail the scan (or are stripped with --strip).
@@ -34,21 +34,20 @@ ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
 BRIEFS_DIR = DOCS / "briefs"
 INDEX_HTML = DOCS / "index.html"
-PROGRESS_HTML = DOCS / "progress.html"
-KEEPERS_HTML = DOCS / "keepers.html"
-INVESTOR_HTML = DOCS / "investor.html"
+EXPERIMENTS_HTML = DOCS / "experiments.html"
 LEADERBOARD_HTML = DOCS / "leaderboard.html"
 
 PARIS_TZ = ZoneInfo("Europe/Paris")
+REVALIDATION_DAY = dt.date(2026, 9, 9)
+PIN_CURRENT = ("2026-09-09-harness-revalidation.html",)
+PAPER_LIVE_RE = re.compile(r"paper[\s-]*live", re.I)
 
 BRIEFS_START = "<!-- gallery:briefs:start -->"
 BRIEFS_END = "<!-- gallery:briefs:end -->"
+SUPERSEDED_START = "<!-- gallery:superseded:start -->"
+SUPERSEDED_END = "<!-- gallery:superseded:end -->"
 UPDATED_START = "<!-- gallery:updated:start -->"
 UPDATED_END = "<!-- gallery:updated:end -->"
-PROGRESS_START = "<!-- gallery:progress-auto:start -->"
-PROGRESS_END = "<!-- gallery:progress-auto:end -->"
-KEEPERS_START = "<!-- gallery:keepers-auto:start -->"
-KEEPERS_END = "<!-- gallery:keepers-auto:end -->"
 LEADERBOARD_START = "<!-- gallery:leaderboard-auto:start -->"
 LEADERBOARD_END = "<!-- gallery:leaderboard-auto:end -->"
 
@@ -141,10 +140,11 @@ SCRUB_GLOBS = (
     "briefs/*.html",
     "briefs/*.md",
     "index.html",
+    "experiments.html",
+    "leaderboard.html",
+    "investor.html",
     "progress.html",
     "keepers.html",
-    "investor.html",
-    "leaderboard.html",
 )
 SCRUB_SKIP_NAMES = {"UX.md", "README.md"}
 
@@ -277,7 +277,7 @@ def date_from_text(text: str) -> dt.date | None:
 
 
 def public_date_label(day: dt.date) -> str:
-    """Full date on Overview cards and Progress nodes, e.g. '6 Sep 2026'."""
+    """Full date on Experiment cards, e.g. '6 Sep 2026'."""
     return f"{day.day} {day.strftime('%b')} {day.year}"
 
 
@@ -387,7 +387,7 @@ def pick_title(html_src: str, filename: str) -> str:
 
 
 def pick_teaser(html_src: str) -> str:
-    """One-line paper $1,000 outcome for Overview cards and Progress nodes.
+    """One-line paper $1,000 outcome for Experiment cards.
 
     Never invent a dollar figure. Prefer an explicit gallery-card teaser;
     otherwise only a plain Day-0 fallback when the brief is clearly paper-live.
@@ -493,22 +493,85 @@ def scan_briefs() -> list[Brief]:
     return briefs
 
 
-def existing_brief_order(index_html: str) -> list[str]:
-    return re.findall(r"""href=["']briefs/([^"']+\.html)["']""", index_html)
+def existing_brief_order(html: str) -> list[str]:
+    return re.findall(r"""href=["']briefs/([^"']+\.html)["']""", html)
 
 
-def order_briefs(briefs: list[Brief], index_html: str) -> list[Brief]:
+def existing_brief_order_in_region(source: str, start: str, end: str) -> list[str]:
+    found = re.search(re.escape(start) + r".*?" + re.escape(end), source, re.S)
+    if not found:
+        return []
+    return existing_brief_order(found.group(0))
+
+
+def lane_override(brief: Brief) -> str | None:
+    try:
+        src = brief.path.read_text(encoding="utf-8")
+    except OSError:
+        return None
+    override = GALLERY_CARD_RE.search(src)
+    if not override:
+        return None
+    lane = parse_attrs(override.group(1)).get("lane", "").strip().lower()
+    if lane in {"current", "superseded"}:
+        return lane
+    return None
+
+
+def brief_is_superseded(brief: Brief) -> bool:
+    """Pre-revalidation write-ups and paper-live path steps are demoted.
+
+    Override with gallery-card lane="current"|"superseded".
+    """
+    lane = lane_override(brief)
+    if lane == "superseded":
+        return True
+    if lane == "current":
+        return False
+    blob = " ".join((brief.filename, brief.title, brief.chip_label))
+    if PAPER_LIVE_RE.search(blob):
+        return True
+    return brief.date < REVALIDATION_DAY
+
+
+def pin_filenames(briefs: list[Brief], pins: tuple[str, ...]) -> list[Brief]:
     by_name = {b.filename: b for b in briefs}
-    ordered: list[Brief] = []
+    out: list[Brief] = []
     seen: set[str] = set()
-    for name in existing_brief_order(index_html):
+    for name in pins:
         brief = by_name.get(name)
         if brief and name not in seen:
-            ordered.append(brief)
+            out.append(brief)
+            seen.add(name)
+    out.extend(b for b in briefs if b.filename not in seen)
+    return out
+
+
+def split_current_superseded(briefs: list[Brief], experiments_html: str) -> tuple[list[Brief], list[Brief]]:
+    by_name = {b.filename: b for b in briefs}
+    current: list[Brief] = []
+    superseded: list[Brief] = []
+    seen: set[str] = set()
+    for name in existing_brief_order_in_region(experiments_html, BRIEFS_START, BRIEFS_END):
+        brief = by_name.get(name)
+        if brief and name not in seen:
+            current.append(brief)
+            seen.add(name)
+    for name in existing_brief_order_in_region(
+        experiments_html, SUPERSEDED_START, SUPERSEDED_END
+    ):
+        brief = by_name.get(name)
+        if brief and name not in seen:
+            superseded.append(brief)
             seen.add(name)
     extras = [b for b in briefs if b.filename not in seen]
     extras.sort(key=lambda b: (b.date, b.filename))
-    return ordered + extras
+    for brief in extras:
+        if brief_is_superseded(brief):
+            superseded.append(brief)
+        else:
+            current.append(brief)
+    return pin_filenames(current, PIN_CURRENT), superseded
 
 
 def render_brief_cards(briefs: list[Brief]) -> str:
@@ -565,102 +628,10 @@ def hrefs_outside_region(source: str, start: str, end: str) -> set[str]:
     return set(re.findall(r"""href=["'](briefs/[^"']+\.html)["']""", clipped))
 
 
-def count_nodes_outside_region(source: str, start: str, end: str) -> int:
-    if start in source and end in source:
-        pattern = re.compile(re.escape(start) + r".*?" + re.escape(end), re.S)
-        clipped = pattern.sub("", source)
-    else:
-        clipped = source
-    return len(re.findall(r"<li\s+class=\"node", clipped))
-
-
 def paper_line(brief: Brief) -> str:
     if brief.teaser:
         return brief.teaser
     return "No single $1,000 figure in this brief — open for tables."
-
-
-def render_progress_nodes(briefs: list[Brief], start_step: int) -> str:
-    if not briefs:
-        return ""
-    chunks: list[str] = []
-    for offset, brief in enumerate(briefs, start=1):
-        step = start_step + offset
-        node_class = "node"
-        if brief.chip_kind in {"drop", "park"}:
-            node_class = f"node {brief.chip_kind}"
-        chunks.append(
-            "      <li class=\""
-            + node_class
-            + "\">\n"
-            "        <div class=\"dot\" aria-hidden=\"true\"></div>\n"
-            "        <article class=\"card\">\n"
-            "          <div class=\"meta\">\n"
-            "            <span class=\"date\">"
-            + esc(card_date_label(brief.date))
-            + "</span>\n"
-            "            <span class=\"step\">"
-            + esc(f"{step} · Brief")
-            + "</span>\n"
-            "            <span class=\"chip "
-            + esc(brief.chip_kind)
-            + "\">"
-            + esc(brief.chip_label)
-            + "</span>\n"
-            "          </div>\n"
-            "          <h2>"
-            + esc(brief.title)
-            + "</h2>\n"
-            "          <p class=\"learned\"><strong>Learned:</strong> "
-            + esc(brief.summary)
-            + "</p>\n"
-            "          <p class=\"paper\">"
-            + esc(paper_line(brief))
-            + "</p>\n"
-            "          <a class=\"open\" href=\""
-            + esc(brief.href)
-            + "\">Open brief →</a>\n"
-            "        </article>\n"
-            "      </li>"
-        )
-    return "\n".join(chunks)
-
-
-def render_keepers_section(briefs: list[Brief]) -> str:
-    if not briefs:
-        return ""
-    items: list[str] = []
-    for brief in briefs:
-        items.append(
-            "      <article class=\"card\">\n"
-            "        <div class=\"top\">\n"
-            "          <span class=\"date\">"
-            + esc(card_date_label(brief.date))
-            + "</span>\n"
-            "          <span class=\"chip "
-            + esc(brief.chip_kind)
-            + "\">"
-            + esc(brief.chip_label)
-            + "</span>\n"
-            "        </div>\n"
-            "        <h2>"
-            + esc(brief.title)
-            + "</h2>\n"
-            "        <p>"
-            + esc(brief.summary)
-            + "</p>\n"
-            "        <a class=\"open\" href=\""
-            + esc(brief.href)
-            + "\">Open brief →</a>\n"
-            "      </article>"
-        )
-    return (
-        "    <section aria-labelledby=\"auto-keepers-title\">\n"
-        "      <h2 id=\"auto-keepers-title\" style=\"margin:1.2rem 0 .65rem;font-size:1.125rem\">"
-        "From newer briefs</h2>\n"
-        + "\n".join(items)
-        + "\n    </section>"
-    )
 
 
 def render_leaderboard_drops(briefs: list[Brief]) -> str:
@@ -696,15 +667,12 @@ def render_leaderboard_drops(briefs: list[Brief]) -> str:
 
 
 def ensure_markers() -> None:
-    """No-op guard used by tests; markers must already be in the hub pages."""
+    """Markers must already be in the hub pages."""
     for path, start, end in (
-        (INDEX_HTML, BRIEFS_START, BRIEFS_END),
         (INDEX_HTML, UPDATED_START, UPDATED_END),
-        (PROGRESS_HTML, UPDATED_START, UPDATED_END),
-        (PROGRESS_HTML, PROGRESS_START, PROGRESS_END),
-        (KEEPERS_HTML, UPDATED_START, UPDATED_END),
-        (KEEPERS_HTML, KEEPERS_START, KEEPERS_END),
-        (INVESTOR_HTML, UPDATED_START, UPDATED_END),
+        (EXPERIMENTS_HTML, UPDATED_START, UPDATED_END),
+        (EXPERIMENTS_HTML, BRIEFS_START, BRIEFS_END),
+        (EXPERIMENTS_HTML, SUPERSEDED_START, SUPERSEDED_END),
         (LEADERBOARD_HTML, UPDATED_START, UPDATED_END),
         (LEADERBOARD_HTML, LEADERBOARD_START, LEADERBOARD_END),
     ):
@@ -716,76 +684,43 @@ def ensure_markers() -> None:
 def update_hub_pages(briefs: list[Brief]) -> list[Path]:
     changed: list[Path] = []
     published = briefs_publish_datetime()
+
     index_src = INDEX_HTML.read_text(encoding="utf-8")
-    ordered = order_briefs(briefs, index_src)
     index_new = stamp_updated_region(index_src, published, INDEX_HTML)
-    index_new = replace_region(
-        index_new,
-        BRIEFS_START,
-        BRIEFS_END,
-        render_brief_cards(ordered),
-        INDEX_HTML,
-    )
     if index_new != index_src:
         INDEX_HTML.write_text(index_new, encoding="utf-8")
         changed.append(INDEX_HTML)
 
-    progress_src = PROGRESS_HTML.read_text(encoding="utf-8")
-    progress_new = stamp_updated_region(progress_src, published, PROGRESS_HTML)
-    known = hrefs_outside_region(progress_new, PROGRESS_START, PROGRESS_END)
-    extras = [b for b in ordered if b.href not in known]
-    start_step = count_nodes_outside_region(progress_new, PROGRESS_START, PROGRESS_END)
-    progress_new = replace_region(
-        progress_new,
-        PROGRESS_START,
-        PROGRESS_END,
-        render_progress_nodes(extras, start_step),
-        PROGRESS_HTML,
+    experiments_src = EXPERIMENTS_HTML.read_text(encoding="utf-8")
+    experiments_new = stamp_updated_region(experiments_src, published, EXPERIMENTS_HTML)
+    current, superseded = split_current_superseded(briefs, experiments_new)
+    experiments_new = replace_region(
+        experiments_new,
+        BRIEFS_START,
+        BRIEFS_END,
+        render_brief_cards(current),
+        EXPERIMENTS_HTML,
     )
-    if progress_new != progress_src:
-        PROGRESS_HTML.write_text(progress_new, encoding="utf-8")
-        changed.append(PROGRESS_HTML)
-
-    keepers_src = KEEPERS_HTML.read_text(encoding="utf-8")
-    keepers_new = stamp_updated_region(keepers_src, published, KEEPERS_HTML)
-    known_k = hrefs_outside_region(keepers_new, KEEPERS_START, KEEPERS_END)
-    # Skip briefs already told on the hand-written timeline — those ideas
-    # already have editorial keeper cards. Only new files get a stub.
-    known_story = hrefs_outside_region(progress_new, PROGRESS_START, PROGRESS_END)
-    keeper_extras = [
-        b
-        for b in ordered
-        if b.chip_kind in {"keep", "park"}
-        and b.href not in known_k
-        and b.href not in known_story
-    ]
-    keepers_new = replace_region(
-        keepers_new,
-        KEEPERS_START,
-        KEEPERS_END,
-        render_keepers_section(keeper_extras),
-        KEEPERS_HTML,
+    experiments_new = replace_region(
+        experiments_new,
+        SUPERSEDED_START,
+        SUPERSEDED_END,
+        render_brief_cards(superseded),
+        EXPERIMENTS_HTML,
     )
-    if keepers_new != keepers_src:
-        KEEPERS_HTML.write_text(keepers_new, encoding="utf-8")
-        changed.append(KEEPERS_HTML)
-
-    investor_src = INVESTOR_HTML.read_text(encoding="utf-8")
-    investor_new = stamp_updated_region(investor_src, published, INVESTOR_HTML)
-    if investor_new != investor_src:
-        INVESTOR_HTML.write_text(investor_new, encoding="utf-8")
-        changed.append(INVESTOR_HTML)
+    if experiments_new != experiments_src:
+        EXPERIMENTS_HTML.write_text(experiments_new, encoding="utf-8")
+        changed.append(EXPERIMENTS_HTML)
 
     board_src = LEADERBOARD_HTML.read_text(encoding="utf-8")
     board_new = stamp_updated_region(board_src, published, LEADERBOARD_HTML)
     known_board = hrefs_outside_region(board_new, LEADERBOARD_START, LEADERBOARD_END)
-    # Hand-written scoreboard history already links the revalidation story.
-    # Only append briefs that are not already on Progress (hand-written) or
-    # this page — chronological research drops after the truth-serum beat.
+    # Hand-written "latest beat" already links the revalidation. Only append
+    # later briefs so the auto region does not dump the superseded archive.
     board_extras = [
         b
-        for b in ordered
-        if b.href not in known_board and b.href not in known_story
+        for b in sorted(briefs, key=lambda x: (x.date, x.filename))
+        if b.href not in known_board and b.date > REVALIDATION_DAY
     ]
     board_new = replace_region(
         board_new,
@@ -935,6 +870,40 @@ def self_test() -> None:
         "books are open. Day 0 does not pretend we traded.</p>"
     )
     assert pick_teaser(live_src) == "$1,000 books open — no P&L yet"
+
+    old = Brief(
+        filename="2026-09-06-first-grids.html",
+        path=Path("missing.html"),
+        date=dt.date(2026, 9, 6),
+        title="First screen",
+        chip_kind="keep",
+        chip_label="Keep",
+        summary="",
+        teaser="",
+    )
+    live = Brief(
+        filename="2026-09-09-paper-live-btc-donchian.html",
+        path=Path("missing.html"),
+        date=dt.date(2026, 9, 9),
+        title="Paper-live",
+        chip_kind="tweak",
+        chip_label="Tweak — paper-live path step",
+        summary="",
+        teaser="",
+    )
+    reval = Brief(
+        filename="2026-09-09-harness-revalidation.html",
+        path=Path("missing.html"),
+        date=dt.date(2026, 9, 9),
+        title="Harness revalidation",
+        chip_kind="drop",
+        chip_label="Drop prior Donchian 10/5 KEEPs",
+        summary="",
+        teaser="",
+    )
+    assert brief_is_superseded(old) is True
+    assert brief_is_superseded(live) is True
+    assert brief_is_superseded(reval) is False
     print("self-test ok")
 
 
