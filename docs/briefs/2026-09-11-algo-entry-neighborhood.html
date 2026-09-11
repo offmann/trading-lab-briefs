@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ALGO Donchian 20/12 confirmed · Sep 11, 2026</title>
+<meta name="description" content="Paper-only: tighter ALGO Donchian neighborhood around 20/12. No cell beat it. KEEP stands. Paper BUY filled. Not a real order.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Cpath d='M8 22 L14 12 L18 18 L24 8' fill='none' stroke='%2399f6e4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='8' r='2' fill='%23fbbf24'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f1f5f9; --bg-elev: #ffffff; --bg-soft: #e2e8f0;
+    --ink: #0f172a; --ink-muted: #475569; --ink-faint: #64748b; --line: #cbd5e1;
+    --teal: #0f766e; --teal-soft: #ccfbf1; --teal-ink: #115e59;
+    --amber: #b45309; --amber-soft: #fef3c7;
+    --green: #047857; --green-soft: #d1fae5;
+    --red: #b91c1c; --red-soft: #fee2e2;
+    --chip-keep: #047857; --chip-keep-bg: #d1fae5;
+    --chip-tweak: #b45309; --chip-tweak-bg: #fef3c7;
+    --chip-drop: #b91c1c; --chip-drop-bg: #fee2e2;
+    --shadow: 0 1px 2px rgba(15,23,42,.06), 0 8px 24px rgba(15,23,42,.06);
+    --radius: 14px; --radius-sm: 10px;
+    --font: "DM Sans", system-ui, -apple-system, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --max: 40rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b1220; --bg-elev: #111827; --bg-soft: #1e293b;
+      --ink: #e2e8f0; --ink-muted: #94a3b8; --ink-faint: #64748b; --line: #334155;
+      --teal: #2dd4bf; --teal-soft: #134e4a; --teal-ink: #99f6e4;
+      --amber: #fbbf24; --amber-soft: #422006;
+      --green: #34d399; --green-soft: #064e3b;
+      --red: #f87171; --red-soft: #450a0a;
+      --chip-keep: #34d399; --chip-keep-bg: #064e3b;
+      --chip-tweak: #fbbf24; --chip-tweak-bg: #422006;
+      --chip-drop: #f87171; --chip-drop-bg: #450a0a;
+      --shadow: 0 1px 2px rgba(0,0,0,.35), 0 12px 28px rgba(0,0,0,.35);
+    }
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; font-family: var(--font); font-size: 1rem; line-height: 1.55;
+    color: var(--ink);
+    background:
+      radial-gradient(1200px 600px at 10% -10%, color-mix(in srgb, var(--teal) 18%, transparent), transparent 55%),
+      radial-gradient(900px 500px at 100% 0%, color-mix(in srgb, var(--amber) 10%, transparent), transparent 50%),
+      var(--bg);
+    min-height: 100dvh;
+  }
+  .wrap { width: min(100% - 1.5rem, var(--max)); margin-inline: auto; padding: 1.25rem 0 2.5rem; }
+  header.top { display: flex; align-items: center; gap: .75rem; margin-bottom: 1.25rem; }
+  .logo {
+    width: 2.5rem; height: 2.5rem; border-radius: 10px; flex-shrink: 0;
+    background: linear-gradient(145deg, #0f766e, #134e4a);
+    display: grid; place-items: center; box-shadow: var(--shadow);
+  }
+  .logo svg { width: 1.35rem; height: 1.35rem; }
+  .brand { font-weight: 700; font-size: .95rem; letter-spacing: -.01em; }
+  .sub { font-size: .8rem; color: var(--ink-faint); }
+  .card {
+    background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 1.1rem 1.15rem; margin-bottom: 1rem;
+  }
+  h1 { font-size: 1.35rem; line-height: 1.25; margin: 0 0 .5rem; letter-spacing: -.02em; }
+  h2 { font-size: 1.05rem; margin: 0 0 .65rem; letter-spacing: -.015em; }
+  p { margin: 0 0 .75rem; color: var(--ink-muted); }
+  p:last-child { margin-bottom: 0; }
+  .lede { color: var(--ink); font-size: 1.02rem; }
+  .chip {
+    display: inline-flex; align-items: center; gap: .35rem;
+    font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+    padding: .28rem .55rem; border-radius: 999px;
+  }
+  .chip.tweak { color: var(--chip-tweak); background: var(--chip-tweak-bg); }
+  .chip.keep { color: var(--chip-keep); background: var(--chip-keep-bg); }
+  .chip.drop { color: var(--chip-drop); background: var(--chip-drop-bg); }
+  .chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .55rem; }
+  .meta { display: flex; flex-wrap: wrap; gap: .4rem; margin: .85rem 0 0; }
+  .pill {
+    font-family: var(--mono); font-size: .7rem; color: var(--ink-muted);
+    background: var(--bg-soft); border-radius: 999px; padding: .25rem .55rem;
+  }
+  .statgrid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; margin-top: .85rem;
+  }
+  @media (min-width: 480px) { .statgrid { grid-template-columns: repeat(4, 1fr); } }
+  .stat {
+    background: var(--bg-soft); border-radius: var(--radius-sm); padding: .7rem .75rem;
+  }
+  .stat .k { font-size: .7rem; color: var(--ink-faint); text-transform: uppercase; letter-spacing: .04em; font-weight: 600; }
+  .stat .v { font-family: var(--mono); font-size: 1.05rem; font-weight: 600; margin-top: .2rem; color: var(--ink); }
+  .stat .v.good { color: var(--green); }
+  .stat .v.warn { color: var(--amber); }
+  .stat .v.bad { color: var(--red); }
+  .compare { display: grid; gap: .65rem; margin-top: .75rem; }
+  .row {
+    display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: .5rem;
+    background: var(--bg-soft); border-radius: var(--radius-sm); padding: .7rem .75rem;
+    font-size: .85rem;
+  }
+  .row .label { font-weight: 600; color: var(--ink); }
+  .row .mono { font-family: var(--mono); }
+  .verdict-row { display: flex; gap: .65rem; align-items: flex-start; margin: .65rem 0; }
+  .verdict-row .txt { color: var(--ink-muted); font-size: .92rem; }
+  .verdict-row .txt b { color: var(--ink); }
+  .next { border-color: color-mix(in srgb, var(--teal) 35%, var(--line)); }
+  .path { font-size: .85rem; color: var(--ink-muted); margin-top: .75rem; }
+  .path b { color: var(--teal-ink); }
+  ul.plain { margin: .4rem 0 0; padding-left: 1.1rem; color: var(--ink-muted); }
+  ul.plain li { margin: .25rem 0; }
+  code { font-family: var(--mono); font-size: .82em; }
+  footer { font-size: .75rem; color: var(--ink-faint); margin-top: 1.25rem; text-align: center; }
+  /* gallery:hub-jump */
+  nav.hub-jump {
+    display: flex; flex-wrap: wrap; align-items: center; gap: .15rem .5rem;
+    margin: 0 0 .85rem; font-size: .8rem; font-weight: 650;
+  }
+  nav.hub-jump a {
+    color: var(--teal-ink, #115e59); text-decoration: none;
+    min-height: 2.5rem; display: inline-flex; align-items: center;
+  }
+  nav.hub-jump a:focus-visible {
+    outline: 2px solid var(--teal, #0f766e); outline-offset: 2px;
+  }
+  nav.hub-jump .sep { color: var(--ink-faint, #64748b); font-weight: 500; }
+  /* gallery:hub-jump:end */
+  /* gallery:published */
+  p.published {
+    font-family: var(--mono, "JetBrains Mono", ui-monospace, monospace);
+    font-size: .72rem; color: var(--ink-faint, #64748b);
+    margin: 0 0 .85rem; line-height: 1.4;
+  }
+  /* gallery:published:end */
+</style>
+</head>
+<body>
+  <!-- gallery-published iso="2026-09-11T06:26:08+00:00" source="first-publish trading-lab@bea49068ce63eaed0056953f35f58c2d38465749" -->
+<div class="wrap">
+      <nav class="hub-jump" aria-label="Lab sections">
+      <a href="../index.html?v=20260909b">Back to Investor</a>
+      <span class="sep" aria-hidden="true">·</span>
+      <a href="../leaderboard.html?v=20260909b">Leaderboard</a>
+      <span class="sep" aria-hidden="true">·</span>
+      <a href="../experiments.html?v=20260909b">Experiments</a>
+    </nav>
+    <header class="top">
+    <div class="logo" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M4 17 L9 9 L13 14 L20 5" stroke="#99f6e4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="5" r="1.6" fill="#fbbf24"/></svg>
+    </div>
+    <div>
+      <div class="brand">Trading lab</div>
+      <div class="sub">Fri Sep 11, 2026 · paper only · ALGO KEEP check</div>
+    </div>
+  </header>
+    <p class="published">Published <!-- gallery:published:start -->2026-09-11 08:26:08 CEST<!-- gallery:published:end --></p>
+
+  <section class="card">
+    <div class="chips">
+      <span class="chip keep">Keep confirmed</span>
+      <span class="chip tweak">No upgrade</span>
+    </div>
+    <h1>ALGO 20/12 still wins the nearby settings</h1>
+    <p class="lede">
+      Yesterday’s paper KEEP was “buy a 20-day high, sell a 12-day low” on ALGO.
+      Today we tried nearby buy windows (18–22 days) and nearby sell windows (10–14 days).
+      <b>20/12 is still first.</b> Nothing next door made more money.
+    </p>
+    <div class="meta">
+      <span class="pill">$1,000 paper</span>
+      <span class="pill">2019 → 2026-09-09</span>
+      <span class="pill">15 bps costs</span>
+      <span class="pill">next-open fills</span>
+    </div>
+    <p class="path"><b>Path:</b> Screen ✓ · Stress ✓ · Paper-live marked · Real $ needs your OK</p>
+  </section>
+
+  <section class="card">
+    <h2>What $1,000 would have become</h2>
+    <div class="statgrid">
+      <div class="stat"><div class="k">KEEP 20/12</div><div class="v good">$18,662</div></div>
+      <div class="stat"><div class="k">Nearest 19/12</div><div class="v">$17,069</div></div>
+      <div class="stat"><div class="k">Just hold ALGO</div><div class="v bad">$79</div></div>
+      <div class="stat"><div class="k">Worst dip (KEEP)</div><div class="v warn">−65%</div></div>
+    </div>
+    <p style="margin-top:.85rem">All 25 nearby settings beat holding ALGO. The ridge peaks at exit=12. Dollars are a bit lower than yesterday’s $19.0k because ALGO’s latest daily close (Sep 9) was a down day — not because the rule changed.</p>
+  </section>
+
+  <section class="card">
+    <h2>Honesty checks</h2>
+    <div class="compare">
+      <div class="row">
+        <div class="label">Year by year</div>
+        <div class="mono">20/12 · 8/8 beat hold</div>
+        <div class="mono">19/12 · 8/8</div>
+      </div>
+      <div class="row">
+        <div class="label">Rolling forward</div>
+        <div class="mono">20/12 · 17/25 · +19.6%</div>
+        <div class="mono">19/12 · 17/25 · +19.3%</div>
+      </div>
+    </div>
+    <p style="margin-top:.85rem">19/12 is almost as honest, but it does not beat 20/12 on dollars or on average fold return. Rule for an upgrade: it has to win (or clearly match) both the history <em>and</em> the honesty tests. It didn’t. KEEP stays 20/12.</p>
+  </section>
+
+  <section class="card">
+    <h2>Paper book (not a real order)</h2>
+    <p>The ALGO 20/12 paper book filled its queued buy on the Sep 9 open at 0.1008811. It is now long. Marked value: <b>$983.22</b> vs $1,000 start (price slipped after the fill). Signal still says stay in. No next-open order pending.</p>
+    <p>Yahoo’s latest daily bar is still Sep 9 — Sep 10 has not printed yet. Demoted 10/5 trackers were marked too; they are not the KEEP.</p>
+  </section>
+
+  <section class="card">
+    <h2>Verdict</h2>
+    <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>donchian_breakout 20/12 on ALGO</b> — confirmed. Not a knife-edge cell.</div></div>
+    <div class="verdict-row"><span class="chip tweak">Tweak</span><div class="txt"><b>19/12</b> — closest neighbor. Same honesty, less money. Leave it.</div></div>
+    <div class="verdict-row"><span class="chip drop">Don't</span><div class="txt"><b>Change BTC.</b> Core sleeve stays buy&amp;hold unless a new winner is obvious. None today.</div></div>
+    <div class="verdict-row"><span class="chip drop">Don't</span><div class="txt"><b>Treat the paper fill as a live order.</b> You own every real trade.</div></div>
+  </section>
+
+  <section class="card next">
+    <h2>Next</h2>
+    <ul class="plain">
+      <li>Mark the ALGO 20/12 paper book when Sep 10 (and later) daily bars print.</li>
+      <li>No more ALGO knob-twiddling on this ridge unless a later mark looks broken.</li>
+      <li>BTC core remains buy&amp;hold on the honest engine.</li>
+    </ul>
+  </section>
+
+  <footer>
+    Paper research only · sacred harness unchanged · not investment advice · you approve every real dollar
+  </footer>
+</div>
+</body>
+</html>
