@@ -34,6 +34,7 @@ import re
 import subprocess
 import sys
 from dataclasses import dataclass, field
+from functools import lru_cache
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -674,9 +675,47 @@ def parse_gallery_published(src: str) -> tuple[dt.datetime, str] | None:
     return when, source or "gallery-published"
 
 
+TIMESTAMP_MAP_PATH = ROOT / "scripts" / "brief_timestamps.md"
+TIMESTAMP_MAP_ROW_RE = re.compile(
+    r"^\|\s*`([^`]+\.html)`\s*\|\s*"
+    r"([0-9]{4}-[0-9]{2}-[0-9]{2}T[^\s|]+)\s*\|\s*"
+    r"[^|]*\|\s*(.*?)\s*\|\s*$",
+    re.M,
+)
+
+
+def _git_rel(path: Path) -> str:
+    resolved = path if path.is_absolute() else (ROOT / path)
+    try:
+        return resolved.resolve().relative_to(ROOT).as_posix()
+    except ValueError:
+        return Path(path).as_posix()
+
+
+def git_is_shallow() -> bool:
+    """True when git history is truncated (or GALLERY_GIT_SHALLOW=1 in tests).
+
+    A depth-1 clone still answers `git log --diff-filter=A`, but it attributes
+    every file to HEAD — a fake first-add at the checkout clock.
+    """
+    override = os.environ.get("GALLERY_GIT_SHALLOW")
+    if override is not None and override.strip() != "":
+        return override.strip().lower() in {"1", "true", "yes"}
+    try:
+        raw = subprocess.check_output(
+            ["git", "rev-parse", "--is-shallow-repository"],
+            cwd=ROOT,
+            text=True,
+            stderr=subprocess.DEVNULL,
+        ).strip()
+    except (OSError, subprocess.CalledProcessError):
+        return False
+    return raw == "true"
+
+
 def git_first_add(path: Path) -> tuple[dt.datetime, str] | None:
     """Committer clock of the first add of this path. No --follow (avoids rename ghosts)."""
-    rel = str(path.relative_to(ROOT)) if path.is_absolute() else str(path)
+    rel = _git_rel(path)
     try:
         raw = subprocess.check_output(
             ["git", "log", "--diff-filter=A", "--format=%cI\t%h\t%s", "--", rel],
@@ -702,6 +741,71 @@ def git_first_add(path: Path) -> tuple[dt.datetime, str] | None:
     if lab:
         source += f" trading-lab@{lab.group(1)}"
     return when, source
+
+
+def trusted_git_first_add(path: Path) -> tuple[dt.datetime, str] | None:
+    """Like git_first_add, but ignore shallow clones (their A-filter is a graft)."""
+    if git_is_shallow():
+        return None
+    return git_first_add(path)
+
+
+def git_show_file(path: Path, rev: str = "HEAD") -> str | None:
+    """Blob contents at rev:path, or None if missing (works on shallow clones)."""
+    rel = _git_rel(path)
+    try:
+        proc = subprocess.run(
+            ["git", "show", f"{rev}:{rel}"],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+    except OSError:
+        return None
+    if proc.returncode != 0:
+        return None
+    return proc.stdout
+
+
+def committed_gallery_published(path: Path) -> tuple[dt.datetime, str] | None:
+    """Last-published clock from HEAD, surviving a working-tree overwrite."""
+    blob = git_show_file(path, "HEAD")
+    if blob is None:
+        return None
+    return parse_gallery_published(blob)
+
+
+def _map_source(raw: str) -> str:
+    sha = re.search(r"git-add\s+`([0-9a-f]+)`", raw, re.I)
+    lab = re.search(r"trading-lab@([0-9a-f]+)", raw, re.I)
+    if sha:
+        source = f"git-add:{sha.group(1)}"
+        if lab:
+            source += f" trading-lab@{lab.group(1)}"
+        return source
+    cleaned = re.sub(r"`+|^\s+|\s+$", "", raw)
+    return cleaned or "timestamp-map"
+
+
+@lru_cache(maxsize=1)
+def published_timestamp_map() -> dict[str, tuple[dt.datetime, str]]:
+    """First-add clocks documented in scripts/brief_timestamps.md."""
+    if not TIMESTAMP_MAP_PATH.is_file():
+        return {}
+    text = TIMESTAMP_MAP_PATH.read_text(encoding="utf-8")
+    out: dict[str, tuple[dt.datetime, str]] = {}
+    for match in TIMESTAMP_MAP_ROW_RE.finditer(text):
+        name, iso, source_raw = match.group(1), match.group(2), match.group(3)
+        when = dt.datetime.fromisoformat(iso.replace("Z", "+00:00"))
+        if when.tzinfo is None:
+            when = when.replace(tzinfo=dt.timezone.utc)
+        out[name] = (when, _map_source(source_raw))
+    return out
+
+
+def timestamp_map_lookup(name: str) -> tuple[dt.datetime, str] | None:
+    return published_timestamp_map().get(name)
 
 
 def _parse_iso_datetime(raw: str) -> dt.datetime:
@@ -766,15 +870,32 @@ def resolve_brief_published(path: Path, src: str) -> tuple[dt.datetime, str]:
 
     Resolution order (documented in scripts/brief_timestamps.md):
     1. <!-- gallery-published iso="..." source="..." --> already in the brief
-    2. git committer date of the first add of this file (no --follow)
-    3. first-publish: timezone-aware UTC now (the brief is about to be committed)
+    2. git first-add (skipped on shallow clones — A-filter grafts every file to HEAD)
+    3. same comment from HEAD (last public publish; survives a scrub overwrite)
+    4. scripts/brief_timestamps.md first-add map
+    5. first-publish UTC now — only if this path is not already on HEAD
     """
     embedded = parse_gallery_published(src)
     if embedded:
         return embedded
-    added = git_first_add(path)
+    added = trusted_git_first_add(path)
     if added:
         return added
+    committed = committed_gallery_published(path)
+    if committed:
+        return committed
+    mapped = timestamp_map_lookup(path.name)
+    if mapped:
+        return mapped
+    on_head = git_show_file(path, "HEAD") is not None
+    if on_head:
+        raise SystemExit(
+            f"{path}: no second-precision publish time. Shallow git history "
+            "cannot see the first-add, the working tree has no "
+            "<!-- gallery-published --> comment, and HEAD / "
+            "scripts/brief_timestamps.md have none either. Restore the "
+            "comment instead of inventing a new clock."
+        )
     return first_publish_datetime(), first_publish_source()
 
 
@@ -1403,6 +1524,7 @@ def self_test() -> None:
         "GALLERY_SOURCE",
         "GITHUB_REPOSITORY",
         "GITHUB_SHA",
+        "GALLERY_GIT_SHALLOW",
     )
     saved_env = {k: os.environ.get(k) for k in env_keys}
     try:
@@ -1444,9 +1566,25 @@ def self_test() -> None:
         assert source == "git-add:502d31b"
 
         existing = BRIEFS_DIR / "2026-09-09-harness-revalidation.html"
+        expected = dt.datetime(2026, 9, 9, 11, 54, 16, tzinfo=dt.timezone.utc)
+        mapped = timestamp_map_lookup(existing.name)
+        assert mapped is not None
+        assert mapped[0] == expected
+        assert mapped[1].startswith("git-add:c07e6ba")
+
+        # Stripped working-tree HTML must not first-publish "now" (frozen above).
         when, source = resolve_brief_published(existing, "<html></html>")
-        assert when == dt.datetime(2026, 9, 9, 11, 54, 16, tzinfo=dt.timezone.utc)
-        assert source.startswith("git-add:c07e6ba")
+        assert when == expected
+        assert "first-publish" not in source
+
+        # Publish CI: shallow clone + comments wiped by the lab copy.
+        os.environ["GALLERY_GIT_SHALLOW"] = "1"
+        when, source = resolve_brief_published(existing, "<html></html>")
+        assert when == expected
+        assert "first-publish" not in source
+        when, source = resolve_brief_published(new_path, bare_src)
+        assert source == "first-publish"
+        os.environ.pop("GALLERY_GIT_SHALLOW", None)
     finally:
         for key, value in saved_env.items():
             if value is None:

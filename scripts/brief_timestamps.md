@@ -9,17 +9,25 @@ Resolution order:
 1. `<!-- gallery-published iso="…" source="…" -->` already in the brief HTML
 2. Git **committer** date of the first add of that file
    (`git log --diff-filter=A`, **no** `--follow` — `--follow` invented Sep 6
-   first-adds for later briefs via rename/copy detection)
-3. **First-publish** (untracked / no git first-add yet): timezone-aware UTC
-   `now` truncated to seconds, `source="first-publish"` (plus
-   `trading-lab@<sha>` when `TRADING_LAB_SHA`, `GALLERY_COMMIT_MESSAGE`, or a
-   `trading-lab` GitHub Actions `GITHUB_SHA` is in the environment). The
-   rebuild embeds the comment so later runs reuse it. This is the CI path:
-   private `publish-briefs.yml` copies briefs, runs this script, *then*
-   commits — so new files have no first-add history at rebuild time.
+   first-adds for later briefs via rename/copy detection). **Skipped on
+   shallow clones**: depth-1 history still answers `--diff-filter=A`, but it
+   attributes every file to HEAD (a fake first-add at the checkout clock).
+3. The same comment from **HEAD** (`git show HEAD:docs/briefs/…`). Private
+   `publish-briefs.yml` copies lab HTML over `docs/briefs/` (lab files have
+   no gallery-published comment), then rebuilds, then commits. The working
+   tree is stripped; HEAD still has the last public clocks.
+4. The first-add map in this file (below), for known briefs if HEAD has no
+   comment either.
+5. **First-publish** (path **not** on HEAD): timezone-aware UTC `now`
+   truncated to seconds, `source="first-publish"` (plus `trading-lab@<sha>`
+   when `TRADING_LAB_SHA`, `GALLERY_COMMIT_MESSAGE`, or a `trading-lab`
+   GitHub Actions `GITHUB_SHA` is in the environment). The rebuild embeds
+   the comment so later runs reuse it. A path that *is* already on HEAD
+   never gets a new `now` clock — better to fail than to re-stamp old cards.
 
 `iso` is stored in UTC (or with an offset). Display is converted with
 `ZoneInfo("Europe/Paris")`. Freeze first-publish with `GALLERY_PUBLISHED_AT`.
+Tests can force the shallow path with `GALLERY_GIT_SHALLOW=1`.
 
 The private `offmann/trading-lab` tree is not cloned here. When a publish
 commit message includes `trading-lab@<sha>`, that sha is recorded in
