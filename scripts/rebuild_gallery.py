@@ -704,13 +704,70 @@ def git_first_add(path: Path) -> tuple[dt.datetime, str] | None:
     return when, source
 
 
+def _parse_iso_datetime(raw: str) -> dt.datetime:
+    if raw.isdigit():
+        when = dt.datetime.fromtimestamp(int(raw), tz=dt.timezone.utc)
+    else:
+        when = dt.datetime.fromisoformat(raw.replace("Z", "+00:00"))
+        if when.tzinfo is None:
+            when = when.replace(tzinfo=dt.timezone.utc)
+    return when.astimezone(dt.timezone.utc).replace(microsecond=0)
+
+
+def trading_lab_sha() -> str | None:
+    """Lab snapshot sha from env (publish CI) or an explicit commit-message env.
+
+    Do not read `git log -1`: first-publish runs *before* the publish commit, so
+    HEAD would be the previous lab snapshot.
+    """
+    for key in ("TRADING_LAB_SHA", "TRADING_LAB_REF"):
+        raw = (os.environ.get(key) or "").strip()
+        if not raw:
+            continue
+        raw = re.sub(r"^trading-lab@", "", raw, flags=re.I)
+        match = re.search(r"([0-9a-f]{7,40})", raw, re.I)
+        if match:
+            return match.group(1)
+    blob = " ".join(
+        os.environ.get(k) or ""
+        for k in ("GALLERY_COMMIT_MESSAGE", "GALLERY_SOURCE")
+    )
+    match = re.search(r"trading-lab@([0-9a-f]+)", blob, re.I)
+    if match:
+        return match.group(1)
+    repo = os.environ.get("GITHUB_REPOSITORY") or ""
+    sha = (os.environ.get("GITHUB_SHA") or "").strip()
+    if sha and re.search(r"(?:^|/)trading-lab$", repo):
+        return sha
+    return None
+
+
+def first_publish_datetime() -> dt.datetime:
+    """UTC now, second precision. Never derive a clock from a filename date.
+
+    Freeze with GALLERY_PUBLISHED_AT (ISO-8601 or unix epoch).
+    """
+    env = os.environ.get("GALLERY_PUBLISHED_AT")
+    if env:
+        return _parse_iso_datetime(env)
+    return dt.datetime.now(dt.timezone.utc).replace(microsecond=0)
+
+
+def first_publish_source() -> str:
+    source = "first-publish"
+    sha = trading_lab_sha()
+    if sha:
+        source += f" trading-lab@{sha}"
+    return source
+
+
 def resolve_brief_published(path: Path, src: str) -> tuple[dt.datetime, str]:
     """Second-precision publish clock. Never invent seconds from a date-only name.
 
     Resolution order (documented in scripts/brief_timestamps.md):
     1. <!-- gallery-published iso="..." source="..." --> already in the brief
     2. git committer date of the first add of this file (no --follow)
-    3. fail the rebuild
+    3. first-publish: timezone-aware UTC now (the brief is about to be committed)
     """
     embedded = parse_gallery_published(src)
     if embedded:
@@ -718,11 +775,7 @@ def resolve_brief_published(path: Path, src: str) -> tuple[dt.datetime, str]:
     added = git_first_add(path)
     if added:
         return added
-    raise SystemExit(
-        f"{path}: no second-precision publish time. Add "
-        '<!-- gallery-published iso="YYYY-MM-DDTHH:MM:SS+00:00" source="..." --> '
-        "or commit the file so `git log --diff-filter=A` has a committer clock."
-    )
+    return first_publish_datetime(), first_publish_source()
 
 
 def ensure_brief_published_meta(src: str, when: dt.datetime, source: str) -> str:
@@ -1341,6 +1394,65 @@ def self_test() -> None:
         "books are open. Day 0 does not pretend we traded.</p>"
     )
     assert pick_teaser(live_src) == "$1,000 books open — no P&L yet"
+
+    env_keys = (
+        "GALLERY_PUBLISHED_AT",
+        "TRADING_LAB_SHA",
+        "TRADING_LAB_REF",
+        "GALLERY_COMMIT_MESSAGE",
+        "GALLERY_SOURCE",
+        "GITHUB_REPOSITORY",
+        "GITHUB_SHA",
+    )
+    saved_env = {k: os.environ.get(k) for k in env_keys}
+    try:
+        for key in env_keys:
+            os.environ.pop(key, None)
+        os.environ["GALLERY_PUBLISHED_AT"] = "2026-09-11T12:34:56Z"
+        os.environ["TRADING_LAB_SHA"] = "deadbeefcafebabe"
+        new_path = BRIEFS_DIR / "2026-09-11-unit-test-untracked.html"
+        bare_src = '<html><body>\n    <header class="top"></header>\n</body></html>'
+        when, source = resolve_brief_published(new_path, bare_src)
+        assert when == dt.datetime(2026, 9, 11, 12, 34, 56, tzinfo=dt.timezone.utc)
+        assert source == "first-publish trading-lab@deadbeefcafebabe"
+        # Filename date must not become a fake midnight clock.
+        assert when.time() != dt.time(0, 0, 0)
+        stamped = ensure_brief_published_meta(bare_src, when, source)
+        parsed = parse_gallery_published(stamped)
+        assert parsed is not None
+        assert parsed[0] == when
+        assert parsed[1] == source
+        assert 'iso="2026-09-11T12:34:56+00:00"' in stamped
+
+        os.environ.pop("TRADING_LAB_SHA", None)
+        os.environ["GALLERY_COMMIT_MESSAGE"] = (
+            "Publish scrubbed briefs from trading-lab@abc1234"
+        )
+        when, source = resolve_brief_published(new_path, bare_src)
+        assert source == "first-publish trading-lab@abc1234"
+
+        os.environ.pop("GALLERY_COMMIT_MESSAGE", None)
+        when, source = resolve_brief_published(new_path, bare_src)
+        assert source == "first-publish"
+
+        commented = (
+            '<!-- gallery-published iso="2026-09-06T17:02:20+00:00" '
+            'source="git-add:502d31b" -->'
+        )
+        when, source = resolve_brief_published(new_path, commented)
+        assert format_updated_stamp(when) == "2026-09-06 19:02:20 CEST"
+        assert source == "git-add:502d31b"
+
+        existing = BRIEFS_DIR / "2026-09-09-harness-revalidation.html"
+        when, source = resolve_brief_published(existing, "<html></html>")
+        assert when == dt.datetime(2026, 9, 9, 11, 54, 16, tzinfo=dt.timezone.utc)
+        assert source.startswith("git-add:c07e6ba")
+    finally:
+        for key, value in saved_env.items():
+            if value is None:
+                os.environ.pop(key, None)
+            else:
+                os.environ[key] = value
 
     old = Brief(
         filename="2026-09-06-first-grids.html",

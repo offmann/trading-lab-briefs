@@ -10,10 +10,16 @@ Resolution order:
 2. Git **committer** date of the first add of that file
    (`git log --diff-filter=A`, **no** `--follow` — `--follow` invented Sep 6
    first-adds for later briefs via rename/copy detection)
-3. Rebuild fails. Add the comment by hand if git history is missing.
+3. **First-publish** (untracked / no git first-add yet): timezone-aware UTC
+   `now` truncated to seconds, `source="first-publish"` (plus
+   `trading-lab@<sha>` when `TRADING_LAB_SHA`, `GALLERY_COMMIT_MESSAGE`, or a
+   `trading-lab` GitHub Actions `GITHUB_SHA` is in the environment). The
+   rebuild embeds the comment so later runs reuse it. This is the CI path:
+   private `publish-briefs.yml` copies briefs, runs this script, *then*
+   commits — so new files have no first-add history at rebuild time.
 
 `iso` is stored in UTC (or with an offset). Display is converted with
-`ZoneInfo("Europe/Paris")`.
+`ZoneInfo("Europe/Paris")`. Freeze first-publish with `GALLERY_PUBLISHED_AT`.
 
 The private `offmann/trading-lab` tree is not cloned here. When a publish
 commit message includes `trading-lab@<sha>`, that sha is recorded in
