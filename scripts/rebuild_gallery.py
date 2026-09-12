@@ -13,7 +13,10 @@ old progress.html / keepers.html URLs so they are never blank stubs.
 Injects a compact Back to Investor · Leaderboard · Experiments bar on
 each brief.
 
-Editorial IA (Investor copy, rank tables, plot data) is left alone.
+Editorial IA (Investor copy, rank tables, plot data) is left alone,
+except a few visitor phrases rebuilt here so CI cannot reintroduce
+jargon: Investor Donchian N/M → “breakout rule N/M”, “Dropped vs hold”
+→ Dropped, and the Investor out-of-sample line.
 Public chip labels are mapped at render from PUBLIC_VERDICT (Lab pick /
 Still testing / Dropped / Parked / Just hold). Internal kinds stay
 keep/tweak/drop. Brief KEEP/TWEAK/DROP chips are rewritten through the
@@ -53,7 +56,7 @@ PROGRESS_HTML = DOCS / "progress.html"
 KEEPERS_HTML = DOCS / "keepers.html"
 
 # Bump this string when hub HTML must win against a cached GH Pages client.
-CACHE_BUSTER = "20260912a"
+CACHE_BUSTER = "20260912b"
 CACHE_META = '<meta http-equiv="Cache-Control" content="no-cache">'
 BUILD_COMMENT = f"<!-- hub-build: {CACHE_BUSTER} -->"
 
@@ -150,6 +153,18 @@ HOLD_BASELINE_RE = re.compile(
     re.I,
 )
 PUBLIC_CHIP_EXACT = {label.lower() for label in PUBLIC_VERDICT.values()}
+
+# Investor home stays jargon-light. Translate Donchian N/M once; keep the
+# knobs (20/12, 10/5). Leaderboard / Experiments may still name Donchian.
+DONCHIAN_RULE_RE = re.compile(r"\bDonchian\s+(\d+/\d+)\b")
+INVESTOR_OOS_BEFORE = (
+    "The Ether path still fails the rolling out-of-sample test, "
+    "so it is not a lab pick."
+)
+INVESTOR_OOS_AFTER = (
+    "The Ether rule failed checks on later time windows, "
+    "so it is not a lab pick."
+)
 
 GLOSSARY_START = "<!-- gallery:glossary:start -->"
 GLOSSARY_END = "<!-- gallery:glossary:end -->"
@@ -386,6 +401,32 @@ def rewrite_public_chips(src: str) -> str:
         return f'<span class="chip {pub_kind}">{esc(pub_label)}</span>'
 
     return CHIP_RE.sub(repl, src)
+
+
+def plain_breakout_rule(text: str) -> str:
+    """Translate Donchian N/M → 'breakout rule N/M'. Keep the ratio."""
+    return DONCHIAN_RULE_RE.sub(r"breakout rule \1", text)
+
+
+def rewrite_dropped_vs_hold_chips(src: str) -> str:
+    """Collapse clunky 'Dropped vs hold' chips to PUBLIC_VERDICT['drop']."""
+
+    def repl(match: re.Match[str]) -> str:
+        css = match.group(1)
+        inner = match.group(2)
+        label = html_text(inner)
+        kind = classify_chip(css, label)
+        if kind == "drop" and re.search(r"\bvs\s+hold\b", label, re.I):
+            return f'<span class="chip drop">{esc(PUBLIC_VERDICT["drop"])}</span>'
+        return match.group(0)
+
+    return CHIP_RE.sub(repl, src)
+
+
+def polish_investor_copy(src: str) -> str:
+    """Plain-English Investor rows and the later-window check line."""
+    src = plain_breakout_rule(src)
+    return src.replace(INVESTOR_OOS_BEFORE, INVESTOR_OOS_AFTER)
 
 
 def render_glossary_json() -> str:
@@ -1069,6 +1110,9 @@ def polish_hub_page(src: str, current: str) -> str:
     src = bust_internal_html_hrefs(src)
     src = insert_style_block(src, HOLD_CHIP_CSS_START, HOLD_CHIP_CSS_END, HOLD_CHIP_CSS)
     src = ensure_glossary_script(src)
+    src = rewrite_dropped_vs_hold_chips(src)
+    if current == "Investor":
+        src = polish_investor_copy(src)
     return src
 
 
@@ -1190,6 +1234,17 @@ def check_hub_ia() -> list[str]:
                 errors.append(f"{rel} still uses ALGO KEEP as a public label")
             if "Just hold" not in src or "Lab pick" not in src:
                 errors.append(f"{rel} is missing the Just hold / Lab pick glossary")
+            if re.search(r"Donchian", src):
+                errors.append(f"{rel} still says Donchian on Investor (use breakout rule)")
+            if "breakout rule 20/12" not in src:
+                errors.append(f"{rel} is missing ALGO breakout rule 20/12")
+            if "rolling out-of-sample" in src:
+                errors.append(f"{rel} still says rolling out-of-sample")
+            if "later time windows" not in src:
+                errors.append(f"{rel} is missing the later-window check line")
+        if path in {INDEX_HTML, INVESTOR_HTML, LEADERBOARD_HTML}:
+            if "Dropped vs hold" in src:
+                errors.append(f"{rel} still says Dropped vs hold")
         if path == LEADERBOARD_HTML:
             if "Donchian 20/12" not in src or "18662" not in src:
                 errors.append("leaderboard is missing ALGO Donchian 20/12 $18,662")
@@ -1650,6 +1705,21 @@ def self_test() -> None:
     assert ">Don't<" in remapped
     assert 'class="chip hold">Just hold<' in remapped
     assert rewrite_public_chips(remapped) == remapped
+
+    assert plain_breakout_rule("ALGO Donchian 20/12") == "ALGO breakout rule 20/12"
+    assert plain_breakout_rule("ETH Donchian 10/5") == "ETH breakout rule 10/5"
+    clunky = '<span class="chip drop">Dropped vs hold</span>'
+    assert PUBLIC_VERDICT["drop"] in rewrite_dropped_vs_hold_chips(clunky)
+    assert "vs hold" not in rewrite_dropped_vs_hold_chips(clunky)
+    investor_src = (
+        '<span class="who">ALGO Donchian 20/12</span>'
+        f"<p>{INVESTOR_OOS_BEFORE}</p>"
+    )
+    polished = polish_investor_copy(investor_src)
+    assert "ALGO breakout rule 20/12" in polished
+    assert "Donchian" not in polished
+    assert INVESTOR_OOS_AFTER in polished
+    assert "rolling out-of-sample" not in polished
 
     keep_src = (
         "<title>SMA 5/20 stress — BTC · Sep 6, 2026</title>"
