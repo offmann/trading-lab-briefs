@@ -148,17 +148,23 @@
     margin: 0 0 .85rem; line-height: 1.4;
   }
   /* gallery:published:end */
+  /* gallery:chip-hold */
+  .chip.hold {
+    color: var(--ink-faint, #64748b);
+    background: var(--bg-soft, #e2e8f0);
+  }
+  /* gallery:chip-hold:end */
 </style>
 </head>
 <body>
   <!-- gallery-published iso="2026-09-06T17:02:20+00:00" source="git-add:502d31b" -->
   <div class="wrap">
         <nav class="hub-jump" aria-label="Lab sections">
-      <a href="../index.html?v=20260909b">Back to Investor</a>
+      <a href="../index.html?v=20260912a">Back to Investor</a>
       <span class="sep" aria-hidden="true">·</span>
-      <a href="../leaderboard.html?v=20260909b">Leaderboard</a>
+      <a href="../leaderboard.html?v=20260912a">Leaderboard</a>
       <span class="sep" aria-hidden="true">·</span>
-      <a href="../experiments.html?v=20260909b">Experiments</a>
+      <a href="../experiments.html?v=20260912a">Experiments</a>
     </nav>
     <header class="top">
       <div class="logo" aria-hidden="true">
@@ -173,8 +179,8 @@
 
     <section class="card">
       <div class="chips">
-        <span class="chip tweak">Tweak family</span>
-        <span class="chip drop">Drop defaults</span>
+        <span class="chip tweak">Still testing</span>
+        <span class="chip drop">Dropped</span>
       </div>
       <h1>Hold-protect softens crashes — and shrinks the BTC pile</h1>
       <p class="lede"><b>btc_hold_protect</b> stays long until a deep drawdown, then waits for recovery. Defaults (<code>dd=25%</code>, <code>reentry=10%</code>) cut max DD to <b>−28%</b> vs hold <b>−76%</b>, but end with <b>fewer BTC units</b> than buy&amp;hold and lose <b>6/7</b> calendar years. Fast SMA 5/20 still wins on $ and units. Grid: wider re-entry helps — keep the family, don’t ship defaults.</p>
@@ -288,11 +294,11 @@
     <section class="card">
       <h2>Keep · Tweak · Drop</h2>
       <div class="row-verdicts">
-        <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>Defaults (25/10) as BTC core rule</b> — fewer units than hold; 1/7 year wins; only ~42% time-in-market.</div></div>
-        <div class="verdict-row"><span class="chip tweak">Tweak</span><div class="txt"><b>Hold-protect idea family</b> — right shape (accumulate + crash exit); stress grid winner + optional F&amp;G gate.</div></div>
-        <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>Fast SMA 5/20 as paper baseline</b> — still best $ &amp; units on this path; live core remains TWEAK.</div></div>
-        <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>Buy&amp;hold as core reference</b> — 100% time-in-market; deepest DD (−76%).</div></div>
-        <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>Go live</b> — paper only; no explicit OK.</div></div>
+        <div class="verdict-row"><span class="chip drop">Dropped</span><div class="txt"><b>Defaults (25/10) as BTC core rule</b> — fewer units than hold; 1/7 year wins; only ~42% time-in-market.</div></div>
+        <div class="verdict-row"><span class="chip tweak">Still testing</span><div class="txt"><b>Hold-protect idea family</b> — right shape (accumulate + crash exit); stress grid winner + optional F&amp;G gate.</div></div>
+        <div class="verdict-row"><span class="chip keep">Lab pick</span><div class="txt"><b>Fast SMA 5/20 as paper baseline</b> — still best $ &amp; units on this path; live core remains TWEAK.</div></div>
+        <div class="verdict-row"><span class="chip keep">Lab pick</span><div class="txt"><b>Buy&amp;hold as core reference</b> — 100% time-in-market; deepest DD (−76%).</div></div>
+        <div class="verdict-row"><span class="chip drop">Dropped</span><div class="txt"><b>Go live</b> — paper only; no explicit OK.</div></div>
       </div>
     </section>
 

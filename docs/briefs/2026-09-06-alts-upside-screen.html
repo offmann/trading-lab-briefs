@@ -159,17 +159,23 @@
     margin: 0 0 .85rem; line-height: 1.4;
   }
   /* gallery:published:end */
+  /* gallery:chip-hold */
+  .chip.hold {
+    color: var(--ink-faint, #64748b);
+    background: var(--bg-soft, #e2e8f0);
+  }
+  /* gallery:chip-hold:end */
 </style>
 </head>
 <body>
   <!-- gallery-published iso="2026-09-06T19:08:29+00:00" source="git-add:f23ce05 trading-lab@bdd90fabfd5aee7ba656c4746047339a786f7b7b" -->
   <div class="wrap">
         <nav class="hub-jump" aria-label="Lab sections">
-      <a href="../index.html?v=20260909b">Back to Investor</a>
+      <a href="../index.html?v=20260912a">Back to Investor</a>
       <span class="sep" aria-hidden="true">·</span>
-      <a href="../leaderboard.html?v=20260909b">Leaderboard</a>
+      <a href="../leaderboard.html?v=20260912a">Leaderboard</a>
       <span class="sep" aria-hidden="true">·</span>
-      <a href="../experiments.html?v=20260909b">Experiments</a>
+      <a href="../experiments.html?v=20260912a">Experiments</a>
     </nav>
     <header class="top">
       <div class="logo" aria-hidden="true">
@@ -185,9 +191,9 @@
     <!-- ── HEADLINE ── -->
     <section class="card">
       <div class="chips">
-        <span class="chip keep">Keep Donchian</span>
-        <span class="chip drop">Drop trend_rsi</span>
-        <span class="chip drop">Drop vol_filter</span>
+        <span class="chip keep">Lab pick</span>
+        <span class="chip drop">Dropped</span>
+        <span class="chip drop">Dropped</span>
       </div>
       <h1>Donchian breakout is the alts edge — trend_rsi &amp; vol-filter are noise</h1>
       <p class="lede">
@@ -322,9 +328,9 @@
     <section class="card">
       <h2>Dead on alts</h2>
       <div class="row-verdicts">
-        <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>trend_rsi on alts</b> — 0 trades across all 36 grid configs on ALGO. The "buy pullbacks in an uptrend" logic never fires because alts don't pull back gently — they crash or spike. RSI conditions are too restrictive for volatile coins.</div></div>
-        <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>vol_filter_sma on alts</b> — at low ATR thresholds (1.5–2.5%) it's identical to plain SMA crossover (crypto is always volatile, the gate never closes). At high thresholds (4%) it kills good entries too. The concept makes sense for equities but adds zero value on crypto.</div></div>
-        <div class="verdict-row"><span class="chip drop">Park</span><div class="txt"><b>sentiment_sma / sma_sticky / btc_hold_protect</b> — not tested on alts this round. Sentiment requires Fear &amp; Greed data. Sticky and hold-protect are BTC core-sleeve designs. Could revisit later, but Donchian covers the alts thesis for now.</div></div>
+        <div class="verdict-row"><span class="chip drop">Dropped</span><div class="txt"><b>trend_rsi on alts</b> — 0 trades across all 36 grid configs on ALGO. The "buy pullbacks in an uptrend" logic never fires because alts don't pull back gently — they crash or spike. RSI conditions are too restrictive for volatile coins.</div></div>
+        <div class="verdict-row"><span class="chip drop">Dropped</span><div class="txt"><b>vol_filter_sma on alts</b> — at low ATR thresholds (1.5–2.5%) it's identical to plain SMA crossover (crypto is always volatile, the gate never closes). At high thresholds (4%) it kills good entries too. The concept makes sense for equities but adds zero value on crypto.</div></div>
+        <div class="verdict-row"><span class="chip park">Parked</span><div class="txt"><b>sentiment_sma / sma_sticky / btc_hold_protect</b> — not tested on alts this round. Sentiment requires Fear &amp; Greed data. Sticky and hold-protect are BTC core-sleeve designs. Could revisit later, but Donchian covers the alts thesis for now.</div></div>
       </div>
     </section>
 
@@ -332,11 +338,11 @@
     <section class="card">
       <h2>Keep · Tweak · Drop</h2>
       <div class="row-verdicts">
-        <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>donchian_breakout 10/5 (ALGO + ETH)</b> — 8/8 year-split, 24/25 + 22/27 WF, Sharpe 2.1/3.3, softest drawdowns. Strongest result in the repo. Paper-track next.</div></div>
-        <div class="verdict-row"><span class="chip tweak">Tweak</span><div class="txt"><b>donchian_breakout 20/10</b> — calmer (32 trades ALGO, 41 ETH), still beats hold 7/8 + 6/8. Weaker WF on ETH. Reserve as alt config if 10/5 churn feels too busy.</div></div>
-        <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>sma_crossover 5/20 baseline</b> — still the reference to beat. Strong on both alts ($24,005 ALGO, $195,382 ETH). Already KEEP on BTC.</div></div>
-        <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>trend_rsi on alts</b> — zero signal, zero trades. Valid concept on BTC where pullbacks exist, dead on volatile alts.</div></div>
-        <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>vol_filter_sma on crypto</b> — collapses to plain SMA. The ATR gate never engages. Honest null result.</div></div>
+        <div class="verdict-row"><span class="chip keep">Lab pick</span><div class="txt"><b>donchian_breakout 10/5 (ALGO + ETH)</b> — 8/8 year-split, 24/25 + 22/27 WF, Sharpe 2.1/3.3, softest drawdowns. Strongest result in the repo. Paper-track next.</div></div>
+        <div class="verdict-row"><span class="chip tweak">Still testing</span><div class="txt"><b>donchian_breakout 20/10</b> — calmer (32 trades ALGO, 41 ETH), still beats hold 7/8 + 6/8. Weaker WF on ETH. Reserve as alt config if 10/5 churn feels too busy.</div></div>
+        <div class="verdict-row"><span class="chip keep">Lab pick</span><div class="txt"><b>sma_crossover 5/20 baseline</b> — still the reference to beat. Strong on both alts ($24,005 ALGO, $195,382 ETH). Already KEEP on BTC.</div></div>
+        <div class="verdict-row"><span class="chip drop">Dropped</span><div class="txt"><b>trend_rsi on alts</b> — zero signal, zero trades. Valid concept on BTC where pullbacks exist, dead on volatile alts.</div></div>
+        <div class="verdict-row"><span class="chip drop">Dropped</span><div class="txt"><b>vol_filter_sma on crypto</b> — collapses to plain SMA. The ATR gate never engages. Honest null result.</div></div>
       </div>
     </section>
 

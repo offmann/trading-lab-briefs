@@ -135,17 +135,23 @@
     margin: 0 0 .85rem; line-height: 1.4;
   }
   /* gallery:published:end */
+  /* gallery:chip-hold */
+  .chip.hold {
+    color: var(--ink-faint, #64748b);
+    background: var(--bg-soft, #e2e8f0);
+  }
+  /* gallery:chip-hold:end */
 </style>
 </head>
 <body>
   <!-- gallery-published iso="2026-09-12T06:19:39+00:00" source="first-publish trading-lab@f8bf42a9dfafd7c5468f2c72bce4e5f606ac9933" -->
 <div class="wrap">
         <nav class="hub-jump" aria-label="Lab sections">
-      <a href="../index.html?v=20260909b">Back to Investor</a>
+      <a href="../index.html?v=20260912a">Back to Investor</a>
       <span class="sep" aria-hidden="true">·</span>
-      <a href="../leaderboard.html?v=20260909b">Leaderboard</a>
+      <a href="../leaderboard.html?v=20260912a">Leaderboard</a>
       <span class="sep" aria-hidden="true">·</span>
-      <a href="../experiments.html?v=20260909b">Experiments</a>
+      <a href="../experiments.html?v=20260912a">Experiments</a>
     </nav>
     <header class="top">
     <div class="logo" aria-hidden="true">
@@ -160,9 +166,9 @@
 
   <section class="card">
     <div class="chips">
-      <span class="chip drop">Drop SOL</span>
-      <span class="chip drop">Drop LINK</span>
-      <span class="chip keep">ALGO keep stands</span>
+      <span class="chip drop">Dropped</span>
+      <span class="chip drop">Dropped</span>
+      <span class="chip keep">Lab pick</span>
     </div>
     <h1>Same ALGO rule on SOL &amp; LINK? Not good enough.</h1>
     <p class="lede">
@@ -249,9 +255,9 @@
 
   <section class="card">
     <h2>Verdict</h2>
-    <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>SOL Donchian neighborhood</b> — beats hold in-sample, fails year-split + walk-forward.</div></div>
-    <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>LINK Donchian neighborhood</b> — every cell loses to hold. Same class as ETH transfer fail.</div></div>
-    <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>ALGO donchian_breakout 20/12</b> — refresh OK. Still the only alts KEEP.</div></div>
+    <div class="verdict-row"><span class="chip drop">Dropped</span><div class="txt"><b>SOL Donchian neighborhood</b> — beats hold in-sample, fails year-split + walk-forward.</div></div>
+    <div class="verdict-row"><span class="chip drop">Dropped</span><div class="txt"><b>LINK Donchian neighborhood</b> — every cell loses to hold. Same class as ETH transfer fail.</div></div>
+    <div class="verdict-row"><span class="chip keep">Lab pick</span><div class="txt"><b>ALGO donchian_breakout 20/12</b> — refresh OK. Still the only alts KEEP.</div></div>
     <div class="verdict-row"><span class="chip drop">Don't</span><div class="txt"><b>New BTC KEEP.</b> Core sleeve stays buy&amp;hold. Nothing obvious today.</div></div>
   </section>
 

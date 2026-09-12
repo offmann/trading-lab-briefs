@@ -14,6 +14,10 @@ Injects a compact Back to Investor · Leaderboard · Experiments bar on
 each brief.
 
 Editorial IA (Investor copy, rank tables, plot data) is left alone.
+Public chip labels are mapped at render from PUBLIC_VERDICT (Lab pick /
+Still testing / Dropped / Parked / Just hold). Internal kinds stay
+keep/tweak/drop. Brief KEEP/TWEAK/DROP chips are rewritten through the
+same glossary so rebuild cannot reintroduce those visitor labels.
 
 Privacy: paper $1,000 / $1000 is allowed. Holdings, RISK_PROFILE, “0.15 BTC”,
 and personal totals like ~$14k fail the scan (or are stripped with --strip).
@@ -49,7 +53,7 @@ PROGRESS_HTML = DOCS / "progress.html"
 KEEPERS_HTML = DOCS / "keepers.html"
 
 # Bump this string when hub HTML must win against a cached GH Pages client.
-CACHE_BUSTER = "20260909b"
+CACHE_BUSTER = "20260912a"
 CACHE_META = '<meta http-equiv="Cache-Control" content="no-cache">'
 BUILD_COMMENT = f"<!-- hub-build: {CACHE_BUSTER} -->"
 
@@ -124,8 +128,42 @@ SKIP_CHIP_LABELS = re.compile(
 )
 GO_LIVE_CHIP = re.compile(r"go live|ship to|as-is", re.I)
 
+# Public investor glossary. Internal kinds stay keep/tweak/drop/park/hold.
+# Map at render (cards, leaderboard auto, brief chip spans) so CI cannot
+# reintroduce KEEP / TWEAK / DROP as the visitor-facing label.
+PUBLIC_VERDICT = {
+    "keep": "Lab pick",
+    "tweak": "Still testing",
+    "drop": "Dropped",
+    "park": "Parked",
+    "hold": "Just hold",
+}
+# Instruction / status chips — not KEEP/TWEAK/DROP vocabulary.
+LEAVE_PUBLIC_CHIP = re.compile(
+    r"^(don't|dont|watch|next|paper\s*only|not financial advice|"
+    r"demote|baseline|no upgrade|eth transfer no|not btc core)$",
+    re.I,
+)
+HOLD_BASELINE_RE = re.compile(
+    r"just\s+hold|buy\s*&(?:amp;)?\s*hold|buy\s+and\s+hold|"
+    r"\b(?:bitcoin|btc)\s+hold\b",
+    re.I,
+)
+PUBLIC_CHIP_EXACT = {label.lower() for label in PUBLIC_VERDICT.values()}
+
+GLOSSARY_START = "<!-- gallery:glossary:start -->"
+GLOSSARY_END = "<!-- gallery:glossary:end -->"
+HOLD_CHIP_CSS_START = "  /* gallery:chip-hold */"
+HOLD_CHIP_CSS_END = "  /* gallery:chip-hold:end */"
+HOLD_CHIP_CSS = f"""{HOLD_CHIP_CSS_START}
+  .chip.hold {{
+    color: var(--ink-faint, #64748b);
+    background: var(--bg-soft, #e2e8f0);
+  }}
+{HOLD_CHIP_CSS_END}"""
+
 # Optional per-brief override, e.g.
-# <!-- gallery-card title="First screen — BTC & ALGO grids" chip="Keep" class="keep" teaser="$6,196 vs hold $4,619" -->
+# <!-- gallery-card title="First screen — BTC & ALGO grids" chip="Lab pick" class="keep" teaser="$6,196 vs hold $4,619" -->
 GALLERY_CARD_RE = re.compile(
     r"<!--\s*gallery-card\b(.*?)-->",
     re.I | re.S,
@@ -264,22 +302,117 @@ def parse_attrs(blob: str) -> dict[str, str]:
     return out
 
 
+def is_hold_baseline(label: str) -> bool:
+    """True when the chip is 'own the coin', never a lab-pick KEEP."""
+    text = html.unescape(label)
+    if re.search(r"hold[\s-]*protect", text, re.I):
+        return False
+    if re.search(r"\bvs\s+hold\b", text, re.I):
+        return False
+    return bool(HOLD_BASELINE_RE.search(text))
+
+
 def classify_chip(css_class: str, label: str) -> str | None:
     label_l = label.lower().strip()
     if SKIP_CHIP_LABELS.match(label_l):
         return None
     css = css_class.lower()
-    if "park" in css or label_l.startswith("park"):
+    css_tokens = set(css.split())
+    if is_hold_baseline(label) or "hold" in css_tokens or label_l.startswith(
+        "just hold"
+    ):
+        return "hold"
+    if "park" in css_tokens or label_l.startswith("park"):
         return "park"
     if "tweak" in label_l and "drop" in label_l:
         return "drop"
-    if "keep" in css or label_l.startswith("keep"):
+    if "keep" in css_tokens or label_l.startswith("keep") or label_l.startswith(
+        "lab pick"
+    ):
         return "keep"
-    if "tweak" in css or label_l.startswith("tweak"):
+    if (
+        "tweak" in css_tokens
+        or label_l.startswith("tweak")
+        or label_l.startswith("still testing")
+    ):
         return "tweak"
-    if "drop" in css or label_l.startswith("drop"):
+    if (
+        "drop" in css_tokens
+        or label_l.startswith("drop")
+        or label_l.startswith("dropped")
+    ):
         return "drop"
     return None
+
+
+def public_verdict_kind(kind: str | None, label: str) -> str:
+    if kind == "hold" or is_hold_baseline(label):
+        return "hold"
+    if kind in PUBLIC_VERDICT:
+        return kind
+    return kind or "tweak"
+
+
+def public_chip_label(kind: str | None, label: str) -> str:
+    """Visitor-facing glossary word. Internal KEEP keys stay on Brief."""
+    pub_kind = public_verdict_kind(kind, label)
+    return PUBLIC_VERDICT.get(pub_kind, label.strip() or "Still testing")
+
+
+def should_remap_public_chip(kind: str | None, label: str) -> bool:
+    text = html_text(label) if "<" in label else label
+    text = text.strip()
+    if not text:
+        return False
+    if SKIP_CHIP_LABELS.match(text) or LEAVE_PUBLIC_CHIP.match(text):
+        return False
+    if text.lower() in PUBLIC_CHIP_EXACT:
+        return kind == "hold" or is_hold_baseline(text) or kind in PUBLIC_VERDICT
+    return kind in PUBLIC_VERDICT
+
+
+def rewrite_public_chips(src: str) -> str:
+    """Rewrite KEEP/TWEAK/DROP/PARK chip labels through PUBLIC_VERDICT."""
+
+    def repl(match: re.Match[str]) -> str:
+        css = match.group(1)
+        inner = match.group(2)
+        label = html_text(inner)
+        kind = classify_chip(css, label)
+        if not should_remap_public_chip(kind, label):
+            return match.group(0)
+        pub_kind = public_verdict_kind(kind, label)
+        pub_label = public_chip_label(kind, label)
+        return f'<span class="chip {pub_kind}">{esc(pub_label)}</span>'
+
+    return CHIP_RE.sub(repl, src)
+
+
+def render_glossary_json() -> str:
+    payload = (
+        '{"keep":"Lab pick","tweak":"Still testing","drop":"Dropped",'
+        '"park":"Parked","hold":"Just hold"}'
+    )
+    return (
+        f"{GLOSSARY_START}\n"
+        f'  <script type="application/json" id="gallery-glossary">{payload}</script>\n'
+        f"  {GLOSSARY_END}"
+    )
+
+
+def ensure_glossary_script(src: str) -> str:
+    block = render_glossary_json()
+    if GLOSSARY_START in src and GLOSSARY_END in src:
+        return re.sub(
+            re.escape(GLOSSARY_START) + r".*?" + re.escape(GLOSSARY_END),
+            block,
+            src,
+            count=1,
+            flags=re.S,
+        )
+    if "</body>" in src:
+        return src.replace("</body>", f"  {block}\n</body>", 1)
+    return src + "\n" + block + "\n"
 
 
 def chips_from_html(block: str) -> list[Chip]:
@@ -512,7 +645,7 @@ def pick_chips(html_src: str) -> list[Chip]:
         attrs = parse_attrs(override.group(1))
         kind = (attrs.get("class") or "").strip().lower()
         label = (attrs.get("chip") or "").strip()
-        if kind in {"keep", "tweak", "drop", "park"} and label:
+        if kind in {"keep", "tweak", "drop", "park", "hold"} and label:
             return [Chip(kind=kind, label=label)]
 
     block = CHIPS_BLOCK_RE.search(html_src)
@@ -934,6 +1067,8 @@ def polish_hub_page(src: str, current: str) -> str:
     src = set_hub_tabs(src, current)
     src = ensure_footer_build(src)
     src = bust_internal_html_hrefs(src)
+    src = insert_style_block(src, HOLD_CHIP_CSS_START, HOLD_CHIP_CSS_END, HOLD_CHIP_CSS)
+    src = ensure_glossary_script(src)
     return src
 
 
@@ -1047,8 +1182,25 @@ def check_hub_ia() -> list[str]:
             if label.lower().strip() in FORBIDDEN_NAV_LABELS:
                 errors.append(f"{rel} still has {label!r} as a nav label")
         if path in {INDEX_HTML, INVESTOR_HTML}:
-            if "$19,879" not in src or "$10,663" not in src:
-                errors.append(f"{rel} lost the BTC hold / ALGO KEEP truth rails")
+            if "$19,879" not in src or "$18,662" not in src:
+                errors.append(f"{rel} lost the BTC hold / ALGO lab-pick truth rails")
+            if "20/12" not in src:
+                errors.append(f"{rel} does not name ALGO lab pick 20/12")
+            if re.search(r"ALGO KEEP", src):
+                errors.append(f"{rel} still uses ALGO KEEP as a public label")
+            if "Just hold" not in src or "Lab pick" not in src:
+                errors.append(f"{rel} is missing the Just hold / Lab pick glossary")
+        if path == LEADERBOARD_HTML:
+            if "Donchian 20/12" not in src or "18662" not in src:
+                errors.append("leaderboard is missing ALGO Donchian 20/12 $18,662")
+            if re.search(r"20/10 is the only active KEEP", src):
+                errors.append("leaderboard still crowns ALGO 20/10 as KEEP")
+        if path in {INDEX_HTML, INVESTOR_HTML, LEADERBOARD_HTML, EXPERIMENTS_HTML}:
+            if re.search(
+                r'<span class="chip[^"]*">\s*(?:Keep|Tweak|Drop|KEEP|TWEAK|DROP)\b',
+                src,
+            ):
+                errors.append(f"{rel} still shows KEEP/TWEAK/DROP as a public chip")
     experiments = EXPERIMENTS_HTML.read_text(encoding="utf-8") if EXPERIMENTS_HTML.is_file() else ""
     if experiments:
         cards = re.findall(
@@ -1204,9 +1356,9 @@ def render_brief_cards(briefs: list[Brief]) -> str:
             + "\">"
             + esc(stamp)
             + "</time><span class=\"chip "
-            + esc(brief.chip_kind)
+            + esc(public_verdict_kind(brief.chip_kind, brief.chip_label))
             + "\">"
-            + esc(brief.chip_label)
+            + esc(public_chip_label(brief.chip_kind, brief.chip_label))
             + "</span></div>\n          <h3>"
             + esc(brief.title)
             + "</h3>"
@@ -1267,9 +1419,9 @@ def render_leaderboard_drops(briefs: list[Brief]) -> str:
             + esc(stamp)
             + "</time>\n"
             "          <span class=\"chip "
-            + esc(brief.chip_kind)
+            + esc(public_verdict_kind(brief.chip_kind, brief.chip_label))
             + "\">"
-            + esc(brief.chip_label)
+            + esc(public_chip_label(brief.chip_kind, brief.chip_label))
             + "</span>\n"
             "        </div>\n"
             "        <h3>"
@@ -1361,6 +1513,8 @@ def update_hub_pages(briefs: list[Brief]) -> list[Path]:
     for brief in briefs:
         src = brief.path.read_text(encoding="utf-8")
         new = ensure_brief_hub_jump(src)
+        new = insert_style_block(new, HOLD_CHIP_CSS_START, HOLD_CHIP_CSS_END, HOLD_CHIP_CSS)
+        new = rewrite_public_chips(new)
         new = ensure_brief_published_meta(new, brief.published_at, brief.published_source)
         if write_if_changed(brief.path, new):
             changed.append(brief.path)
@@ -1478,6 +1632,24 @@ def self_test() -> None:
     drop_chips = chips_from_html('<span class="chip tweak">Tweak → Drop</span>')
     kind, label = headline_chip(drop_chips)
     assert kind == "drop" and "Drop" in label
+    assert public_chip_label(kind, label) == "Dropped"
+
+    assert public_chip_label("keep", "Keep") == "Lab pick"
+    assert public_chip_label("tweak", "Tweak family") == "Still testing"
+    assert public_chip_label("drop", "Drop prior Donchian 10/5 KEEPs") == "Dropped"
+    assert public_verdict_kind("keep", "Keep buy&hold on BTC") == "hold"
+    assert public_chip_label("keep", "Keep buy&hold on BTC") == "Just hold"
+    assert public_chip_label("keep", "Lab pick") == "Lab pick"
+    assert classify_chip("keep", "Lab pick") == "keep"
+    remapped = rewrite_public_chips(
+        '<span class="chip keep">Keep</span>'
+        '<span class="chip drop">Don\'t</span>'
+        '<span class="chip keep">Keep buy&amp;hold on BTC</span>'
+    )
+    assert ">Lab pick<" in remapped
+    assert ">Don't<" in remapped
+    assert 'class="chip hold">Just hold<' in remapped
+    assert rewrite_public_chips(remapped) == remapped
 
     keep_src = (
         "<title>SMA 5/20 stress — BTC · Sep 6, 2026</title>"
