@@ -10,14 +10,14 @@ This file is for future agents. The reader of the live site is **not a trader**.
 
 | File | Job | Answers |
 |------|-----|---------|
-| `index.html` | **Investor (home / default)** | Plain English: what was tested that matters, last updated to the second, what it means for an investor, and “$1,000 → $X vs hold over a clear timeframe.” Lead with the two big numbers when they still hold: BTC hold **$19,879** · ALGO KEEP **$10,663**. |
-| `leaderboard.html` | Scoreboard + plot | Ranked paper strategies by sleeve (**BTC / ALGO / ETH**) vs buy&hold, KEEP/TWEAK/DROP. Plus a scatter: each point = an experiment; X = time; Y = paper end $ from $1,000. Sleeve filters; do not mix incompatible windows on one series. |
-| `experiments.html` | Brief gallery | Dive into individual experiment cards. Revalidation + current KEEP/TWEAK first. Superseded / invalidated briefs in a collapsed **Superseded** section. |
+| `index.html` | **Investor (home / default)** | Plain English: what was tested that matters, last updated to the second, what it means for an investor, and “$1,000 → $X vs just hold over a clear timeframe.” Lead with the two big numbers when they still hold: **Just hold Bitcoin $19,879** · **ALGO lab pick Donchian 20/12 $18,662**. Optional one-line legend: “Just hold = own the coin. Lab pick = best paper rule we found so far.” |
+| `leaderboard.html` | Scoreboard + plot | Ranked paper strategies by sleeve (**BTC / ALGO / ETH**) vs just hold, Lab pick / Still testing / Dropped. Plus a lollipop: each point = an experiment; X = paper end $ from $1,000; Y = ranked strategy. Sleeve filters; do not mix incompatible windows on one series. |
+| `experiments.html` | Brief gallery | Dive into individual experiment cards. Revalidation + current lab pick / still testing first. Superseded / invalidated briefs in a collapsed **Superseded** section. |
 | `investor.html` | Investor alias | Full duplicate of `index.html` (Investor tab current). Old `/investor.html` bookmarks always show content. |
 | `progress.html`, `keepers.html` | Experiments aliases | Full 3-tab Experiments page plus a one-line “this address moved” note, then a short redirect to `experiments.html`. Never a blank stub. Not in primary nav. |
 | `briefs/*.html` | Detail | One experiment. Compact top bar: **Back to Investor · Leaderboard · Experiments**. Do not unlist them. Do not resurrect Overview / Progress / Keepers. |
 
-Hub pages use a **three-tab** nav: **Investor / Leaderboard / Experiments**. One row on a phone (~390px). Internal hub links carry `?v=20260909b`. Hub `<head>` includes `Cache-Control: no-cache` and a visible `build 20260909b` footer stamp.
+Hub pages use a **three-tab** nav: **Investor / Leaderboard / Experiments**. One row on a phone (~390px). Internal hub links carry `?v=20260912a`. Hub `<head>` includes `Cache-Control: no-cache` and a visible `build 20260912a` footer stamp. Rebuild injects `#gallery-glossary` JSON from `PUBLIC_VERDICT` so the Leaderboard plot reads the same labels.
 
 ## Copy rules (hubs)
 
@@ -33,29 +33,38 @@ Every **Experiments card** must show a clock **to the second**, like `2026-09-06
 
 ## Truth rails (post harness revalidation)
 
-Verify from `docs/briefs/2026-09-09-harness-revalidation.html` — do not invent:
+Verify from published briefs — do not invent dollars:
 
-- **BTC bar = buy&hold** (~$19,879 from $1,000 on the revalidation full sample; deepest dip ~−76%).
-- **Only active KEEP = Donchian 20/10 on ALGO** (~$10,663 vs ALGO hold ~$79).
-- **ETH Donchian 10/5 = TWEAK** (still beats hold full-sample ~$31.8k vs ~$17.7k, but walk-forward fails — not KEEP).
-- Paper-live books that started on old KEEP configs: history; revalidation supersedes those paper dollars.
+- **BTC bar = just hold** (~$19,879 from $1,000 on the 9 Sep revalidation full sample; deepest dip ~−76%). Source: `docs/briefs/2026-09-09-harness-revalidation.html`.
+- **ALGO lab pick = Donchian 20/12** (~$18,662 vs just hold ~$79). Source: `docs/briefs/2026-09-11-algo-entry-neighborhood.html` (20/12 confirmed; neighborhood brief 10 Sep first moved the pick off 20/10). **Never** hardcode 20/10 as the active ALGO pick on a hub.
+- **ETH Donchian 10/5 = still testing** (still beats hold full-sample ~$31.8k vs ~$17.7k, but walk-forward fails — not a lab pick). Source: 9 Sep revalidation.
+- Paper-live books that started on old KEEP configs: history; later honest briefs supersede those paper dollars.
 
 ## Leaderboard plot
 
-Build from **post-revalidation / honest** paper end equities you can verify in published briefs (especially the revalidation brief). **Omit** invalidated pre–look-ahead figures. All honest comparable points today share one publish clock (`2026-09-09 13:54:16 CEST`) — do **not** fake a multi-day scatter. **All** = small multiples (BTC / ALGO / ETH), each with its **own linear $ scale**. Sleeve filter = one larger linear panel. X = paper end $ from $1,000 (lollipop). Y = ranked strategy. Hold = gray dashed reference. Palette: BTC amber, ALGO teal, ETH indigo. Shapes: KEEP ● / TWEAK ■ / DROP ○. Label the KEEP and the $ leader. Phone-first ~390px. Inline SVG/JS only.
+Build from **post-revalidation / honest** paper end equities you can verify in published briefs (revalidation + later ALGO neighborhood confirmation). **Omit** invalidated pre–look-ahead figures. Do **not** fake a multi-day time scatter. ALGO lab pick 20/12 may use its own confirmation clock (`2026-09-11 08:26:08 CEST`); other 9 Sep cells keep `2026-09-09 13:54:16 CEST`. **All** = small multiples (BTC / ALGO / ETH), each with its **own linear $ scale**. Sleeve filter = one larger linear panel. X = paper end $ from $1,000 (lollipop). Y = ranked strategy. Just hold = gray dashed reference. Palette: BTC amber, ALGO teal, ETH indigo. Shapes: Lab pick ● / Still testing ■ / Dropped ○ / Just hold ◆. Label the lab pick and the $ leader. Phone-first ~390px. Inline SVG/JS only.
 
-## Verdict words (use these, not synonyms)
+## Verdict words (public glossary — use these, not KEEP / TWEAK / DROP)
 
-- **Keep** — keep as a *paper baseline or reference*. Never “go live.”
-- **Tweak** — idea has a pulse; do not crown it; change the question or the knobs.
-- **Drop** — this config or this use is done. Say what was dropped (defaults vs whole family).
-- **Parked** — knobs were searched; stop the spiral; keep the write-up. Not a Drop. Use `.chip.park` / "Parked" everywhere — briefs included (copy `--chip-park` tokens from a hub page if the brief lacks them).
+Internal code keys may stay `keep` / `tweak` / `drop` / `park` / `hold` (CSS classes, `Brief.chip_kind`, plot `verdict` fields). **Visitor-facing labels** must come from `PUBLIC_VERDICT` in `scripts/rebuild_gallery.py` at render time. Do not put KEEP / TWEAK / DROP on hub chips, Investor hero labels, or the Leaderboard legend.
+
+| Internal key | Public label | Meaning |
+|--------------|--------------|---------|
+| `hold` | **Just hold** | Own the coin, no trading rule (baseline). Never call this Keep / Lab pick. |
+| `keep` | **Lab pick** | Current paper winner for that sleeve. Never “go live.” |
+| `tweak` | **Still testing** | Interesting but not locked. Do not crown it. |
+| `drop` | **Dropped** | This config or this use is ruled out. |
+| `park` | **Parked** | Knobs were searched; stop the spiral; keep the write-up. Not a Drop. Use `.chip.park`. |
+
+Optional Investor legend (once): “Just hold = own the coin. Lab pick = best paper rule we found so far.”
+
+Rebuild maps experiment cards, leaderboard-auto chips, and brief `<span class="chip …">` KEEP/TWEAK/DROP labels through that glossary. Instruction chips (`Don't`, `Watch`, `Next`) stay as-is. New gallery-card overrides should use `chip="Lab pick"` (class can remain `keep`).
 
 When a new brief lands, update:
 
 1. Investor home if the $1,000 vs hold story changed *(hand-written)*
 2. Leaderboard ranks / plot points if sleeve scores or verdicts changed *(hand-written)*
-3. Experiments current vs superseded placement if a KEEP/TWEAK/DROP actually moved
+3. Experiments current vs superseded placement if a lab pick / still testing / dropped verdict actually moved
 4. The Experiments card lists and the last-updated stamp — **this step is CI**
 
 ## CI rebuild
@@ -71,7 +80,7 @@ When a new brief lands, update:
 
 Do not delete them even when a region is empty.
 
-- **Scans** `docs/briefs/*.html` (title, date, KEEP / TWEAK / DROP / PARKED from hero chips or takeaway chips). Optional override on a brief: `<!-- gallery-card title="…" chip="Keep" class="keep" teaser="$10,663 vs hold $79" lane="current" -->`. `lane="superseded"` demotes a new brief. The `teaser` is the one-line paper $ (or Day-0) line on Experiment cards. Never put an invented dollar figure in `teaser`.
+- **Scans** `docs/briefs/*.html` (title, date, keep / tweak / drop / park / hold from hero chips or takeaway chips). Optional override on a brief: `<!-- gallery-card title="…" chip="Lab pick" class="keep" teaser="$18,662 vs just hold $79" lane="current" -->`. `lane="superseded"` demotes a new brief. The `teaser` is the one-line paper $ (or Day-0) line on Experiment cards. Never put an invented dollar figure in `teaser`. Public chip text is always the glossary word, even if the brief still says KEEP in the body.
 - **Rewrites** the marked Experiments card lists and every `gallery:updated` kicker. Stamp format: `Updated 2026-09-09 13:54:16 CEST · hypothetical $1,000` from the latest `docs/briefs/` commit (override with `GALLERY_UPDATED_AT` or `SOURCE_DATE_EPOCH`). Cards show **full date** + chip + title + teaser. Existing card order is kept; new files are appended (current vs superseded: date before 9 Sep 2026, or paper-live, → superseded unless `lane` overrides). Revalidation is pinned first in Current.
 - **Does not** overwrite Investor prose, leaderboard rank tables, or plot point data. Those stay editorial.
 - **Leaderboard auto:** hand-written “latest beat” stays. Only briefs **after** 9 Sep 2026 that are not already linked get appended.
@@ -98,7 +107,7 @@ Publish **only**:
 - Strategy concepts and plain-English rules  
 - Paper findings vs **buy & hold**  
 - Hypothetical **paper $1,000** (already the brief convention)  
-- Keep / Tweak / Drop / Parked  
+- Just hold / Lab pick / Still testing / Dropped / Parked  
 - Progress over time (on Leaderboard plot + Experiments cards)
 
 Never publish:

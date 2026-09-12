@@ -152,17 +152,23 @@
     margin: 0 0 .85rem; line-height: 1.4;
   }
   /* gallery:published:end */
+  /* gallery:chip-hold */
+  .chip.hold {
+    color: var(--ink-faint, #64748b);
+    background: var(--bg-soft, #e2e8f0);
+  }
+  /* gallery:chip-hold:end */
 </style>
 </head>
 <body>
   <!-- gallery-published iso="2026-09-06T17:02:20+00:00" source="git-add:502d31b" -->
   <div class="wrap">
         <nav class="hub-jump" aria-label="Lab sections">
-      <a href="../index.html?v=20260909b">Back to Investor</a>
+      <a href="../index.html?v=20260912a">Back to Investor</a>
       <span class="sep" aria-hidden="true">·</span>
-      <a href="../leaderboard.html?v=20260909b">Leaderboard</a>
+      <a href="../leaderboard.html?v=20260912a">Leaderboard</a>
       <span class="sep" aria-hidden="true">·</span>
-      <a href="../experiments.html?v=20260909b">Experiments</a>
+      <a href="../experiments.html?v=20260912a">Experiments</a>
     </nav>
     <header class="top">
       <div class="logo" aria-hidden="true">
@@ -177,8 +183,8 @@
 
     <section class="card">
       <div class="chips">
-        <span class="chip tweak">Tweak family</span>
-        <span class="chip drop">Drop sticky defaults</span>
+        <span class="chip tweak">Still testing</span>
+        <span class="chip drop">Dropped</span>
       </div>
       <h1>Sticky SMA vs fast 5/20: more “stick” didn’t buy more Bitcoin</h1>
       <p class="lede">After PR #4 we compared the new <b>sma_sticky</b> defaults (20/50, confirm 2, exit gap 1%) to the fast SMA 5/20 baseline and plain buy&amp;hold on BTC. Sticky was meant to stay invested and grow units. On this sample it roughly matches hold on dollars, stays out ~44% of the time, and <b>loses badly to fast SMA</b> on both $ and BTC-units. Grid the knobs before killing the idea — don’t ship these defaults.</p>
@@ -268,11 +274,11 @@
     <section class="card">
       <h2>Keep · Tweak · Drop</h2>
       <div class="row-verdicts">
-        <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>Sticky defaults as BTC core rule</b> — loses to fast SMA on $ &amp; units; ≈ hold $ while out ~44% of bars.</div></div>
-        <div class="verdict-row"><span class="chip tweak">Tweak</span><div class="txt"><b>Sticky idea family</b> — confirm + exit-gap still worth a grid before killing (RESEARCH rule).</div></div>
-        <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>Fast SMA 5/20 as paper baseline</b> — best of the three on this path; live core still TWEAK (sells often).</div></div>
-        <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>Buy&amp;hold as core reference</b> — 100% time-in-market; deepest DD (−76%).</div></div>
-        <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>Go live</b> — paper only; no explicit OK.</div></div>
+        <div class="verdict-row"><span class="chip drop">Dropped</span><div class="txt"><b>Sticky defaults as BTC core rule</b> — loses to fast SMA on $ &amp; units; ≈ hold $ while out ~44% of bars.</div></div>
+        <div class="verdict-row"><span class="chip tweak">Still testing</span><div class="txt"><b>Sticky idea family</b> — confirm + exit-gap still worth a grid before killing (RESEARCH rule).</div></div>
+        <div class="verdict-row"><span class="chip keep">Lab pick</span><div class="txt"><b>Fast SMA 5/20 as paper baseline</b> — best of the three on this path; live core still TWEAK (sells often).</div></div>
+        <div class="verdict-row"><span class="chip keep">Lab pick</span><div class="txt"><b>Buy&amp;hold as core reference</b> — 100% time-in-market; deepest DD (−76%).</div></div>
+        <div class="verdict-row"><span class="chip drop">Dropped</span><div class="txt"><b>Go live</b> — paper only; no explicit OK.</div></div>
       </div>
     </section>
 

@@ -148,17 +148,23 @@
     margin: 0 0 .85rem; line-height: 1.4;
   }
   /* gallery:published:end */
+  /* gallery:chip-hold */
+  .chip.hold {
+    color: var(--ink-faint, #64748b);
+    background: var(--bg-soft, #e2e8f0);
+  }
+  /* gallery:chip-hold:end */
 </style>
 </head>
 <body>
   <!-- gallery-published iso="2026-09-06T17:02:20+00:00" source="git-add:502d31b" -->
   <div class="wrap">
         <nav class="hub-jump" aria-label="Lab sections">
-      <a href="../index.html?v=20260909b">Back to Investor</a>
+      <a href="../index.html?v=20260912a">Back to Investor</a>
       <span class="sep" aria-hidden="true">·</span>
-      <a href="../leaderboard.html?v=20260909b">Leaderboard</a>
+      <a href="../leaderboard.html?v=20260912a">Leaderboard</a>
       <span class="sep" aria-hidden="true">·</span>
-      <a href="../experiments.html?v=20260909b">Experiments</a>
+      <a href="../experiments.html?v=20260912a">Experiments</a>
     </nav>
     <header class="top">
       <div class="logo" aria-hidden="true">
@@ -173,8 +179,8 @@
 
     <section class="card">
       <div class="chips">
-        <span class="chip tweak">Tweak BTC core</span>
-        <span class="chip drop">Park family</span>
+        <span class="chip tweak">Still testing</span>
+        <span class="chip park">Parked</span>
       </div>
       <h1>Grid winner 20/15 beats hold — still trails fast SMA on units</h1>
       <p class="lede"><b>btc_hold_protect</b> with <code>dd_pct=20</code>, <code>reentry_pct=15</code> rescues year-split to <b>5/7</b> beat B&amp;H (defaults were 1/7) and grows ending units to <b>0.210 &gt; hold 0.132</b>. Walk-forward beat-hold <b>43%</b>. Fast SMA 5/20 still wins the pile (<b>0.612</b> units, 6/7 years). <b>Park</b> further dd/reentry research on this family for BTC.</p>
@@ -262,12 +268,12 @@
     <section class="card">
       <h2>Keep · Tweak · Drop</h2>
       <div class="row-verdicts">
-        <div class="verdict-row"><span class="chip tweak">Tweak</span><div class="txt"><b>BTC core rule (20/15)</b> — beats hold on $ &amp; units &amp; 5/7 years; still ≪ SMA units; not obvious enough to sell core BTC on this alone.</div></div>
-        <div class="verdict-row"><span class="chip drop">Park</span><div class="txt"><b>Hold-protect family (BTC)</b> — dd/reentry grid + stress/WF done. Stop knob spiral. Do not DROP the idea (documented soft-hold recipe).</div></div>
-        <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>Defaults (25/10) as core</b> — confirmed worse than 20/15 and worse than hold on units.</div></div>
-        <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>Fast SMA 5/20 paper baseline</b> — still best ending_units (0.612).</div></div>
-        <div class="verdict-row"><span class="chip keep">Keep</span><div class="txt"><b>Buy&amp;hold core reference</b> — 100% time-in-market; deepest DD (−76%).</div></div>
-        <div class="verdict-row"><span class="chip drop">Drop</span><div class="txt"><b>Go live</b> — paper only; no explicit OK.</div></div>
+        <div class="verdict-row"><span class="chip tweak">Still testing</span><div class="txt"><b>BTC core rule (20/15)</b> — beats hold on $ &amp; units &amp; 5/7 years; still ≪ SMA units; not obvious enough to sell core BTC on this alone.</div></div>
+        <div class="verdict-row"><span class="chip park">Parked</span><div class="txt"><b>Hold-protect family (BTC)</b> — dd/reentry grid + stress/WF done. Stop knob spiral. Do not DROP the idea (documented soft-hold recipe).</div></div>
+        <div class="verdict-row"><span class="chip drop">Dropped</span><div class="txt"><b>Defaults (25/10) as core</b> — confirmed worse than 20/15 and worse than hold on units.</div></div>
+        <div class="verdict-row"><span class="chip keep">Lab pick</span><div class="txt"><b>Fast SMA 5/20 paper baseline</b> — still best ending_units (0.612).</div></div>
+        <div class="verdict-row"><span class="chip keep">Lab pick</span><div class="txt"><b>Buy&amp;hold core reference</b> — 100% time-in-market; deepest DD (−76%).</div></div>
+        <div class="verdict-row"><span class="chip drop">Dropped</span><div class="txt"><b>Go live</b> — paper only; no explicit OK.</div></div>
       </div>
     </section>
 

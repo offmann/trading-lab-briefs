@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Cache-Control" content="no-cache">
-<!-- hub-build: 20260909b -->
+<!-- hub-build: 20260912a -->
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Trading Lab — Leaderboard</title>
-<meta name="description" content="Paper scoreboard by sleeve: BTC, ALGO, ETH vs buy-and-hold from $1,000. KEEP / TWEAK / DROP. Not advice.">
+<meta name="description" content="Paper scoreboard by sleeve: BTC, ALGO, ETH vs just hold from $1,000. Lab pick / Still testing / Dropped. Not advice.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Cpath d='M8 22 L14 12 L18 18 L24 8' fill='none' stroke='%2399f6e4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='8' r='2' fill='%23fbbf24'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -248,6 +248,12 @@
   }
   footer.site a { color: var(--teal); }
   @media (min-width: 480px) { h1 { font-size: 1.75rem; } }
+  /* gallery:chip-hold */
+  .chip.hold {
+    color: var(--ink-faint, #64748b);
+    background: var(--bg-soft, #e2e8f0);
+  }
+  /* gallery:chip-hold:end */
 </style>
 </head>
 <body>
@@ -268,17 +274,17 @@
         </button>
       </div>
       <nav class="tabs" aria-label="Lab sections">
-        <a href="index.html?v=20260909b">Investor</a>
-        <a href="leaderboard.html?v=20260909b" aria-current="page">Leaderboard</a>
-        <a href="experiments.html?v=20260909b">Experiments</a>
+        <a href="index.html?v=20260912a">Investor</a>
+        <a href="leaderboard.html?v=20260912a" aria-current="page">Leaderboard</a>
+        <a href="experiments.html?v=20260912a">Experiments</a>
       </nav>
     </div>
   </header>
 
   <main id="main" class="wrap">
-    <p class="kicker"><!-- gallery:updated:start -->Updated 2026-09-12 20:53:51 CEST · hypothetical $1,000<!-- gallery:updated:end --></p>
+    <p class="kicker"><!-- gallery:updated:start -->Updated 2026-09-12 08:19:49 CEST · hypothetical $1,000<!-- gallery:updated:end --></p>
     <h1>Paper scoreboard</h1>
-    <p class="lede">Each sleeve is its own linear scale from a <strong>$1,000</strong> start. Honest engine only. A high dollar figure is not a KEEP if the rolling test fails.</p>
+    <p class="lede">Each sleeve is its own linear scale from a <strong>$1,000</strong> start. Honest engine only. A high dollar figure is not a lab pick if the rolling test fails.</p>
 
     <section class="card" aria-labelledby="plot-title">
       <h2 id="plot-title">Honest $1,000 scorecard</h2>
@@ -292,10 +298,10 @@
       <div class="plot-stack" id="plot"></div>
       <p class="plot-caption" id="plotCap">Tap a marker. All = three small multiples, each on its own linear $ scale. Scorecard 2026-09-09 13:54:16 CEST.</p>
       <div class="legend" aria-hidden="true">
-        <span class="btc"><i class="keep"></i>KEEP</span>
-        <span><i class="tweak"></i>TWEAK</span>
-        <span><i class="drop"></i>DROP</span>
-        <span><i class="hold-swatch"></i>hold</span>
+        <span class="btc"><i class="keep"></i>Lab pick</span>
+        <span><i class="tweak"></i>Still testing</span>
+        <span><i class="drop"></i>Dropped</span>
+        <span><i class="hold-swatch"></i>Just hold</span>
         <span class="btc">BTC amber</span>
         <span class="algo">ALGO teal</span>
         <span class="eth">ETH indigo</span>
@@ -318,47 +324,47 @@
               <td>Donchian-hold 10/15 c2</td>
               <td class="mono">$26,148</td>
               <td class="mono beat">beat</td>
-              <td><span class="chip tweak">Tweak</span></td>
+              <td><span class="chip tweak">Still testing</span></td>
             </tr>
             <tr>
               <td><b>Buy &amp; hold</b></td>
               <td class="mono beat">$19,879</td>
               <td class="mono">bar</td>
-              <td><span class="chip keep">Keep</span></td>
+              <td><span class="chip hold">Just hold</span></td>
             </tr>
             <tr>
               <td>Donchian 20/10</td>
               <td class="mono">$17,595</td>
               <td class="mono lost">trail</td>
-              <td><span class="chip tweak">Tweak</span></td>
+              <td><span class="chip tweak">Still testing</span></td>
             </tr>
             <tr>
               <td>SMA 5/20</td>
               <td class="mono">$12,163</td>
               <td class="mono lost">trail</td>
-              <td><span class="chip drop">Drop vs hold</span></td>
+              <td><span class="chip drop">Dropped vs hold</span></td>
             </tr>
             <tr>
               <td>Donchian-hold 10/10</td>
               <td class="mono">$10,389</td>
               <td class="mono lost">trail</td>
-              <td><span class="chip drop">Drop vs hold</span></td>
+              <td><span class="chip drop">Dropped vs hold</span></td>
             </tr>
             <tr>
               <td>Donchian 10/5</td>
               <td class="mono lost">$2,598</td>
               <td class="mono lost">trail</td>
-              <td><span class="chip drop">Drop</span></td>
+              <td><span class="chip drop">Dropped</span></td>
             </tr>
           </tbody>
         </table>
       </div>
-      <p style="margin-top:.6rem">Buy&amp;hold is the Bitcoin bar (dip −76%). The in-sample overlay that beats it still fails the rolling test.</p>
+      <p style="margin-top:.6rem">Just hold is the Bitcoin bar (dip −76%). The in-sample overlay that beats it still fails the rolling test.</p>
     </section>
 
     <section class="card" aria-labelledby="algo-board">
       <h2 id="algo-board">ALGO sleeve</h2>
-      <p class="sleeve-meta">2019-06-21 → 2026-09-08 · $1,000 start · hold $79</p>
+      <p class="sleeve-meta">2019-06-21 → 2026-09-09 · $1,000 start · just hold $79</p>
       <div class="table-wrap">
         <table>
           <thead>
@@ -366,33 +372,39 @@
           </thead>
           <tbody>
             <tr>
-              <td><b>Donchian 20/10</b></td>
-              <td class="mono beat">$10,663</td>
+              <td><b>Donchian 20/12</b></td>
+              <td class="mono beat">$18,662</td>
               <td class="mono beat">beat</td>
-              <td><span class="chip keep">Keep</span></td>
+              <td><span class="chip keep">Lab pick</span></td>
+            </tr>
+            <tr>
+              <td>Donchian 20/10</td>
+              <td class="mono">$10,663</td>
+              <td class="mono beat">beat</td>
+              <td><span class="chip tweak">Still testing</span></td>
             </tr>
             <tr>
               <td>SMA 5/20</td>
               <td class="mono">$1,177</td>
               <td class="mono beat">beat</td>
-              <td><span class="chip tweak">Tweak</span></td>
+              <td><span class="chip tweak">Still testing</span></td>
             </tr>
             <tr>
               <td>Donchian 10/5</td>
               <td class="mono">$886</td>
               <td class="mono beat">beat</td>
-              <td><span class="chip drop">Drop</span></td>
+              <td><span class="chip drop">Dropped</span></td>
             </tr>
             <tr>
               <td>Buy &amp; hold</td>
               <td class="mono lost">$79</td>
               <td class="mono">bar</td>
-              <td><span class="chip drop">Drop</span></td>
+              <td><span class="chip hold">Just hold</span></td>
             </tr>
           </tbody>
         </table>
       </div>
-      <p style="margin-top:.6rem">20/10 is the only active KEEP. 10/5 beats a crashed hold but loses vs the $1,000 start.</p>
+      <p style="margin-top:.6rem">20/12 is the lab pick (11 Sep confirmation, $18,662). 20/10 is the prior 9 Sep cell — still fine, second place. 10/5 beats a crashed hold but loses vs the $1,000 start.</p>
     </section>
 
     <section class="card" aria-labelledby="eth-board">
@@ -408,30 +420,30 @@
               <td>Donchian 10/5</td>
               <td class="mono beat">$31,808</td>
               <td class="mono beat">beat</td>
-              <td><span class="chip tweak">Tweak</span></td>
+              <td><span class="chip tweak">Still testing</span></td>
             </tr>
             <tr>
               <td>Buy &amp; hold</td>
               <td class="mono">$17,691</td>
               <td class="mono">bar</td>
-              <td class="mono">—</td>
+              <td><span class="chip hold">Just hold</span></td>
             </tr>
             <tr>
               <td>SMA 5/20</td>
               <td class="mono">$13,054</td>
               <td class="mono lost">trail</td>
-              <td><span class="chip drop">Drop vs hold</span></td>
+              <td><span class="chip drop">Dropped vs hold</span></td>
             </tr>
             <tr>
               <td>Donchian 20/10</td>
               <td class="mono">$11,566</td>
               <td class="mono lost">trail</td>
-              <td><span class="chip drop">Drop vs hold</span></td>
+              <td><span class="chip drop">Dropped vs hold</span></td>
             </tr>
           </tbody>
         </table>
       </div>
-      <p style="margin-top:.6rem">Donchian 10/5 beats hold on the long path but fails the rolling test — TWEAK, not KEEP.</p>
+      <p style="margin-top:.6rem">Donchian 10/5 beats hold on the long path but fails the rolling test — still testing, not a lab pick.</p>
     </section>
 
     <section aria-labelledby="drops-title">
@@ -443,39 +455,39 @@
             <span class="chip drop">New scorecard</span>
           </div>
           <h3>Harness revalidation</h3>
-          <p>BTC bar = buy&amp;hold $19,879. Only active KEEP = ALGO Donchian 20/10 $10,663. ETH 10/5 is a TWEAK.</p>
-          <a class="open" href="briefs/2026-09-09-harness-revalidation.html?v=20260909b">Open brief →</a>
+          <p>BTC bar = just hold $19,879. Later briefs moved the ALGO lab pick to Donchian 20/12 $18,662. ETH 10/5 is still testing.</p>
+          <a class="open" href="briefs/2026-09-09-harness-revalidation.html?v=20260912a">Open brief →</a>
         </article>
         <!-- gallery:leaderboard-auto:start -->
       <article class="drop-card">
         <div class="top">
           <time class="date" datetime="2026-09-11T06:26:08+00:00">2026-09-11 08:26:08 CEST</time>
-          <span class="chip keep">Keep upgrade</span>
+          <span class="chip keep">Lab pick</span>
         </div>
         <h3>ALGO Donchian neighborhood</h3>
         <p>$1,000 books open — no P&amp;L yet</p>
         <p class="when">Published 2026-09-11 08:26:08 CEST</p>
-        <a class="open" href="briefs/2026-09-10-algo-donchian-neighborhood.html?v=20260909b">Open brief →</a>
+        <a class="open" href="briefs/2026-09-10-algo-donchian-neighborhood.html?v=20260912a">Open brief →</a>
       </article>
       <article class="drop-card">
         <div class="top">
           <time class="date" datetime="2026-09-11T06:26:08+00:00">2026-09-11 08:26:08 CEST</time>
-          <span class="chip keep">Keep confirmed</span>
+          <span class="chip keep">Lab pick</span>
         </div>
         <h3>ALGO Donchian 20/12 confirmed</h3>
         <p>No single $1,000 figure in this brief — open for tables.</p>
         <p class="when">Published 2026-09-11 08:26:08 CEST</p>
-        <a class="open" href="briefs/2026-09-11-algo-entry-neighborhood.html?v=20260909b">Open brief →</a>
+        <a class="open" href="briefs/2026-09-11-algo-entry-neighborhood.html?v=20260912a">Open brief →</a>
       </article>
       <article class="drop-card">
         <div class="top">
           <time class="date" datetime="2026-09-12T06:19:39+00:00">2026-09-12 08:19:39 CEST</time>
-          <span class="chip drop">Drop SOL</span>
+          <span class="chip drop">Dropped</span>
         </div>
         <h3>SOL/LINK Donchian transfer</h3>
         <p>No single $1,000 figure in this brief — open for tables.</p>
         <p class="when">Published 2026-09-12 08:19:39 CEST</p>
-        <a class="open" href="briefs/2026-09-12-sol-link-donchian-transfer.html?v=20260909b">Open brief →</a>
+        <a class="open" href="briefs/2026-09-12-sol-link-donchian-transfer.html?v=20260912a">Open brief →</a>
       </article>
         <!-- gallery:leaderboard-auto:end -->
       </div>
@@ -483,7 +495,7 @@
   </main>
 
   <footer class="site">
-    Paper research · hypothetical $1,000 · not financial advice · build 20260909b · <a href="index.html?v=20260909b">Investor</a>
+    Paper research · hypothetical $1,000 · not financial advice · build 20260912a · <a href="index.html?v=20260912a">Investor</a>
   </footer>
 
   <script>
@@ -504,30 +516,33 @@
         });
       }
 
-      // Honest full-sample end $ from docs/briefs/2026-09-09-harness-revalidation.html.
-      // One publish clock — do not invent a multi-day scatter. Invalid pre-fix $ omitted.
+      // Honest full-sample end $. BTC/ETH + ALGO 20/10 from
+      // docs/briefs/2026-09-09-harness-revalidation.html. ALGO 20/12 $18,662
+      // from docs/briefs/2026-09-11-algo-entry-neighborhood.html. Do not invent $.
       var SCORECARD_AT = "2026-09-09 13:54:16 CEST";
+      var ALGO_PICK_AT = "2026-09-11 08:26:08 CEST";
       var POINTS = [
         {sleeve:"BTC", name:"Donchian-hold 10/15 c2", short:"Don-hold 10/15", y:26148, verdict:"tweak", hold:false},
-        {sleeve:"BTC", name:"Buy & hold", short:"Hold", y:19879, verdict:"keep", hold:true},
+        {sleeve:"BTC", name:"Buy & hold", short:"Just hold", y:19879, verdict:"hold", hold:true},
         {sleeve:"BTC", name:"Donchian 20/10", short:"Don 20/10", y:17595, verdict:"tweak", hold:false},
         {sleeve:"BTC", name:"SMA 5/20", short:"SMA 5/20", y:12163, verdict:"drop", hold:false},
         {sleeve:"BTC", name:"Donchian-hold 10/10", short:"Don-hold 10/10", y:10389, verdict:"drop", hold:false},
         {sleeve:"BTC", name:"Donchian 10/5", short:"Don 10/5", y:2598, verdict:"drop", hold:false},
-        {sleeve:"ALGO", name:"Donchian 20/10", short:"Don 20/10", y:10663, verdict:"keep", hold:false},
+        {sleeve:"ALGO", name:"Donchian 20/12", short:"Don 20/12", y:18662, verdict:"keep", hold:false},
+        {sleeve:"ALGO", name:"Donchian 20/10", short:"Don 20/10", y:10663, verdict:"tweak", hold:false},
         {sleeve:"ALGO", name:"SMA 5/20", short:"SMA 5/20", y:1177, verdict:"tweak", hold:false},
         {sleeve:"ALGO", name:"Donchian 10/5", short:"Don 10/5", y:886, verdict:"drop", hold:false},
-        {sleeve:"ALGO", name:"Buy & hold", short:"Hold", y:79, verdict:"drop", hold:true},
+        {sleeve:"ALGO", name:"Buy & hold", short:"Just hold", y:79, verdict:"hold", hold:true},
         {sleeve:"ETH", name:"Donchian 10/5", short:"Don 10/5", y:31808, verdict:"tweak", hold:false},
-        {sleeve:"ETH", name:"Buy & hold", short:"Hold", y:17691, verdict:"bar", hold:true},
+        {sleeve:"ETH", name:"Buy & hold", short:"Just hold", y:17691, verdict:"hold", hold:true},
         {sleeve:"ETH", name:"SMA 5/20", short:"SMA 5/20", y:13054, verdict:"drop", hold:false},
         {sleeve:"ETH", name:"Donchian 20/10", short:"Don 20/10", y:11566, verdict:"drop", hold:false}
       ];
       var HOLD = {BTC:19879, ALGO:79, ETH:17691};
-      var XMAX = {BTC:28000, ALGO:12000, ETH:35000};
+      var XMAX = {BTC:28000, ALGO:22000, ETH:35000};
       var WINDOWS = {
         BTC:"2019-01-01 → 2026-09-08",
-        ALGO:"2019-06-21 → 2026-09-08",
+        ALGO:"2019-06-21 → 2026-09-09",
         ETH:"2019-01-01 → 2026-09-08"
       };
       var COLORS = {BTC:"--s-btc", ALGO:"--s-algo", ETH:"--s-eth"};
@@ -539,9 +554,26 @@
       function money(n) {
         return "$" + Math.round(n).toLocaleString("en-US");
       }
+      function loadGlossary() {
+        var fallback = {
+          keep: "Lab pick",
+          tweak: "Still testing",
+          drop: "Dropped",
+          park: "Parked",
+          hold: "Just hold",
+          bar: "Just hold"
+        };
+        var el = document.getElementById("gallery-glossary");
+        if (!el) return fallback;
+        try {
+          return Object.assign(fallback, JSON.parse(el.textContent));
+        } catch (err) {
+          return fallback;
+        }
+      }
+      var GLOSSARY = loadGlossary();
       function verdictWord(v) {
-        if (v === "bar") return "hold bar";
-        return v.toUpperCase();
+        return GLOSSARY[v] || v;
       }
 
       function draw(filter) {
@@ -557,12 +589,13 @@
         if (filter === "ALL") {
           document.getElementById("plotCap").textContent =
             "All = three linear panels (not one log axis). Scorecard " + SCORECARD_AT +
-            ". X = paper end $ from $1,000. Dashed line = buy&hold. Tap a marker.";
+            ". ALGO lab pick " + ALGO_PICK_AT +
+            ". X = paper end $ from $1,000. Dashed line = just hold. Tap a marker.";
         } else {
           document.getElementById("plotCap").textContent =
             filter + " · linear 0–" + money(XMAX[filter]) +
-            " · hold " + money(HOLD[filter]) +
-            " · " + SCORECARD_AT + ". Tap a marker.";
+            " · just hold " + money(HOLD[filter]) +
+            " · " + (filter === "ALGO" ? ALGO_PICK_AT : SCORECARD_AT) + ". Tap a marker.";
         }
       }
 
@@ -597,7 +630,7 @@
         var figure = document.createElement("figure");
         figure.className = "plot-panel";
         var cap = document.createElement("figcaption");
-        cap.innerHTML = sleeve + " · hold " + money(HOLD[sleeve]) +
+        cap.innerHTML = sleeve + " · just hold " + money(HOLD[sleeve]) +
           " <span>linear 0–" + money(xmax) + " · " + WINDOWS[sleeve] + "</span>";
         figure.appendChild(cap);
 
@@ -673,16 +706,17 @@
             "text-anchor": "end",
             "font-family": "JetBrains Mono, ui-monospace, monospace"
           });
-          var tag = p.verdict === "keep" ? " KEEP" : (p === top ? " top $" : "");
+          var tag = p.verdict === "keep" ? " " + verdictWord("keep") : (p === top ? " top $" : "");
           right.textContent = money(p.y) + tag;
           g.appendChild(right);
 
           function pick() {
-            var extra = p.verdict === "keep" ? "KEEP baseline." :
-              (p === top ? "Highest $ on this sleeve — not a KEEP unless marked." : verdictWord(p.verdict) + ".");
+            var extra = p.verdict === "keep" ? verdictWord("keep") + "." :
+              (p === top ? "Highest $ on this sleeve — not a lab pick unless marked." : verdictWord(p.verdict) + ".");
+            var when = sleeve === "ALGO" && p.verdict === "keep" ? ALGO_PICK_AT : SCORECARD_AT;
             document.getElementById("plotCap").innerHTML =
               "<b>" + sleeve + " · " + p.name + "</b> — " + money(p.y) +
-              " from $1,000 · " + extra + " " + SCORECARD_AT + ".";
+              " from $1,000 · " + extra + " " + when + ".";
           }
           g.addEventListener("click", pick);
           g.addEventListener("keydown", function (e) {
@@ -697,7 +731,7 @@
             "text-anchor": "end",
             "font-family": "DM Sans, system-ui, sans-serif"
           });
-          note.textContent = "KEEP " + keep.short + " " + money(keep.y);
+          note.textContent = verdictWord("keep") + " " + keep.short + " " + money(keep.y);
           svg.appendChild(note);
         }
 
@@ -716,5 +750,8 @@
       draw("ALL");
     })();
   </script>
+  <!-- gallery:glossary:start -->
+  <script type="application/json" id="gallery-glossary">{"keep":"Lab pick","tweak":"Still testing","drop":"Dropped","park":"Parked","hold":"Just hold"}</script>
+  <!-- gallery:glossary:end -->
 </body>
 </html>
