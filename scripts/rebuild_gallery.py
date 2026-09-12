@@ -56,7 +56,7 @@ PROGRESS_HTML = DOCS / "progress.html"
 KEEPERS_HTML = DOCS / "keepers.html"
 
 # Bump this string when hub HTML must win against a cached GH Pages client.
-CACHE_BUSTER = "20260912b"
+CACHE_BUSTER = "20260912c"
 CACHE_META = '<meta http-equiv="Cache-Control" content="no-cache">'
 BUILD_COMMENT = f"<!-- hub-build: {CACHE_BUSTER} -->"
 
@@ -176,6 +176,66 @@ HOLD_CHIP_CSS = f"""{HOLD_CHIP_CSS_START}
     background: var(--bg-soft, #e2e8f0);
   }}
 {HOLD_CHIP_CSS_END}"""
+PHONE_BOARD_CSS_START = "  /* gallery:phone-board */"
+PHONE_BOARD_CSS_END = "  /* gallery:phone-board:end */"
+PHONE_BOARD_CSS = f"""{PHONE_BOARD_CSS_START}
+  @media (max-width: 479px) {{
+    .table-wrap {{
+      overflow-x: visible;
+      -webkit-overflow-scrolling: auto;
+      border: 0;
+    }}
+    table {{
+      min-width: 0;
+      width: 100%;
+    }}
+    thead {{
+      display: none;
+    }}
+    tbody {{
+      display: block;
+      width: 100%;
+    }}
+    tbody tr {{
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: baseline;
+      column-gap: .5rem;
+      row-gap: .15rem;
+      padding: .55rem 0;
+      border-bottom: 1px solid var(--line);
+    }}
+    tbody tr:last-child {{
+      border-bottom: 0;
+    }}
+    tbody th,
+    tbody td {{
+      padding: 0;
+      border: 0;
+      white-space: normal;
+      text-align: left;
+    }}
+    tbody td:nth-child(1) {{
+      grid-column: 1;
+      grid-row: 1;
+      font-weight: 650;
+    }}
+    tbody td:nth-child(4) {{
+      grid-column: 2;
+      grid-row: 1;
+      justify-self: end;
+    }}
+    tbody td:nth-child(2) {{
+      grid-column: 1;
+      grid-row: 2;
+    }}
+    tbody td:nth-child(3) {{
+      grid-column: 2;
+      grid-row: 2;
+      justify-self: end;
+    }}
+  }}
+{PHONE_BOARD_CSS_END}"""
 
 # Optional per-brief override, e.g.
 # <!-- gallery-card title="First screen — BTC & ALGO grids" chip="Lab pick" class="keep" teaser="$6,196 vs hold $4,619" -->
@@ -1113,6 +1173,8 @@ def polish_hub_page(src: str, current: str) -> str:
     src = rewrite_dropped_vs_hold_chips(src)
     if current == "Investor":
         src = polish_investor_copy(src)
+    if current == "Leaderboard":
+        src = insert_style_block(src, PHONE_BOARD_CSS_START, PHONE_BOARD_CSS_END, PHONE_BOARD_CSS)
     return src
 
 
@@ -1250,6 +1312,10 @@ def check_hub_ia() -> list[str]:
                 errors.append("leaderboard is missing ALGO Donchian 20/12 $18,662")
             if re.search(r"20/10 is the only active KEEP", src):
                 errors.append("leaderboard still crowns ALGO 20/10 as KEEP")
+            if "gallery:phone-board" not in src:
+                errors.append("leaderboard is missing the phone stacked-row CSS")
+            if "grid-template-columns: minmax(0, 1fr) auto" not in src:
+                errors.append("leaderboard phone rows do not put the verdict chip on the strategy line")
         if path in {INDEX_HTML, INVESTOR_HTML, LEADERBOARD_HTML, EXPERIMENTS_HTML}:
             if re.search(
                 r'<span class="chip[^"]*">\s*(?:Keep|Tweak|Drop|KEEP|TWEAK|DROP)\b',
@@ -1720,6 +1786,9 @@ def self_test() -> None:
     assert "Donchian" not in polished
     assert INVESTOR_OOS_AFTER in polished
     assert "rolling out-of-sample" not in polished
+    assert "overflow-x: visible" in PHONE_BOARD_CSS
+    assert "grid-template-columns: minmax(0, 1fr) auto" in PHONE_BOARD_CSS
+    assert "td:nth-child(4)" in PHONE_BOARD_CSS
 
     keep_src = (
         "<title>SMA 5/20 stress — BTC · Sep 6, 2026</title>"
