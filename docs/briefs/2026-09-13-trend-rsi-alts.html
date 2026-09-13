@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>SOL/LINK Donchian transfer · Sep 12, 2026</title>
-<meta name="description" content="Paper-only: tried ALGO KEEP Donchian 20/12 on SOL and LINK. SOL looks rich in-sample but fails honesty; LINK loses to hold. DROP both. ALGO KEEP unchanged.">
+<title>Trend+RSI alts screen · Sep 13, 2026</title>
+<meta name="description" content="Paper-only: trend+RSI on SOL, LINK, and ETH almost never trades and never beats hold. DROP. ALGO Donchian KEEP unchanged.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Cpath d='M8 22 L14 12 L18 18 L24 8' fill='none' stroke='%2399f6e4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='8' r='2' fill='%23fbbf24'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -114,6 +114,7 @@
   ul.plain li { margin: .25rem 0; }
   code { font-family: var(--mono); font-size: .82em; }
   footer { font-size: .75rem; color: var(--ink-faint); margin-top: 1.25rem; text-align: center; }
+  .family-trials, .keep-not-action { font-size: .8rem; color: var(--ink-faint); margin: .35rem 0 0; }
   /* gallery:hub-jump */
   nav.hub-jump {
     display: flex; flex-wrap: wrap; align-items: center; gap: .15rem .5rem;
@@ -144,7 +145,7 @@
 </style>
 </head>
 <body>
-  <!-- gallery-published iso="2026-09-12T06:19:39+00:00" source="first-publish trading-lab@f8bf42a9dfafd7c5468f2c72bce4e5f606ac9933" -->
+  <!-- gallery-published iso="2026-09-13T06:17:18+00:00" source="first-publish trading-lab@d08c59274c2de6ef06ccffb67e462cc3d012754d" -->
 <div class="wrap">
       <nav class="hub-jump" aria-label="Lab sections">
       <a href="../index.html?v=20260912c">Back to Investor</a>
@@ -159,113 +160,144 @@
     </div>
     <div>
       <div class="brand">Trading lab</div>
-      <div class="sub">Sat Sep 12, 2026 · paper only · alts KEEP transfer</div>
+      <div class="sub">Sun Sep 13, 2026 · paper only · non-Donchian alts</div>
     </div>
   </header>
-    <p class="published">Published <!-- gallery:published:start -->2026-09-12 08:19:39 CEST<!-- gallery:published:end --></p>
+    <p class="published">Published <!-- gallery:published:start -->2026-09-13 08:17:18 CEST<!-- gallery:published:end --></p>
 
   <section class="card">
     <div class="chips">
       <span class="chip drop">Dropped</span>
       <span class="chip drop">Dropped</span>
+      <span class="chip drop">Dropped</span>
       <span class="chip keep">Lab pick</span>
     </div>
-    <h1>Same ALGO rule on SOL &amp; LINK? Not good enough.</h1>
+    <h1>Trend + RSI on SOL, LINK, ETH? Almost never trades.</h1>
     <p class="lede">
-      We copied the ALGO paper KEEP (“buy a 20-day high, sell a 12-day low”) onto
-      <b>SOL</b> and <b>LINK</b>, plus a small nearby grid. SOL looked rich on history dollars,
-      but failed the honesty tests. LINK lost to just holding. <b>No new KEEP.</b>
+      Yesterday Donchian 20/12 failed to travel off ALGO. Today we tried a different idea:
+      <b>stay in an uptrend, buy a dip, sell the bounce</b> (<code>trend_rsi</code>).
+      Fair 36-cell grid on each coin. Almost every setting sat in cash forever.
+      The few that traded missed the whole moonshot. <b>DROP. No new KEEP.</b>
     </p>
     <div class="meta">
       <span class="pill">$1,000 paper</span>
-      <span class="pill">long history → 2026-09-10</span>
+      <span class="pill">long history → 2026-09-11</span>
       <span class="pill">15 bps costs</span>
       <span class="pill">next-open fills</span>
     </div>
-    <p class="path"><b>Path:</b> Screen ✓ · Stress ✓ · Paper-live marked · Real $ needs your OK</p>
+    <p class="path"><b>Path:</b> Screen ✓ · Stress not needed (0 cells beat hold) · Paper-live marked · Real $ needs your OK</p>
   </section>
 
   <section class="card">
-    <h2>SOL — dollars look good, honesty does not</h2>
+    <h2>What the rule is trying to do</h2>
+    <p>
+      In plain English: only buy when price is already above a long average <em>and</em>
+      a short-term “overcooked down” dip prints. Sell when the bounce gets hot or the
+      trend breaks. Sounds sensible. On these three coins it almost never happens.
+    </p>
+    <p>36 settings × 3 coins = 108 tests. Only <b>9 cells ever placed a trade</b>. The other 99 stayed flat at $1,000.</p>
+  </section>
+
+  <section class="card">
+    <h2>SOL — hold wins by a mile</h2>
     <div class="statgrid">
-      <div class="stat"><div class="k">Best cell 20/10</div><div class="v good">$177,631</div></div>
-      <div class="stat"><div class="k">KEEP copy 20/12</div><div class="v good">$165,852</div></div>
-      <div class="stat"><div class="k">Just hold SOL</div><div class="v">$112,399</div></div>
-      <div class="stat"><div class="k">WF beat rate</div><div class="v bad">~45%</div></div>
+      <div class="stat"><div class="k">Just hold SOL</div><div class="v good">$116,618</div></div>
+      <div class="stat"><div class="k">Best trend+RSI</div><div class="v bad">$2,245</div></div>
+      <div class="stat"><div class="k">Donchian 10/5</div><div class="v">$80,079</div></div>
+      <div class="stat"><div class="k">Cells vs hold</div><div class="v bad">0 / 36</div></div>
     </div>
     <p style="margin-top:.85rem">
-      Eight of nine nearby settings beat holding SOL on full-history dollars.
-      That is the tempting part. Then we asked: does it win <em>year by year</em> and on
-      rolling forward windows? No. Year-split is only 3–4 of 7 years. Walk-forward
-      is about 10 of 22 folds (~45%). ALGO’s KEEP bar is 8/8 years and ~68% of folds.
-      Pretty history ≠ durable edge. <b>DROP the SOL transfer.</b>
+      Best cell (slow trend, quick RSI, loose dip): six trades, 3% of days in the market.
+      Soft dip (−18%) because it barely played. That is not an edge — it is sitting out
+      a $116k ride. Donchian 10/5 also loses to hold. <b>DROP SOL.</b>
     </p>
   </section>
 
   <section class="card">
-    <h2>LINK — hold wins, full stop</h2>
+    <h2>LINK &amp; ETH — the trades that fired lost money</h2>
     <div class="statgrid">
-      <div class="stat"><div class="k">Just hold LINK</div><div class="v good">$37,548</div></div>
-      <div class="stat"><div class="k">Best Donchian</div><div class="v bad">$11,061</div></div>
-      <div class="stat"><div class="k">KEEP copy 20/12</div><div class="v bad">$4,363</div></div>
-      <div class="stat"><div class="k">Cells vs hold</div><div class="v bad">0 / 9</div></div>
+      <div class="stat"><div class="k">Hold LINK</div><div class="v good">$37,808</div></div>
+      <div class="stat"><div class="k">Best trend+RSI</div><div class="v bad">$609</div></div>
+      <div class="stat"><div class="k">Hold ETH</div><div class="v good">$17,902</div></div>
+      <div class="stat"><div class="k">Best trend+RSI</div><div class="v bad">$930</div></div>
     </div>
     <p style="margin-top:.85rem">
-      Same story as the earlier ETH transfer: the ALGO rule does not travel.
-      No cell beat buy&amp;hold, so we did not invent honesty theater. <b>DROP LINK.</b>
+      Same story, worse dollars. LINK and ETH cells that actually traded finished
+      <em>under</em> the $1,000 start. Donchian 10/5 on LINK is $9,127 (still far behind hold).
+      ETH Donchian 10/5 is $31,224 — beats hold on history dollars, but that is the old
+      alts baseline, not today’s family, and we are not promoting it to KEEP.
     </p>
   </section>
 
   <section class="card">
-    <h2>Honesty scorecard (SOL tops)</h2>
+    <h2>Peek: vol-filter SMA is not a rescue</h2>
+    <p>
+      Because trend+RSI barely traded, we also ran the existing vol-filter SMA grid
+      (same three coins). On SOL the “winner” ($883k vs hold $117k) is
+      <b>identical to plain SMA 10/30</b> — the vol gate never blocked a trade.
+      Year-split 5/7, walk-forward 10/22 (45%). Same honesty fail as yesterday’s
+      SOL Donchian transfer. ETH vol-filter: 3/8 years, WF 11/27 (41%). LINK loses to hold.
+      Not a new KEEP. Not today’s main story.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>Scorecard vs baselines</h2>
     <div class="compare">
       <div class="row">
-        <div class="label">20/12 (KEEP copy)</div>
-        <div class="mono">years 3/7</div>
+        <div class="label">trend_rsi (all 3)</div>
+        <div class="mono">0 / 108 beat hold</div>
+        <div class="mono">99 never traded</div>
+      </div>
+      <div class="row">
+        <div class="label">SOL SMA / vol 10/30</div>
+        <div class="mono">years 5/7</div>
         <div class="mono">WF 10/22</div>
       </div>
       <div class="row">
-        <div class="label">20/10 (best $)</div>
-        <div class="mono">years 4/7</div>
-        <div class="mono">WF 10/22</div>
-      </div>
-      <div class="row">
-        <div class="label">25/10 (best Sharpe)</div>
-        <div class="mono">years 4/7</div>
-        <div class="mono">WF 9/22</div>
+        <div class="label">ETH vol 20/30</div>
+        <div class="mono">years 3/8</div>
+        <div class="mono">WF 11/27</div>
       </div>
       <div class="row">
         <div class="label">ALGO KEEP (control)</div>
-        <div class="mono">years 8/8</div>
-        <div class="mono">WF 17/25</div>
+        <div class="mono">$17,629 vs $78</div>
+        <div class="mono">8/8 · 17/25 cited</div>
       </div>
     </div>
-    <p style="margin-top:.85rem">Rule: KEEP only if it beats hold <em>and</em> honesty is strong. SOL fails the second half. ALGO control still 8/8 and 17/25 through the Sep 10 bar.</p>
+    <p style="margin-top:.85rem">
+      ALGO Donchian 20/12 refresh through Sep 11 still ~$17.6k vs hold $78.
+      No new stress — we are not demoting it. Honesty from Sep 12 still stands (8/8, 17/25).
+    </p>
   </section>
 
   <section class="card">
     <h2>Paper book (not a real order)</h2>
     <p>
-      ALGO KEEP 20/12 paper book marked through <b>2026-09-10</b> (Yahoo’s latest daily;
-      Sep 11/12 not printed yet). Still long since the Sep 9 fill. Equity
-      <b>$910.09</b> vs $1,000 start (ALGO slipped after entry). Signal still IN. No pending fill.
+      ALGO KEEP 20/12 paper book marked through <b>2026-09-11</b> (Yahoo’s latest daily;
+      Sep 12/13 not printed yet). Still long since the Sep 9 fill. Equity
+      <b>$929.10</b> vs $1,000 start (up from $910 on Sep 10). Signal still IN. No pending fill.
     </p>
-    <p>Demoted 10/5 trackers also marked. BTC/ETH 10/5 show pending paper SELLs — trackers only, not the KEEP.</p>
+    <p>Demoted 10/5 trackers also marked. BTC/ETH 10/5 filled their pending paper SELLs and are now flat — trackers only, not the KEEP.</p>
   </section>
 
   <section class="card">
     <h2>Verdict</h2>
-    <div class="verdict-row"><span class="chip drop">Dropped</span><div class="txt"><b>SOL Donchian neighborhood</b> — beats hold in-sample, fails year-split + walk-forward.</div></div>
-    <div class="verdict-row"><span class="chip drop">Dropped</span><div class="txt"><b>LINK Donchian neighborhood</b> — every cell loses to hold. Same class as ETH transfer fail.</div></div>
+    <div class="verdict-row"><span class="chip drop">Dropped</span><div class="txt"><b>SOL trend_rsi</b> — almost never trades; best cell $2.2k vs hold $117k.</div></div>
+    <div class="verdict-row"><span class="chip drop">Dropped</span><div class="txt"><b>LINK trend_rsi</b> — cells that fire lose money vs hold $38k.</div></div>
+    <div class="verdict-row"><span class="chip drop">Dropped</span><div class="txt"><b>ETH trend_rsi</b> — same; best cell $930 vs hold $18k.</div></div>
+    <div class="verdict-row"><span class="chip drop">Dropped</span><div class="txt"><b>vol-filter SMA peek</b> — SOL is just SMA 10/30; honesty 45% WF. Not a KEEP.</div></div>
     <div class="verdict-row"><span class="chip keep">Lab pick</span><div class="txt"><b>ALGO donchian_breakout 20/12</b> — refresh OK. Still the only alts KEEP.</div></div>
-    <div class="verdict-row"><span class="chip drop">Don't</span><div class="txt"><b>New BTC KEEP.</b> Core sleeve stays buy&amp;hold. Nothing obvious today.</div></div>
+    <div class="verdict-row"><span class="chip drop">Don't</span><div class="txt"><b>New BTC KEEP.</b> Core sleeve stays buy&amp;hold.</div></div>
+    <p class="family-trials">252 related trials in this family.</p>
+    <p class="keep-not-action">Research KEEP ≠ ACTION_ELIGIBLE — not permission to buy. Decision v0 is private advisor status only.</p>
   </section>
 
   <section class="card next">
     <h2>Next</h2>
     <ul class="plain">
-      <li>Keep marking ALGO 20/12 paper-live as new Yahoo bars print (Sep 11+).</li>
-      <li>Try a different alts family (not Donchian transfer) — e.g. simpler trend+hold or vol filter — on SOL/LINK/ETH.</li>
+      <li>Stop dip-buying these three. Try a default-long / “step aside only on a crash” rule on SOL — the opposite idea — because every active family either never trades or misses the moon years.</li>
+      <li>Keep marking ALGO 20/12 paper-live when Sep 12+ bars print.</li>
       <li>BTC core remains buy&amp;hold on the honest engine.</li>
     </ul>
   </section>
