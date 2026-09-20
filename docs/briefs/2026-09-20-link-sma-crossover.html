@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>SOL crash-exit screen · Sep 14, 2026</title>
-<meta name="description" content="Paper-only: default-long / crash-exit on SOL (btc_hold_protect reused). Softens the dip by sitting in cash and ending with far fewer SOL. DROP. ALGO Donchian KEEP unchanged.">
+<title>LINK SMA buy-strength · Sep 20, 2026</title>
+<meta name="description" content="Paper-only: sma_crossover on LINK — buy when the fast average is above the slow one. 4 cells. Best $7,112 vs hold $53,496. Year-split 2/10 and walk-forward 14/31. DROP. ALGO KEEP unchanged.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Cpath d='M8 22 L14 12 L18 18 L24 8' fill='none' stroke='%2399f6e4' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='8' r='2' fill='%23fbbf24'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -145,7 +145,7 @@
 </style>
 </head>
 <body>
-  <!-- gallery-published iso="2026-09-14T06:22:42+00:00" source="first-publish trading-lab@742b7c3c041487a7ede4e999c0a885f2276564c5" -->
+  <!-- gallery-published iso="2026-09-20T06:16:11+00:00" source="first-publish trading-lab@9e7941f58ea06f6d80b32da89b8f3fb36dace53d" -->
 <div class="wrap">
       <nav class="hub-jump" aria-label="Lab sections">
       <a href="../index.html?v=20260912c">Back to Investor</a>
@@ -160,27 +160,26 @@
     </div>
     <div>
       <div class="brand">Trading lab</div>
-      <div class="sub">Mon Sep 14, 2026 · paper only · SOL crash-exit</div>
+      <div class="sub">Sun Sep 20, 2026 · paper only · LINK SMA buy-strength</div>
     </div>
   </header>
-    <p class="published">Published <!-- gallery:published:start -->2026-09-14 08:22:42 CEST<!-- gallery:published:end --></p>
+    <p class="published">Published <!-- gallery:published:start -->2026-09-20 08:16:11 CEST<!-- gallery:published:end --></p>
 
   <section class="card">
     <div class="chips">
       <span class="chip drop">Dropped</span>
       <span class="chip keep">Lab pick</span>
     </div>
-    <h1>Stay long, step aside on a crash? On SOL it just sits in cash.</h1>
+    <h1>Buying LINK strength never even beats just holding.</h1>
     <p class="lede">
-      Yesterday dip-buying never traded. Today we tried the opposite:
-      <b>default long, sell only after a deep drop, buy back near the peak</b>
-      (existing <code>btc_hold_protect</code> on SOL — name is old, logic is the same).
-      Nine settings. None beat just holding SOL. The “softer dip” is paid for
-      with far fewer coins at the end. <b>DROP. No new KEEP.</b>
+      Yesterday SOL SMA looked rich on paper, then failed honesty. Today the
+      same 4 settings on LINK do not even win in-sample: best cell ends about
+      $7,112 vs hold $53,496. Year-split 2/10. Walk-forward 45%. DROP. No new
+      KEEP. No ETH or SOL knob hunt.
     </p>
     <div class="meta">
       <span class="pill">$1,000 paper</span>
-      <span class="pill">2020-04-10 → 2026-09-12</span>
+      <span class="pill">2017-11-09 → 2026-09-18</span>
       <span class="pill">15 bps costs</span>
       <span class="pill">next-open fills</span>
     </div>
@@ -190,70 +189,64 @@
   <section class="card">
     <h2>What the rule is trying to do</h2>
     <p>
-      In plain English: keep riding SOL. If price falls <b>20–30%</b> from its running high,
-      step into cash. Climb back in only when price is within <b>5–15%</b> of that high.
-      No Fear &amp; Greed gate today (off). Same nine-cell grid as the parked Bitcoin test.
+      Plain English: buy LINK when a 10- or 20-day average is above a 50- or
+      100-day average (the trend already looks strong), and sit in cash when
+      it is not. Same four settings as yesterday’s SOL grid — we did not
+      enlarge it.
     </p>
-    <p>We did not invent a second strategy. The registry already runs this rule on any coin.</p>
   </section>
 
   <section class="card">
     <h2>$1,000 in → what you would have now</h2>
     <div class="statgrid">
-      <div class="stat"><div class="k">Just hold SOL</div><div class="v good">$115,923</div></div>
-      <div class="stat"><div class="k">Best crash-exit</div><div class="v bad">$18,071</div></div>
-      <div class="stat"><div class="k">Donchian 10/5</div><div class="v">$80,079</div></div>
-      <div class="stat"><div class="k">Cells vs hold</div><div class="v bad">0 / 9</div></div>
+      <div class="stat"><div class="k">Just hold LINK</div><div class="v good">$53,496</div></div>
+      <div class="stat"><div class="k">Best SMA (10/50)</div><div class="v bad">$7,112</div></div>
+      <div class="stat"><div class="k">Second (20/100)</div><div class="v bad">$6,625</div></div>
+      <div class="stat"><div class="k">Donchian 10/5</div><div class="v warn">$37,157</div></div>
     </div>
     <p style="margin-top:.85rem">
-      Best cell: exit at −30%, re-enter within 15% of the peak. Eight trades.
-      Only <b>18% of days</b> in the market. Defaults (−25% / 10%) finish even worse: $10,399.
+      Zero of four settings beat hold on dollars or Sharpe. The winner of a
+      losing family is in about <b>half the days</b> (42 trades) and still
+      ends with about 582 LINK units vs hold 4,375. That is not a “pretty
+      number that fails honesty” story — the full-sample number already
+      loses. Donchian 10/5 is richer than SMA and still behind hold.
+      The slower 20 / 50 cell is worst at $2,140.
     </p>
   </section>
 
   <section class="card">
-    <h2>The real score: how many SOL you keep</h2>
-    <div class="statgrid">
-      <div class="stat"><div class="k">Hold SOL units</div><div class="v good">1,139</div></div>
-      <div class="stat"><div class="k">Best crash-exit</div><div class="v bad">178</div></div>
-      <div class="stat"><div class="k">Hold worst dip</div><div class="v warn">−96%</div></div>
-      <div class="stat"><div class="k">Crash-exit dip</div><div class="v">−57%</div></div>
-    </div>
-    <p style="margin-top:.85rem">
-      Hold’s worst ride was brutal — almost a full wipe at the low. Crash-exit looks calmer
-      (−57%) because it spent 2022, 2023, and 2026 sitting on $1,000 cash.
-      You finish with about <b>one-sixth as many SOL</b>. Same lesson as the parked Bitcoin
-      version of this rule. That is not an edge. It is missing the moon years.
-    </p>
-  </section>
-
-  <section class="card">
-    <h2>Honesty check (best cell 30 / 15)</h2>
+    <h2>Honesty check (top cells)</h2>
     <div class="compare">
       <div class="row">
-        <div class="label">Year-split</div>
-        <div class="mono">3 / 7 beat hold</div>
-        <div class="mono">flat in 3 years</div>
+        <div class="label">10 / 50 (best $)</div>
+        <div class="mono">years 2 / 10</div>
+        <div class="mono">WF 14 / 31 (45%)</div>
       </div>
       <div class="row">
-        <div class="label">Walk-forward</div>
-        <div class="mono">12 / 22 (55%)</div>
-        <div class="mono">mean +5%/fold</div>
+        <div class="label">20 / 100 (second)</div>
+        <div class="mono">years 4 / 10</div>
+        <div class="mono">WF 9 / 31 (29%)</div>
       </div>
       <div class="row">
-        <div class="label">2021 moon</div>
-        <div class="mono">$20k vs hold $107k</div>
-        <div class="mono">missed it</div>
-      </div>
-      <div class="row">
-        <div class="label">Defaults 25 / 10</div>
-        <div class="mono">years 3/7</div>
-        <div class="mono">WF 10/22</div>
+        <div class="label">10 / 100 and 20 / 50</div>
+        <div class="mono">lose to hold $</div>
+        <div class="mono">not stressed</div>
       </div>
     </div>
     <p style="margin-top:.85rem">
-      Walk-forward “wins” are mostly cash beating a falling market — not catching upside.
-      No LINK or ETH peek: SOL never produced a candidate.
+      The best cell only “beats” 2025 (a crash year) and 2026. It loses
+      every moon year: 2017, 2019, 2020, 2021, 2023. Rolling 90-day windows
+      win 45% of folds — several wins are sitting in cash while the fold
+      falls. Same honesty shape as SOL SMA, without SOL’s fake in-sample
+      jackpot. A KEEP needs dollars <b>and</b> honesty. This has neither.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>ETH / SOL peek</h2>
+    <p>
+      Skipped. Family DROPs on LINK in-sample, and SOL SMA already DROPped
+      yesterday. We did not hunt ETH or SOL knobs.
     </p>
   </section>
 
@@ -261,53 +254,59 @@
     <h2>Scorecard vs baselines</h2>
     <div class="compare">
       <div class="row">
-        <div class="label">SOL crash-exit</div>
-        <div class="mono">0 / 9 beat hold $</div>
-        <div class="mono">178 vs 1,139 units</div>
+        <div class="label">LINK SMA 10/50</div>
+        <div class="mono">$7,112 vs hold $53,496</div>
+        <div class="mono">DROP</div>
       </div>
       <div class="row">
-        <div class="label">SOL Donchian 10/5</div>
-        <div class="mono">$80k vs hold $116k</div>
-        <div class="mono">still loses; closer</div>
+        <div class="label">LINK Donchian 10/5</div>
+        <div class="mono">$37.2k vs hold $53.5k</div>
+        <div class="mono">comparator</div>
+      </div>
+      <div class="row">
+        <div class="label">Yesterday SOL SMA</div>
+        <div class="mono">$596.5k vs hold $115.7k</div>
+        <div class="mono">already DROP</div>
       </div>
       <div class="row">
         <div class="label">ALGO KEEP (control)</div>
-        <div class="mono">$17,526 vs $78</div>
+        <div class="mono">$18,444 vs hold $79</div>
         <div class="mono">8/8 · 17/25 cited</div>
       </div>
     </div>
     <p style="margin-top:.85rem">
-      ALGO Donchian 20/12 refresh through Sep 12 still ~$17.5k vs hold $78.
-      No new stress — we are not demoting it. Honesty from Sep 12 still stands.
+      ALGO Donchian 20 / 12 refresh through Sep 18 still about $18.4k. No new
+      stress — we are not demoting it. Honesty from Sep 10–11 still stands.
     </p>
   </section>
 
   <section class="card">
     <h2>Paper book (not a real order)</h2>
     <p>
-      ALGO KEEP 20/12 paper book marked through <b>2026-09-12</b> (Yahoo’s latest daily;
-      Sep 13/14 not printed yet). Still long since the Sep 9 fill. Equity
-      <b>$923.69</b> vs $1,000 start (down a little from $929.10 on Sep 11). Signal still IN.
-      No pending fill. Routine mark — not a new KEEP.
+      ALGO KEEP 20 / 12 paper book marked through <b>2026-09-18</b> (Yahoo’s latest daily;
+      Sep 19/20 not printed yet). Still long since the Sep 9 fill. Equity
+      <b>$971.81</b> vs $1,000 start (up from $901.85 on Sep 17).
+      Signal still IN. No pending fill. Routine mark — not a new KEEP.
     </p>
-    <p>Demoted 10/5 trackers also marked. BTC/ETH 10/5 stay flat in cash (trackers only).</p>
+    <p>Demoted 10 / 5 trackers also marked. ETH 10 / 5 stays flat in cash. BTC 10 / 5 shows a pending paper BUY (tracker only — not a KEEP).</p>
   </section>
 
   <section class="card">
     <h2>Verdict</h2>
-    <div class="verdict-row"><span class="chip drop">Dropped</span><div class="txt"><b>SOL crash-exit</b> — 0/9 beat hold. Best $18k vs $116k; 178 vs 1,139 SOL. Soft dip is sitting in cash.</div></div>
-    <div class="verdict-row"><span class="chip drop">Dropped</span><div class="txt"><b>Do not tweak the knobs.</b> All nine cells fail the same way. Fear &amp; Greed would add complexity, not coins.</div></div>
+    <div class="verdict-row"><span class="chip drop">Dropped</span><div class="txt"><b>LINK sma_crossover</b> — 4 cells, 0 beat hold on dollars. Honesty is 2/10 years and 45% of folds. Not a KEEP. Do not enlarge this grid.</div></div>
+    <div class="verdict-row"><span class="chip drop">Dropped</span><div class="txt"><b>ETH / SOL knobs</b> — family failed here and on SOL yesterday, so we did not hunt those names.</div></div>
     <div class="verdict-row"><span class="chip keep">Lab pick</span><div class="txt"><b>ALGO donchian_breakout 20/12</b> — refresh OK. Still the only alts KEEP.</div></div>
-    <div class="verdict-row"><span class="chip drop">Don't</span><div class="txt"><b>New BTC KEEP.</b> Core sleeve stays buy&amp;hold. This family stays parked on Bitcoin too.</div></div>
-    <p class="family-trials">Search history: 11 unique specs · 67 run records.</p>
+    <div class="verdict-row"><span class="chip drop">Don't</span><div class="txt"><b>New BTC KEEP.</b> Core sleeve stays buy&amp;hold.</div></div>
+    <p class="family-trials">Search history (sma_crossover LINK): 4 unique specs · 86 run records.</p>
     <p class="keep-not-action">Research KEEP ≠ ACTION_ELIGIBLE — not permission to buy. Decision v0 is private advisor status only.</p>
   </section>
 
   <section class="card next">
     <h2>Next</h2>
     <ul class="plain">
-      <li>Park crash-exit on SOL (same as Bitcoin). Try stickier Donchian exits (<code>donchian_hold</code>) on SOL — 10/5 already kept more of the moon ($80k) than this crash rule ($18k).</li>
-      <li>Keep marking ALGO 20/12 paper-live when Sep 13+ bars print.</li>
+      <li>Park LINK price-timing SMA (SOL SMA already parked). Do not enlarge the 4-cell grid.</li>
+      <li>Next idea: same 4-cell <code>sma_crossover</code> on <b>AVAX</b> — a different liquid alt, not more LINK or SOL knobs.</li>
+      <li>Keep marking ALGO 20/12 paper-live when Sep 19+ bars print.</li>
       <li>BTC core remains buy&amp;hold on the honest engine.</li>
     </ul>
   </section>
