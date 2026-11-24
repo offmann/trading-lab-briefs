@@ -1,0 +1,1294 @@
+{
+  "schemaVersion": 1,
+  "meta": {
+    "title": "House view",
+    "timezone": "Europe/Paris",
+    "generatedAt": "2026-11-24T10:55:00+01:00",
+    "coverage": {
+      "from": "2026-11-17",
+      "to": "2026-11-24",
+      "label": "17-24 Nov 2026, Europe/Paris",
+      "note": "Sanitized public copy of messages that were actually sent in this week. It is not the complete historical archive. Silent off-day briefs and silent evening checks are omitted. Scout items have a date but no recorded clock time, so sentAt is null and is not invented."
+    },
+    "privacy": "Public copy only. No allocations, amounts, fills, or personal trigger prices. Tickers are macro examples of a mechanism. They are not holdings, allocations, or recommendations. Watch lines are qualitative. Market figures are written without a dollar sign or a GW/MW abbreviation so they stay inside the public-site privacy tests.",
+    "counts": {
+      "scout": 15,
+      "brief": 3,
+      "thesis-change": 3,
+      "evening": 4,
+      "thinkers": 1
+    },
+    "messageCount": 26
+  },
+  "houseThesis": {
+    "id": "overview.thesis",
+    "title": "House thesis",
+    "updatedOn": "2026-11-23",
+    "paragraphs": [
+      "Long-term accumulation, fundamentals first. Quick trades only with a clear path.",
+      "AI is a five-layer stack with sublayers: physical plant, chips, infrastructure owners, models, and apps. Sublayers exist to spot bottleneck shifts and gaps, not to fill every box. Default analysis is macro and sublayer-level; company detail only on request.",
+      "The working bet is that software moats are thin in an AI world, so value often accrues lower in the stack. That bet has to keep being tested.",
+      "Before adding to a scarce theme, apply the toll-versus-shortage test: is this a durable, controllable toll that strengthens with usage, or a shortage that capital can copy?",
+      "The scarce input has been shifting from chips toward permission: permits, interconnects, and jurisdiction. Operator data through mid-November still showed demand (GPU rents, memory booked years out, foundries asking for cash up front). The live stress has been financing, politics, and real rates, not a break in orders.",
+      "A changed or broken thesis is a reason to review. It is not an automatic sell. Conditions should be written before the event."
+    ],
+    "versions": [
+      {
+        "version": 1,
+        "effectiveOn": "2026-11-18",
+        "supersedes": null,
+        "summary": "Nvidia cleared the demand tests in the 17 Nov print. The live debate moved to revenue quality, vendor financing, and governance. Physical-layer names were cheaper after an AI-power rotation. Direction unchanged."
+      },
+      {
+        "version": 2,
+        "effectiveOn": "2026-11-20",
+        "supersedes": 1,
+        "summary": "The mid-November stress is financing, politics, and real rates, not demand. GPU rents were still rising, memory was still being booked, and foundries were reportedly asking weaker customers for cash up front. Permitting stayed amber as the Texas freeze looked longer."
+      },
+      {
+        "version": 3,
+        "effectiveOn": "2026-11-22",
+        "supersedes": 2,
+        "summary": "Adopted the sublayer map. The week to 20 Nov looked like forced deleveraging (SOX and Taiwan had sharp weekly drops) while supply data kept tightening, especially in HBM and DRAM and at foundry and tools. Memory is not one market: flash softened. Compute demand looked intact, but trust and financing in 2a were under watch."
+      },
+      {
+        "version": 4,
+        "effectiveOn": "2026-11-23",
+        "supersedes": 3,
+        "summary": "Thinkers scan: the physical-layer toll has a regulator. PJM's market monitor and eight state consumer advocates want data-center load pulled from the mid-December capacity auction. House-view direction was not flipped. The memory gap is treated as HBM-specific, not a blanket memory call. Nvidia's board reinstated Jensen Huang later the same day; investigations continue, so key-person risk eased but did not disappear."
+      }
+    ]
+  },
+  "counterView": {
+    "id": "overview.counter",
+    "title": "Strongest counter-view",
+    "asOf": "2026-11-23",
+    "text": "The physical-layer toll has a regulator. Scarcity prices that power producers earn in capacity auctions can be contested just as new capital defaults to power and grid. Separately, with real yields high, long-duration scarcity assets can de-rate even if every operating datapoint holds. AI usage can rise while the profit pool does not: unit prices can fall faster than volume grows, capital can sit in last year's bottleneck, and a real constraint can still fail to become a durable toll."
+  },
+  "houseRules": [
+    {
+      "id": "rules.ideas",
+      "title": "How ideas are treated",
+      "items": [
+        "These are research ideas, not buy or sell instructions, and not orders.",
+        "Act only on conditions written down before the event.",
+        "A broken thesis is a review, never an automatic sell.",
+        "Apply the toll-versus-shortage test before treating scarcity as a durable toll.",
+        "No new-money idea within three trading days of that company's report.",
+        "Long-term hold bias. A falling price is not, by itself, a reason to sell in a panic."
+      ]
+    },
+    {
+      "id": "rules.reading",
+      "title": "How a claim is read",
+      "items": [
+        "Mix many signals into one house view. Never copy a single thinker.",
+        "Every item carries the strongest credible counter-view.",
+        "Tag numbers as sourced, computed, or estimated, with a date and a source when a figure is used.",
+        "Separate what was reported, what is inferred, and what is still unknown.",
+        "Date the observation. A dated note is not a permanent truth."
+      ]
+    },
+    {
+      "id": "rules.map",
+      "title": "How the map is used",
+      "items": [
+        "Five layers, then sublayers. Empty boxes stay empty.",
+        "Sublayers exist to spot bottleneck shifts and gaps, not to collect a name per box.",
+        "Names are examples of a mechanism. They are not holdings, allocations, or recommendations.",
+        "If a company fits two places, give it one primary category and a cross-tag.",
+        "Default analysis is macro and sublayer-level. Company detail only on request.",
+        "GEV is grid and electrical equipment (1b), not a power producer. AVGO's primary category is 2a, with a 2c cross-tag, and is not counted twice."
+      ]
+    },
+    {
+      "id": "rules.boundary",
+      "title": "What this desk is not",
+      "items": [
+        "Not a trading screen. No orders, transfers, or broker connections.",
+        "A note in the inbox is not permission to trade, send, deploy, or skip a confirmation."
+      ]
+    }
+  ],
+  "layers": [
+    {
+      "id": "1",
+      "name": "Physical",
+      "line": "Power, electrical gear, buildings, and permits.",
+      "heat": "tightening",
+      "subs": [
+        {
+          "id": "1a",
+          "name": "Power generation",
+          "heat": "tightening",
+          "bottleneck": "Deliverable, already-connected power still looks scarce. A longer Texas permit freeze favours sites that can already deliver.",
+          "examples": [
+            "CEG",
+            "TLN"
+          ],
+          "notes": "GEV is not listed here. It supplies equipment and sits in 1b."
+        },
+        {
+          "id": "1b",
+          "name": "Grid and electrical equipment",
+          "heat": "tightening",
+          "bottleneck": "Tightness looks concentrated in high-voltage grid gear, especially large transformers, not in every electrical product.",
+          "examples": [
+            "ETN",
+            "GEV"
+          ],
+          "notes": "GEV is an equipment supplier, not a power producer. ETN is broader than a large-transformer pure play."
+        },
+        {
+          "id": "1c",
+          "name": "Data-center plant and cooling",
+          "heat": "watch",
+          "bottleneck": "Cooling and plant can constrain deployment, but one 23 Nov supplier report suggested capacity may be catching up with orders. That is not yet a sector trend.",
+          "examples": [
+            "VRT"
+          ],
+          "notes": "Empty of a dedicated name is fine. AAON appears on the timeline as an observation, not to fill the box."
+        },
+        {
+          "id": "1d",
+          "name": "Land and permits",
+          "heat": "tightening",
+          "bottleneck": "A site that can be permitted and powered remains a binding constraint. Texas and ERCOT timelines slipped; the signal stays amber because a freeze is not the same as a signed moratorium.",
+          "examples": [],
+          "notes": "Often a signal rather than a cleanly investable toll. Empty of company names on purpose."
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Chips",
+      "line": "Accelerators, memory, interconnect, and the steps that make them.",
+      "heat": "splitting",
+      "subs": [
+        {
+          "id": "2a",
+          "name": "Compute, GPUs and custom accelerators",
+          "heat": "watch",
+          "bottleneck": "Demand evidence stayed intact through the mid-November equity selloff. The live issues are trust, financing, and custom-silicon mix, not a rollover in rents.",
+          "examples": [
+            "NVDA",
+            "AMD",
+            "AVGO"
+          ],
+          "notes": "AVGO's primary category is 2a, with a 2c cross-tag."
+        },
+        {
+          "id": "2b",
+          "name": "Memory",
+          "heat": "splitting",
+          "bottleneck": "HBM and DRAM still look tight and booked years out. NAND and some enterprise flash look softer after reported China-cloud order cuts. There is no single memory shortage.",
+          "examples": [
+            "MU"
+          ],
+          "notes": "The interesting gap, if any, is HBM-specific and time-limited, not a blanket memory call. A 17 Dec Micron print is a natural checkpoint."
+        },
+        {
+          "id": "2c",
+          "name": "Networking, optics, and interconnect",
+          "heat": "watch",
+          "bottleneck": "A mid-November survey pointed at bonding yield as a possible co-packaged-optics delay. That is not yet a confirmed industry-wide constraint, so this box stays empty by design.",
+          "examples": [
+            "MRVL"
+          ],
+          "notes": "AVGO is not listed here as a primary name. Cross-tag only."
+        },
+        {
+          "id": "2d",
+          "name": "Foundry, equipment, and packaging",
+          "heat": "tightening",
+          "bottleneck": "Foundries and tools still look like the layer that gets paid first, including reports of cash-up-front terms for weaker customers.",
+          "examples": [
+            "TSM",
+            "ASML",
+            "ACMR"
+          ],
+          "notes": "BESI is a later-cycle packaging watch, not a reason to fill the box."
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "name": "Infrastructure owners",
+      "line": "The layer that funds and hosts a lot of other people's tolls.",
+      "heat": "watch",
+      "subs": [
+        {
+          "id": "3a",
+          "name": "US hyperscalers",
+          "heat": "watch",
+          "bottleneck": "Free-cash-flow strain is no longer theoretical after large capex prints. They remain the layer funding a lot of the stack.",
+          "examples": [
+            "GOOGL"
+          ],
+          "notes": "Google also has custom-chip exposure; it is tagged here as the primary category."
+        },
+        {
+          "id": "3b",
+          "name": "Neoclouds and compute landlords",
+          "heat": "watch",
+          "bottleneck": "Weaker compute landlords face tighter credit and prepayment terms. Empty on purpose until a clean, durable toll is clear.",
+          "examples": [],
+          "notes": "Empty by design."
+        },
+        {
+          "id": "3c",
+          "name": "China cloud",
+          "heat": "watch",
+          "bottleneck": "Compute shortages and token-price competition are pulling in two directions: API prices have risen in places, while reported SSD order cuts and thinner monetisation weigh on the layer.",
+          "examples": [
+            "BABA"
+          ],
+          "notes": "Alibaba's September-quarter cloud growth was strong, but free cash flow stayed negative as capex rose. That is a review of quality, not a demand collapse."
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "name": "Models",
+      "line": "Frontier labs and the pricing power of the model layer.",
+      "heat": "weakening",
+      "subs": [],
+      "examples": [
+        "ANT"
+      ],
+      "bottleneck": "Open models still take a large share of volume, while blended token prices have fallen and cache hits have risen. Pricing power looks thinner than volume.",
+      "notes": "Anthropic listed in the week. The earlier 'profitable lab' line was already qualified by an amended filing that showed a third-quarter operating loss after a large short-term compute charge, plus very large committed spend."
+    },
+    {
+      "id": "5",
+      "name": "Applications",
+      "line": "Where models show up in a product or a workflow.",
+      "heat": "empty",
+      "subs": [],
+      "examples": [],
+      "bottleneck": "Early signals only. Nothing here is treated as a proven application toll.",
+      "notes": "Recursion, Illumina, and Tempus appear on the timeline as research observations, not to fill the box."
+    }
+  ],
+  "theses": {
+    "strengthened": [
+      {
+        "id": "thesis.demand-intact",
+        "title": "Compute demand held up through the mid-November equity selloff",
+        "asOf": "2026-11-22",
+        "summary": "H100 neocloud rents stayed up on a 30-day view, memory was still being booked years out, and foundries were reportedly asking some customers for cash up front. The sharp SOX and Taiwan weekly drops look more like forced deleveraging than a break in operator demand."
+      },
+      {
+        "id": "thesis.permission",
+        "title": "Permission, not chips, is the binding physical constraint",
+        "asOf": "2026-11-23",
+        "summary": "Texas permit timelines stretched, ERCOT's Batch Zero audit shut out a very large queue, and PJM's fast-energization path still finishes late in the decade. Already-connected power and sites keep their scarcity value for longer."
+      },
+      {
+        "id": "thesis.memory-split",
+        "title": "Memory is not one market",
+        "asOf": "2026-11-22",
+        "summary": "HBM and DRAM still look tight. NAND and some enterprise flash look softer after reported China-cloud order cuts. A blanket memory call is the wrong map."
+      },
+      {
+        "id": "thesis.tools-paid-first",
+        "title": "Foundry and tools still get paid first",
+        "asOf": "2026-11-20",
+        "summary": "Reports that TSMC is setting credit lines and asking weaker customers for cash, while some chip vendors extend payment terms, support the idea that the tool and foundry layer collects earlier than merchant GPUs."
+      }
+    ],
+    "qualifiedOrEased": [
+      {
+        "id": "thesis.anthropic-lab",
+        "title": "The profitable, cash-generating lab line for Anthropic was qualified",
+        "asOf": "2026-11-18",
+        "summary": "The amended filing used in the roadshow showed a third-quarter operating loss after a large short-term compute charge, plus very large committed spend. Top labs can still earn, but they are large compute renters."
+      },
+      {
+        "id": "thesis.huang-exit",
+        "title": "Huang's resignation as a lasting operational break eased",
+        "asOf": "2026-11-23",
+        "summary": "On 18 Nov the board had said it did not intend to reinstate him. On 23 Nov the board restored him as president, CEO, and director, citing US government input that the return posed no national-security risk. Independent investigations continue, so the issue eased; it did not close."
+      },
+      {
+        "id": "thesis.cheap-china-tokens",
+        "title": "The cheap-Chinese-token deflation case weakened",
+        "asOf": "2026-11-19",
+        "summary": "Chinese labs rationed compute and raised some API prices. That cuts against a simple story that open Chinese tokens keep deflating AI pricing forever, without proving durable China-cloud monetisation."
+      }
+    ],
+    "open": [
+      {
+        "id": "thesis.financing-quality",
+        "title": "Revenue quality and vendor financing at Nvidia",
+        "asOf": "2026-11-23",
+        "summary": "Receivables, days-sales-outstanding, and large guarantees shifted the debate after the print. A 10-Q is due by 4 Dec, and an SEC accounting inquiry is in the background. Demand can be real and still poorly financed."
+      },
+      {
+        "id": "thesis.custom-mix",
+        "title": "Custom-silicon mix inside the TPU complex",
+        "asOf": "2026-11-22",
+        "summary": "An unconfirmed report said Google cut 2027 Broadcom TPU volume and shifted some work toward MediaTek. The next clean test is Broadcom's 9 Dec print. Custom silicon can keep sharing while the beneficiary mix changes."
+      },
+      {
+        "id": "thesis.hbm-clock",
+        "title": "Whether the HBM tightness has a near clock",
+        "asOf": "2026-11-23",
+        "summary": "Contracted capacity and rising HBM price talk support a longer upcycle. Cycle bears argue that commodity memory gluts first and that today's prices already assume a shortage that can fade if capex slows. Micron's mid-December print is a checkpoint."
+      },
+      {
+        "id": "thesis.l1-regulator",
+        "title": "Whether physical-layer scarcity prices stick once regulators intervene",
+        "asOf": "2026-11-23",
+        "summary": "PJM's market monitor and eight state advocates want data-center load pulled out of the mid-December capacity auction. Long bilateral contracts may be a sturdier form of the toll than auction prices."
+      },
+      {
+        "id": "thesis.rates-vs-ops",
+        "title": "Financing, politics, and real rates versus operating data",
+        "asOf": "2026-11-22",
+        "summary": "Operator data can stay tight while long-duration scarcity assets de-rate. A December Fed decision sits on the calendar as a live rates test."
+      },
+      {
+        "id": "thesis.model-pricing",
+        "title": "Model-layer pricing power",
+        "asOf": "2026-11-22",
+        "summary": "On at least one routing platform, token volume rose while blended prices fell and cache-hit rates were very high. Cached tokens are not incremental GPU work. One platform is not the market, but pricing power at the model layer looks thinner than usage."
+      },
+      {
+        "id": "thesis.btc-cycle",
+        "title": "Bitcoin cycle and ETF flows",
+        "asOf": "2026-11-23",
+        "summary": "Spot bitcoin ETFs saw heavy mid-November outflow weeks, then a sharp washout and bounce. That is a cycle review, not an automatic exit, and not a new-money call on the bounce."
+      }
+    ]
+  },
+  "pulse": [
+    {
+      "group": "tightening",
+      "layer": "1a",
+      "text": "Already-connected power still looks scarce. Permit freezes lengthen that advantage."
+    },
+    {
+      "group": "tightening",
+      "layer": "1b",
+      "text": "High-voltage equipment, not every electrical product."
+    },
+    {
+      "group": "tightening",
+      "layer": "1d",
+      "text": "Permits and interconnect remain amber: delayed, not yet a signed moratorium."
+    },
+    {
+      "group": "tightening",
+      "layer": "2d",
+      "text": "Foundry and tools still look like the layer that gets paid first."
+    },
+    {
+      "group": "splitting",
+      "layer": "2b",
+      "text": "HBM and DRAM tight; NAND softer. Memory is not one market."
+    },
+    {
+      "group": "watch",
+      "layer": "2a",
+      "text": "Demand intact; trust, financing, and custom-silicon mix are the live issues."
+    },
+    {
+      "group": "watch",
+      "layer": "2c",
+      "text": "Optics yield may matter. One survey does not confirm an industry-wide delay."
+    },
+    {
+      "group": "watch",
+      "layer": "1c",
+      "text": "Cooling scarcity may be easing at one company. That is not a sector trend."
+    },
+    {
+      "group": "weakening",
+      "layer": "4",
+      "text": "Token usage can rise as prices fall. Cached tokens are not incremental GPU work."
+    }
+  ],
+  "messages": [
+    {
+      "id": "scout-2026-11-17-ercot",
+      "sourceId": "A-20261117-01",
+      "date": "2026-11-17",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "ERCOT Batch Zero leaves most of the data-center queue in limbo",
+      "layers": [
+        "1d",
+        "1a"
+      ],
+      "primaryLayer": "1d",
+      "verdict": "watch",
+      "bullets": [
+        "ERCOT's Batch Zero audit reviewed 257 developers. Most got a second-round request for information, often on site control, long-lead equipment, or financial security. [S]",
+        "About 66.4 gigawatts were provisionally kept. More than 300 gigawatts were shut out, with a large pending stack still unresolved. [S]",
+        "The next dates to watch are a 10 Dec report, a 17 Dec Texas utility-commission meeting, and a decision after 19 Jan on whether the queue restarts. A 9 Apr 2027 results deadline may slip.",
+        "Already-connected power and sites keep their scarcity value for longer while this process runs."
+      ],
+      "counterView": "Jefferies has argued Texas forwards only price a modest amount of new data-center load each year, so the headline queue was always larger than what the grid would actually clear.",
+      "sources": [
+        {
+          "name": "ERCOT Batch Zero update",
+          "url": "https://www.ercot.com/files/docs/2026/11/05/ERCOT-Verification-RFI-Update.pdf"
+        },
+        {
+          "name": "Latitude Media",
+          "url": "https://www.latitudemedia.com/news/texas-data-centers-are-staring-down-a-december-limbo/"
+        },
+        {
+          "name": "Gibson Dunn calendar note",
+          "url": "https://www.gibsondunn.com/texas-data-center-critical-dates-and-procedures-following-the-2026-elections/"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261117-01. Clock time was not recorded, so sentAt is null."
+    },
+    {
+      "id": "brief-2026-11-18",
+      "date": "2026-11-18",
+      "sentAt": "2026-11-18T11:20:00+01:00",
+      "timezone": "Europe/Paris",
+      "type": "brief",
+      "title": "Nvidia cleared the demand tests; the debate moved to financing",
+      "layers": [
+        "2a",
+        "1a",
+        "3a",
+        "4"
+      ],
+      "primaryLayer": "2a",
+      "verdict": "watch",
+      "bullets": [
+        "Nvidia's third-quarter revenue was 115.8 billion dollars versus a 105.8 billion dollar test line, the fourth-quarter guide was 130 billion dollars, and next-year growth was raised to about 75 percent. [S]",
+        "Supply commitments rose from 279 billion to 390 billion dollars. The catch: a large slice falls due the following fiscal year, and receivables, days-sales-outstanding, and guarantees became the new bear focus. [S]",
+        "The stock's pre-market gain was modest next to the move options had priced, so the market was already looking past the headline numbers.",
+        "Physical-layer names were cheaper after an AI-power rotation, including Constellation below its 200-day average. Alibaba was due to report the next day, so no new-money idea was attached to that print.",
+        "Anthropic was expected to price that evening, likely above the marketed range. The earlier profitable-lab line had already been qualified by the amended filing."
+      ],
+      "counterView": "Ed Zitron and other bears argue Nvidia is financing its own demand, and the 10-Q had still not been filed. Strong bookings can coexist with weaker revenue quality.",
+      "sources": [
+        {
+          "name": "Nvidia Q3 FY27 CFO commentary",
+          "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000088/q3fy27cfocommentary.htm"
+        },
+        {
+          "name": "CNBC on the board and the call",
+          "url": "https://www.cnbc.com/2026/11/18/nvidia-stock-earnings.html"
+        }
+      ],
+      "provenance": "research/brief-2026-11-18.md; alerts-log prepared_at 2026-11-18T11:20+01:00 Europe/Paris."
+    },
+    {
+      "id": "thesis-2026-11-18",
+      "date": "2026-11-18",
+      "sentAt": "2026-11-18T11:20:00+01:00",
+      "timezone": "Europe/Paris",
+      "type": "thesis-change",
+      "title": "House view: demand answered, debate moves to vendor financing",
+      "layers": [
+        "2a",
+        "1a"
+      ],
+      "primaryLayer": "2a",
+      "verdict": "watch",
+      "bullets": [
+        "House-view direction was unchanged: the 17 Nov Nvidia print answered the near-term demand question.",
+        "The live debate moved to revenue quality, vendor financing, and governance. On the call, the board said it did not intend to reinstate Jensen Huang.",
+        "Physical-layer names had cheapened, so default new research attention stayed lower in the stack rather than chasing the print.",
+        "This is house-view version 1 in this week's public record."
+      ],
+      "counterView": "If the 10-Q or later filings show a material slip in receivables, guarantees, or geography disclosure, the demand-is-clean read would need a review even if revenues stayed large.",
+      "sources": [
+        {
+          "name": "Nvidia Q3 FY27 CFO commentary",
+          "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000088/q3fy27cfocommentary.htm"
+        }
+      ],
+      "provenance": "thesis.md house-view note and changelog, 2026-11-18, aligned to the 11:20 Paris brief."
+    },
+    {
+      "id": "scout-2026-11-18-memory-commitments",
+      "sourceId": "A-20261118-01",
+      "date": "2026-11-18",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "Nvidia and Apple are locking memory years ahead",
+      "layers": [
+        "2b",
+        "2a"
+      ],
+      "primaryLayer": "2b",
+      "verdict": "strengthens",
+      "bullets": [
+        "Nvidia's CFO commentary said supply commitments rose to 390 billion dollars and were primarily multi-year memory, with a large amount due the next two fiscal years. [S]",
+        "TrendForce reported Apple was finalising a four-to-five-year DRAM agreement with Samsung, with a minimum volume from the first half of 2027, and that SK hynix was also signing supplier-favourable terms. [S]",
+        "Memory is being contracted years out, so later buyers and consumer devices bid for whatever is left."
+      ],
+      "counterView": "Those same commitments become a fixed obligation if demand slips. A large amount due next fiscal year is a cost if the shortage fades.",
+      "sources": [
+        {
+          "name": "Nvidia Q3 FY27 CFO commentary",
+          "url": "https://www.sec.gov/Archives/edgar/data/1045810/000104581026000088/q3fy27cfocommentary.htm"
+        },
+        {
+          "name": "TrendForce on Samsung-Apple DRAM talks",
+          "url": "https://www.trendforce.com/news/2026/11/18/news-samsung-apple-reportedly-finalizing-4-5-year-dram-lta-with-minimum-supply-commitment-starting-in-2027/"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261118-01. Clock time was not recorded, so sentAt is null."
+    },
+    {
+      "id": "scout-2026-11-18-anthropic-power",
+      "sourceId": "A-20261118-02",
+      "date": "2026-11-18",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "Anthropic took over a multi-year generator order book",
+      "layers": [
+        "1a"
+      ],
+      "primaryLayer": "1a",
+      "verdict": "strengthens",
+      "bullets": [
+        "Anthropic took over OnePWR's roughly two-year-old Caterpillar generator orders, a 3.4 billion dollar package for about 1.7 gigawatts including engineering and construction. [S]",
+        "The deal is an early sign that reserved power slots can be re-absorbed by better-funded buyers after other reservations slip or are cancelled.",
+        "Model labs are buying physical capacity directly, which supports the idea that value is moving down toward power and plant."
+      ],
+      "counterView": "A single reassigned order book does not prove that every reserved turbine slot will find a new buyer, especially if financing for second-tier developers stays tight.",
+      "sources": [
+        {
+          "name": "Tom's Hardware, data-centers section (Anthropic-OnePWR generator order, 9 Nov)",
+          "url": "https://www.tomshardware.com/tech-industry/data-centers"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261118-02. Clock time was not recorded, so sentAt is null."
+    },
+    {
+      "id": "scout-2026-11-19-china-compute",
+      "sourceId": "A-20261119-01",
+      "date": "2026-11-19",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "Chinese labs ration compute and raise some API prices",
+      "layers": [
+        "3c",
+        "4"
+      ],
+      "primaryLayer": "3c",
+      "verdict": "watch",
+      "bullets": [
+        "DeepSeek capped document length and began dropping idle chats, citing a compute shortage. [S]",
+        "Some Chinese API prices rose, including a sharp increase in DeepSeek V4 Flash peak rates since August and a reported Alibaba-hosted increase on V4.1 Flash. [S]",
+        "Several listed Chinese model names had already sold off hard over a few sessions, so the market was pricing a tighter compute story, not only a token-price war.",
+        "This was a useful backdrop for Alibaba's print later the same day: pricing power versus capacity caps."
+      ],
+      "counterView": "Rationing can be a temporary shortage, not durable monetisation. Token-price competition can return as soon as more capacity is installed.",
+      "sources": [
+        {
+          "name": "Caixin on DeepSeek's compute crunch",
+          "url": "https://www.caixinglobal.com/2026-11-18/in-depth-deepseeks-computing-crunch-pushes-chinas-ai-developers-beyond-models-102506236.html"
+        },
+        {
+          "name": "Asiae price note",
+          "url": "https://www.asiae.co.kr/en/article/2026110210165184839"
+        },
+        {
+          "name": "LLM API pricing recap",
+          "url": "https://llmap.ai/news/openinference-repriced-deepseek-v4-1-flash-input-down-49-out-afmigx"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261119-01. Clock time was not recorded, so sentAt is null."
+    },
+    {
+      "id": "scout-2026-11-19-pjm",
+      "sourceId": "A-20261119-02",
+      "date": "2026-11-19",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "PJM's fast path still leaves new large loads waiting for years",
+      "layers": [
+        "1a",
+        "1d"
+      ],
+      "primaryLayer": "1a",
+      "verdict": "strengthens",
+      "bullets": [
+        "PJM filed a Fast Energization process: one 12-month study for generation plus large loads. [S]",
+        "The first window does not open until late November 2027, and the first cycle would not finish until 2029, so existing interconnected generation keeps its scarcity value for roughly three more years.",
+        "A companion filing would bill upgrades to large-load zones over 15 years, which can raise the delivered cost of new data-center sites even when a path exists."
+      ],
+      "counterView": "Load-zone upgrade charges raise the cost of new PJM data centers and can slow the very demand that supports scarcity pricing. Permitting also stays amber until rules are actually signed.",
+      "sources": [
+        {
+          "name": "PJM FERC filing ER27-531",
+          "url": "https://www.pjm.com/-/media/DotCom/documents/ferc/filings/2026/20261116-er27-531-000.pdf"
+        },
+        {
+          "name": "The Duck Curve explainer",
+          "url": "https://theduckcurve.com/posts/pjm-fast-energization-ferc-filing"
+        },
+        {
+          "name": "Utility Dive",
+          "url": "https://www.utilitydive.com/news/pjm-rto-large-load-interconnection-ferc-show-cause/874872/"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261119-02. Clock time was not recorded, so sentAt is null."
+    },
+    {
+      "id": "scout-2026-11-19-tempus",
+      "sourceId": "A-20261119-03",
+      "date": "2026-11-19",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "Tempus 2027 growth quality hangs on a year-end Medicare switch",
+      "layers": [
+        "5"
+      ],
+      "primaryLayer": "5",
+      "verdict": "neutral",
+      "bullets": [
+        "Tempus said a slice of 2027 oncology growth depends on converting a test to an FDA-approved Medicare category by 31 Dec, which would raise the reimbursement rate from 1 Jan. [S]",
+        "Mix in minimal-residual-disease testing is pulling average selling prices down, so volume alone is not the price lever.",
+        "A related Personalis vote was due 30 Nov. This is an application-layer watch, not a reason to fill the apps box."
+      ],
+      "counterView": "If the year-end conversion slips, a visible piece of next year's growth guide is at risk, and the market may treat that as a demand problem rather than a reimbursement calendar issue.",
+      "sources": [
+        {
+          "name": "The Inference recap",
+          "url": "https://theinference.org/article/tempus-ai-beat-q3-but-80-million-of-2027-growth-rides-on-a-december-31-medicare-deadline"
+        },
+        {
+          "name": "Tempus Q3 results",
+          "url": "https://investors.tempus.com/news/news-details/2026/Tempus-Reports-Third-Quarter-2026-Results/default.aspx"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261119-03. Clock time was not recorded, so sentAt is null."
+    },
+    {
+      "id": "evening-2026-11-19-amd-ant-baba",
+      "date": "2026-11-19",
+      "sentAt": "2026-11-19T21:25:00+01:00",
+      "timezone": "Europe/Paris",
+      "type": "evening",
+      "title": "AMD sold off on a short report; Anthropic debuted; Alibaba's cloud grew fast",
+      "layers": [
+        "2a",
+        "4",
+        "3c"
+      ],
+      "primaryLayer": "2a",
+      "verdict": "watch",
+      "bullets": [
+        "AMD fell sharply intraday after a Hunterbrook short report that raised firmware, guarantee, and China-billing questions. AMD denied the China-billing claim. [S]",
+        "Export-rule risk, already live at Nvidia, now extends more clearly to AMD. A congressional licence table later in the week made the approved-but-unshipped volumes visible.",
+        "Anthropic opened at 111.50 dollars, well above the 83 dollar IPO price. That is a debut print, not a reason to chase day one.",
+        "Alibaba's September quarter showed cloud revenue up 53 percent and capex up 60 percent, with free cash flow still deeply negative. Cloud is accelerating; cash generation is not."
+      ],
+      "counterView": "Short-report claims can be overstated, and Bernstein later argued that the published licence totals show a process rather than an open floodgate. One down day in the S&P also does not, by itself, change a thesis.",
+      "sources": [
+        {
+          "name": "Reuters market wrap",
+          "url": "https://www.investing.com/news/stock-market-news/wall-street-ends-sharply-lower-asanthropics-debut-fails-to-revive-ai-fervor-5040108"
+        },
+        {
+          "name": "Alibaba September-quarter results",
+          "url": "https://data.alibabagroup.com/ecms-files/1532295521/e676aff4-e76d-489b-960a-47b9cf36485d/Alibaba%20Group%20Announces%20September%20Quarter%202026%20Results%20and%20Interim%20Results%20for%20the%20Six%20Months%20Ended%20September%2030,%202026.pdf"
+        }
+      ],
+      "provenance": "alerts-log.json evening-alert 2026-11-19T21:25+01:00 Europe/Paris; journal.md evening-alert note."
+    },
+    {
+      "id": "brief-2026-11-20",
+      "date": "2026-11-20",
+      "sentAt": "2026-11-20T11:20:00+01:00",
+      "timezone": "Europe/Paris",
+      "type": "brief",
+      "title": "The tape and the suppliers are telling different stories",
+      "layers": [
+        "2d",
+        "2b",
+        "2a",
+        "1d",
+        "3c"
+      ],
+      "primaryLayer": "2d",
+      "verdict": "watch",
+      "bullets": [
+        "Equities sold off through the week, but GPU rents were still rising, Micron said most of its 2027 output was sold, and TSMC was reportedly asking weaker customers for cash up front. [S]",
+        "The stress looks like financing, politics, and real rates, not a break in operator demand.",
+        "A congressional licence table showed only a minority of requested advanced chips were approved, all listed as approved and not shipped. AMD's China exposure is now on paper. [S]",
+        "SemiAnalysis argued the Texas permit freeze could last eight to twelve months, with 2027 largely locked and 2028 the fight. The permitting signal stayed amber because nothing was signed.",
+        "Alibaba's print confirmed fast cloud growth and still-negative free cash flow, so the quality test for new money in that name was not met. US spot bitcoin ETFs had a third heavy outflow week, which warrants a cycle review, not an automatic exit."
+      ],
+      "counterView": "If foundries are asking for cash, some customers may be financially weaker than the demand headlines imply. Credit stress at neoclouds can later show up as cancelled orders, even if current rents are still firm.",
+      "sources": [
+        {
+          "name": "TechPowerUp on TSMC credit and cash-up-front reports",
+          "url": "https://www.techpowerup.com/355020/tsmc-reportedly-reviews-customer-finances-asks-some-chip-buyers-to-pay-upfront"
+        },
+        {
+          "name": "Quartz on Micron 2027 supply",
+          "url": "https://qz.com/micron-ceo-says-75-percent-2027-supply-sold-out-112026"
+        },
+        {
+          "name": "SemiAnalysis Texas freeze thread",
+          "url": "https://x.com/SemiAnalysis_/status/2123602891713708464"
+        },
+        {
+          "name": "HFAC licence summary",
+          "url": "https://democrats-foreignaffairs.house.gov/wp-content/uploads/2026/11/11.19.26-ECRA-Information-Disclosure-HFAC-Summary.pdf"
+        },
+        {
+          "name": "Silicon Data H100 index",
+          "url": "https://www.silicondata.com/products/silicon-index/h100"
+        }
+      ],
+      "provenance": "briefs/2026-11-20.md; alerts-log prepared_at 2026-11-20T11:20+01:00 Europe/Paris."
+    },
+    {
+      "id": "thesis-2026-11-20",
+      "date": "2026-11-20",
+      "sentAt": "2026-11-20T11:20:00+01:00",
+      "timezone": "Europe/Paris",
+      "type": "thesis-change",
+      "title": "House view: the stress is financing, politics, and rates",
+      "layers": [
+        "2a",
+        "1d",
+        "3a"
+      ],
+      "primaryLayer": "2a",
+      "verdict": "watch",
+      "bullets": [
+        "House-view direction was unchanged. Operator data still said demand; the market was pricing financing, politics, and real rates.",
+        "Political and legal risk widened from Nvidia to AMD and to a California attorney-general subpoena.",
+        "A longer Texas freeze favours already-connected power over new builders and compute renters.",
+        "This is house-view version 2 in this week's public record."
+      ],
+      "counterView": "Rates can keep de-rating long-duration scarcity assets even if every operating datapoint holds. A demand break would only show up later, in rents, bookings, or capex guides.",
+      "sources": [
+        {
+          "name": "SemiAnalysis Texas freeze thread",
+          "url": "https://x.com/SemiAnalysis_/status/2123602891713708464"
+        }
+      ],
+      "provenance": "thesis.md house-view note and changelog, 2026-11-20, aligned to the 11:20 Paris brief."
+    },
+    {
+      "id": "scout-2026-11-20-illumina",
+      "sourceId": "A-20261120-01",
+      "date": "2026-11-20",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "Illumina's data atlas, not its model, won a virtual-cell challenge",
+      "layers": [
+        "5"
+      ],
+      "primaryLayer": "5",
+      "verdict": "watch",
+      "bullets": [
+        "Illumina BioInsight won Arc's 2026 Virtual Cell Challenge, ahead of FlowState and Xaira, using its Billion Cell Atlas and an open-sourced CellularAI stack. [S]",
+        "The interesting edge is proprietary perturbation data, not a unique model architecture.",
+        "No Atlas revenue was disclosed, so this is optionality, not a proven data toll. It stays a research observation in the apps layer."
+      ],
+      "counterView": "Arc itself noted that winners leaned on reference transfer from public knockdowns, and a leading score of this kind is not the same thing as accuracy in the lab or in a product.",
+      "sources": [
+        {
+          "name": "Arc Institute wrap-up",
+          "url": "https://arcinstitute.org/news/virtual-cell-challenge-2026-wrap-up"
+        },
+        {
+          "name": "Illumina investor release",
+          "url": "https://investor.illumina.com/news-releases/news-release-details/illumina-wins-virtual-cell-challenge-powered-billion-cell-atlas"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261120-01. Clock time was not recorded, so sentAt is null."
+    },
+    {
+      "id": "scout-2026-11-20-biontech",
+      "sourceId": "A-20261120-02",
+      "date": "2026-11-20",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "A European court found Comirnaty infringed a GSK lipid patent",
+      "layers": [
+        "5"
+      ],
+      "primaryLayer": "5",
+      "verdict": "neutral",
+      "bullets": [
+        "The Unified Patent Court in The Hague found that Comirnaty infringed a GSK RNA-liposome patent and largely upheld the patent. [S]",
+        "An injunction over most participating states was deferred to a final validity decision, and only if no licence is agreed within three months of that decision. Sales data and interim damages were also ordered.",
+        "Moderna has already settled globally with GSK; BioNTech and Pfizer have not. This is a royalty-and-damages cost, not an immediate sales stop, and it does not touch an oncology thesis."
+      ],
+      "counterView": "A final validity decision could still go against GSK, or a licence could be cheap. Until then, the overhang is legal more than commercial.",
+      "sources": [
+        {
+          "name": "JUVE Patent",
+          "url": "https://www.juve-patent.com/cases/partial-victory-for-gsk-against-biontech-and-pfizer-in-upc-dispute/"
+        },
+        {
+          "name": "Unified Patent Court docket",
+          "url": "https://www.unifiedpatentcourt.org/en/node/184698"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261120-02. Clock time was not recorded, so sentAt is null."
+    },
+    {
+      "id": "evening-2026-11-20-selloff",
+      "date": "2026-11-20",
+      "sentAt": "2026-11-20T21:25:00+01:00",
+      "timezone": "Europe/Paris",
+      "type": "evening",
+      "title": "The AI selloff deepened; a report said Google cut Broadcom TPU volume",
+      "layers": [
+        "2a"
+      ],
+      "primaryLayer": "2a",
+      "verdict": "watch",
+      "bullets": [
+        "By late afternoon in Paris, Nvidia, AMD, Broadcom, and several other AI names were down double digits, with the SOX and Nasdaq also sharply lower. [C]",
+        "Ming-Chi Kuo reported that Google cut 2027 Broadcom TPU volume by about a fifth and shifted some work toward MediaTek. The report was unconfirmed. [S]",
+        "That puts the custom-silicon mix, not the existence of custom silicon, under watch. Broadcom's 9 Dec print is the clean test.",
+        "Bitcoin also weakened on the day. No new cycle crossing was added beyond the outflow review already flagged in the morning brief."
+      ],
+      "counterView": "Analysts can read a TPU mix shift as a move toward frontier chips rather than less AI spend. A one-day forced move also does not, by itself, break a demand thesis.",
+      "sources": [
+        {
+          "name": "Investing.com on the Kuo TPU report",
+          "url": "https://www.investing.com/news/stock-market-news/google-reportedly-cuts-broadcomdesigned-tpu-plans-eyes-more-mediatek-chips-5042253"
+        },
+        {
+          "name": "Yahoo Finance",
+          "url": "https://finance.yahoo.com/quote/NVDA/"
+        }
+      ],
+      "provenance": "alerts-log.json evening-check-alert 2026-11-20T21:25+01:00 Europe/Paris; journal.md evening-check note. Personal trading details from that afternoon were omitted."
+    },
+    {
+      "id": "scout-2026-11-21-rubin",
+      "sourceId": "A-20261121-01",
+      "date": "2026-11-21",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "Reported Rubin bottlenecks sit in boards and memory, not the GPU",
+      "layers": [
+        "2b",
+        "2a"
+      ],
+      "primaryLayer": "2b",
+      "verdict": "watch",
+      "bullets": [
+        "Taiwan supply-chain reports said Vera Rubin mass shipments may slip from late 2026 into the first half of 2027, with GB300 bridging the gap. [S]",
+        "The likely gates were a high-layer NVLink switch board with very low material yield, plus HBM4 already running at full utilisation.",
+        "Nvidia said the roadmap was on track and announced no delay. An earlier HBM4 bandwidth target had already been cut.",
+        "If the reports are right, the system constraint has moved below the GPU, into boards and memory. That is a timing and mix issue, not proof that demand broke."
+      ],
+      "counterView": "The supplier report is unconfirmed. Treating an unconfirmed slip as a material roadmap break would be too aggressive while the company still says it is on track.",
+      "sources": [
+        {
+          "name": "Commercial Times",
+          "url": "https://www.ctee.com.tw/news/20261116700965-430201"
+        },
+        {
+          "name": "Newspim",
+          "url": "https://www.newspim.com/news/view/20261117000561"
+        },
+        {
+          "name": "VLSI.kr recap",
+          "url": "https://www.vlsi.kr/en/vera-rubin-dual-bottleneck-7-facts-en/"
+        },
+        {
+          "name": "TechPowerUp on earlier HBM4 target cuts",
+          "url": "https://www.techpowerup.com/354133/nvidia-cuts-hbm4-speed-and-nvlink-bandwidth-targets-for-vera-rubin"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261121-01. Clock time was not recorded, so sentAt is null."
+    },
+    {
+      "id": "scout-2026-11-21-recursion",
+      "sourceId": "A-20261121-02",
+      "date": "2026-11-21",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "Recursion aligned with the FDA on a registrational trial for a repurposed drug",
+      "layers": [
+        "5"
+      ],
+      "primaryLayer": "5",
+      "verdict": "watch",
+      "bullets": [
+        "Recursion said the FDA aligned on a registrational Phase 3 design for REC-4881, a shelved Takeda MEK inhibitor repurposed for familial adenomatous polyposis. [S]",
+        "The early study was small: median polyp burden fell, and most patients were still below baseline after a period off drug.",
+        "The first proof, if it arrives, is indication-finding on existing molecules, not de-novo design. This is an early application-layer signal, not platform validation."
+      ],
+      "counterView": "A 26-patient Phase 2 is a weak base for a 200-patient Phase 3, and the trial would not start until the second half of 2027. One repurposing win would still not prove a platform.",
+      "sources": [
+        {
+          "name": "Recursion FDA-alignment release",
+          "url": "https://ir.recursion.com/news-releases/news-release-details/recursion-announces-alignment-fda-registrational-phase-3-trial"
+        },
+        {
+          "name": "Recursion REC-4881 page",
+          "url": "https://www.recursion.com/news/rec-4881"
+        },
+        {
+          "name": "SEC exhibit",
+          "url": "https://www.sec.gov/Archives/edgar/data/1601830/000160183026000144/exhibit993-cgapr.htm"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261121-02. Clock time was not recorded, so sentAt is null."
+    },
+    {
+      "id": "evening-2026-11-21-sec-btc",
+      "date": "2026-11-21",
+      "sentAt": "2026-11-21T21:25:00+01:00",
+      "timezone": "Europe/Paris",
+      "type": "evening",
+      "title": "Reuters: an SEC inquiry into Nvidia accounting; bitcoin washed out and bounced",
+      "layers": [
+        "2a"
+      ],
+      "primaryLayer": "2a",
+      "verdict": "watch",
+      "bullets": [
+        "Reuters reported that SEC enforcement is probing Nvidia accounting, with a likely focus on a 2025 regional-revenue change that had dropped Singapore. [S]",
+        "That touches disclosure and geography, not the demand data from the recent print. It is incremental to an already-open legal and filing overhang.",
+        "Bitcoin traded as low as about 55,100 dollars, the weakest since September 2024, then bounced toward 60,300 dollars. [C]",
+        "A cycle add-condition that uses a daily close below a long-term moving-average band was not met on the close. Watch the 10-Q language and early-December congressional dates."
+      ],
+      "counterView": "An inquiry can end without charges, and a washout low can look decisive in the moment. Neither fact, on its own, settles the financing-quality debate or the bitcoin cycle.",
+      "sources": [
+        {
+          "name": "France24 / NYT on the Nvidia inquiry",
+          "url": "https://www.france24.com/en/live-news/20261121-nvidia-faces-us-accounting-probe-amid-deepening-turmoil-media"
+        }
+      ],
+      "provenance": "alerts-log.json evening-alert 2026-11-21T21:25+01:00 Europe/Paris; journal.md evening-check note."
+    },
+    {
+      "id": "brief-2026-11-22",
+      "date": "2026-11-22",
+      "sentAt": "2026-11-22T11:00:00+01:00",
+      "timezone": "Europe/Paris",
+      "type": "brief",
+      "title": "Last week was forced selling, not a break in demand",
+      "layers": [
+        "2b",
+        "2d",
+        "2a"
+      ],
+      "primaryLayer": "2b",
+      "verdict": "watch",
+      "bullets": [
+        "The SOX fell 17.1 percent on the week, and Taiwan had its worst week since 1991. [C][S] Operator data did not roll over with the tape.",
+        "Korean press said most of Samsung's 2027-29 memory capacity is already contracted, with some buyers seeking terms into 2031 and price floors. TrendForce HBM4 price talk for 2027 is well above 2026. [S]",
+        "H100 neocloud rents had their first down week, but were still up 6.6 percent over 30 days. The rollover watch-lines were not close. [S][C]",
+        "Nvidia closed the week well below recent levels, with a 10-Q due by 4 Dec and an early-stage inquiry in the background. New research money into that name waits on the filing. Broadcom's custom-silicon pillar moved to amber on the unconfirmed Kuo report, ahead of the 9 Dec print.",
+        "The memory gap remains the interesting empty box, and only on the tight products (HBM and DRAM), not on softening flash. A mid-December Micron print is the natural checkpoint."
+      ],
+      "counterView": "BNK Securities has argued that memory demand has already peaked, and NAND prices are already softening. Hyperscaler H100 rents were slightly down over 30 days, so one weak week in neocloud rents can also be the start of a trend rather than noise.",
+      "sources": [
+        {
+          "name": "Economy Tribune",
+          "url": "https://www.economytribune.co.kr/news/articleView.html?idxno=3904497"
+        },
+        {
+          "name": "Seoul Economic Daily / TrendForce HBM4",
+          "url": "https://en.sedaily.com/business/2026/11/19/latest-hbm-prices-to-jump-up-to-27-fold-next-year"
+        },
+        {
+          "name": "Focus Taiwan",
+          "url": "https://focustaiwan.tw/business/202611200015"
+        },
+        {
+          "name": "Silicon Data H100 index",
+          "url": "https://www.silicondata.com/products/silicon-index/h100"
+        },
+        {
+          "name": "Chip Dispatch on the delayed 10-Q",
+          "url": "https://chipdispatch.com/articles/nvidia-delays-10-q-filing-ties-timing-to-active-investigations"
+        }
+      ],
+      "provenance": "briefs/2026-11-22.md; alerts-log prepared_at 2026-11-22T11:00+01:00 Europe/Paris. Personal allocation and trigger-price lines were omitted or rewritten as qualitative watches."
+    },
+    {
+      "id": "thesis-2026-11-22",
+      "date": "2026-11-22",
+      "sentAt": "2026-11-22T11:00:00+01:00",
+      "timezone": "Europe/Paris",
+      "type": "thesis-change",
+      "title": "Sublayer map adopted; house view still leans to bottlenecks, not a name per box",
+      "layers": [
+        "2b",
+        "2a",
+        "2d",
+        "1a"
+      ],
+      "primaryLayer": "2b",
+      "verdict": "watch",
+      "bullets": [
+        "The five-layer map now has sublayers, used to spot bottleneck shifts and diversification gaps. Empty boxes stay empty on purpose.",
+        "House-view direction was unchanged: mid-November looked like forced deleveraging while supply data kept tightening, especially in HBM, DRAM, and foundry tools.",
+        "The memory gap that matters, if any, is HBM and DRAM, not flash. Compute demand looked intact, but trust and financing in 2a were under watch.",
+        "This is house-view version 3 in this week's public record."
+      ],
+      "counterView": "Cycle bears can still be right if today's contracted tightness is the peak. Filling an empty sublayer just because it is empty would be the wrong use of the map.",
+      "sources": [],
+      "provenance": "thesis.md section 2.1 and changelog, 2026-11-22, aligned to the 11:00 Paris brief. Allocation figures from the internal map were omitted."
+    },
+    {
+      "id": "scout-2026-11-22-nand",
+      "sourceId": "A-20261122-01",
+      "date": "2026-11-22",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "China cloud reportedly cut NAND and some server-memory orders",
+      "layers": [
+        "2b",
+        "3c"
+      ],
+      "primaryLayer": "2b",
+      "verdict": "weakens",
+      "bullets": [
+        "TrendForce said Chinese cloud firms cut 2027 enterprise-SSD orders, and some server DRAM, by more than US clouds added, citing GPU shortages, high inventory, and token-price competition. [S]",
+        "NAND supply and capex were still rising, with contract prices expected to turn down in 2027 after a smaller fourth-quarter increase.",
+        "DRAM was still described as undersupplied, but with narrower gains. This weakens a China-cloud monetisation read and warns against treating all memory as one shortage."
+      ],
+      "counterView": "Regional NAND softness does not prove a broad demand collapse, and it does not describe HBM. A China-specific inventory glut can coexist with a tight high-bandwidth market.",
+      "sources": [
+        {
+          "name": "TrendForce press note",
+          "url": "https://www.trendforce.com/presscenter/news/20261119-13314.html"
+        },
+        {
+          "name": "The Register recap",
+          "url": "https://www.theregister.com/systems/2026/11/19/nand-prices-tipped-to-fall-as-chinese-cloud-giants-cut-ssd-orders/5311116"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261122-01. Clock time was not recorded, so sentAt is null."
+    },
+    {
+      "id": "scout-2026-11-22-openrouter",
+      "sourceId": "A-20261122-02",
+      "date": "2026-11-22",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "OpenRouter usage jumped while token prices and cache hits told a different story",
+      "layers": [
+        "4",
+        "2b"
+      ],
+      "primaryLayer": "4",
+      "verdict": "watch",
+      "bullets": [
+        "OpenRouter's October recap showed token volume still rising fast, with agentic keys now the majority of tokens, up from a small share a year earlier. [S]",
+        "The median agentic cache-hit rate was above 90 percent, and blended prices per million tokens had fallen sharply since January. Open models took most of the tokens but a much smaller share of spend.",
+        "That supports a low-layer volume thesis (inference, and memory used for caches) while weakening model-layer pricing power. Cached tokens are not incremental GPU work."
+      ],
+      "counterView": "One routing platform is not the market. Do not turn a cache-hit rate into a direct power-demand or GPU-rental multiplier.",
+      "sources": [
+        {
+          "name": "OpenRouter October 2026 data",
+          "url": "https://openrouter.ai/data/october-2026"
+        },
+        {
+          "name": "TokenPost recap",
+          "url": "https://www.tokenpost.com/news/technology/59401"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261122-02. Clock time was not recorded, so sentAt is null."
+    },
+    {
+      "id": "thinkers-2026-11-23",
+      "date": "2026-11-23",
+      "sentAt": "2026-11-23T08:45:00+01:00",
+      "timezone": "Europe/Paris",
+      "type": "thinkers",
+      "title": "Weekly thinkers scan: the physical-layer toll has a regulator",
+      "layers": [
+        "1a",
+        "2b",
+        "2a",
+        "3b"
+      ],
+      "primaryLayer": "1a",
+      "verdict": "watch",
+      "bullets": [
+        "Seven ideas were logged for 16-23 Nov; six of the seven challenge the house view or the consensus around it. The house view was not flipped.",
+        "The strongest counter-view this week: PJM's market monitor and eight state consumer advocates want data-center load pulled out of the mid-December capacity auction, after large data-center-driven capacity costs to consumers.",
+        "Jim Handy argues today's memory prices are a temporary shortage. Kiwoom, by contrast, keeps HBM profit rising to 2028 and puts any glut in commodity NAND and later DRAM. The memory gap is therefore HBM-specific and has a clock.",
+        "Ackman warned the Fed may err in December, because financing conditions have already tightened. Baker said rivals are trying to become a new Central Bank of AI, and that neoclouds which cannot get prepayments face consolidation.",
+        "Cycle-peak takes (Jefferies, the ECB review, Handy, Kiwoom) were starting to crowd after Taiwan's sharpest week in decades, so the bear view is itself getting crowded."
+      ],
+      "counterView": "Long bilateral power contracts can still be a durable toll even if auction prices are contested. A crowded bear view after a forced-selling week can also be wrong if operator data stays tight.",
+      "sources": [
+        {
+          "name": "PJM consumer-advocate letter",
+          "url": "https://opc.maryland.gov/Portals/0/Files/Publications/Others/FIN%20PJM%20Board%20Letter%20re%20December%202026%20RPM%20auction%20(002).pdf?ver=MbKZd2OzJWKgGV-HzXQClw%3D%3D"
+        },
+        {
+          "name": "Korea Times / Jim Handy",
+          "url": "https://www.koreatimes.co.kr/business/companies/20261122/cover-story-ai-spending-binge-puts-samsung-sk-at-risk-of-memory-price-collapse"
+        },
+        {
+          "name": "Ackman on December policy",
+          "url": "https://x.com/BillAckman/status/2124629409105944729"
+        },
+        {
+          "name": "Gavin Baker on AI financing rivals",
+          "url": "https://x.com/GavinSBaker/status/2123826938498146439"
+        },
+        {
+          "name": "ECB Financial Stability Review note",
+          "url": "https://www.ecb.europa.eu/press/financial-stability-publications/fsr/special/html/ecb.fsrart202611_03~46e116aeb8.en.html"
+        },
+        {
+          "name": "Kiwoom recap via VLSI Korea",
+          "url": "https://www.vlsi.kr/en/kiwoom-samsung-sk-hynix-peak-out-7-facts-en/"
+        }
+      ],
+      "provenance": "thesis.md last-updated stamp 2026-11-23 08:45 Europe/Paris and section 5 changelog. sentAt uses that recorded update time, not an invented clock."
+    },
+    {
+      "id": "scout-2026-11-23-cpo",
+      "sourceId": "A-20261123-01",
+      "date": "2026-11-23",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "A survey puts volume co-packaged optics later, on bonding yield",
+      "layers": [
+        "2c",
+        "2d"
+      ],
+      "primaryLayer": "2c",
+      "verdict": "watch",
+      "bullets": [
+        "A FUNDA survey, via Nashnova, said volume co-packaged optics may slip toward late 2027 or 2028 because hybrid-bond yields are well below what a volume ramp would need. [S]",
+        "The implied bottleneck sits in bonding tools and yield, which would give pluggable optics and near-packaged options a longer window.",
+        "Lambda, a day later, said it was already running Nvidia CPO switches on a large GPU fleet, so the delay is not universal.",
+        "Networking stays empty as a primary box: one survey does not confirm that interconnect has become the binding constraint."
+      ],
+      "counterView": "A second-hand survey against an existing deployment is not a confirmed industry-wide delay. Yields can also improve faster than a 2028 slip implies.",
+      "sources": [
+        {
+          "name": "Nashnova survey recap",
+          "url": "https://www.nashnova.com/feed/special/cpo-volume-shipments-delayed-to-2028-as-hybrid-bonding-yield-becomes-core-17842"
+        },
+        {
+          "name": "Lambda deployment note",
+          "url": "https://lambda.com/blog/worlds-first-large-scale-deployment-of-nvidia-photonics-switches-with-cpo"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261123-01. Clock time was not recorded, so sentAt is null."
+    },
+    {
+      "id": "scout-2026-11-23-aaon",
+      "sourceId": "A-20261123-02",
+      "date": "2026-11-23",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "AAON cooling sales rose fast, but the backlog looks less scarce",
+      "layers": [
+        "1c"
+      ],
+      "primaryLayer": "1c",
+      "verdict": "weakens",
+      "bullets": [
+        "AAON's third-quarter filing showed BASX and liquid-cooling sales up several times over the prior year. [S]",
+        "The BASX backlog was only slightly higher than at year-end and was reported lower than in June, which management tied to faster conversion and lumpy awards.",
+        "The company also restated the first half and disclosed a material weakness, so the print is not a clean industry thermometer.",
+        "If cooling capacity is catching up with orders, the 1c plant gap is less urgent than power, grid, and permits. That is one company, not a sector call."
+      ],
+      "counterView": "Lumpy awards can shrink a backlog without easing industry-wide lead times. One supplier's conversion speed cannot establish a cooling-market trend.",
+      "sources": [
+        {
+          "name": "AAON Q3 10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/824142/000082414226000088/aaon-20260930.htm"
+        },
+        {
+          "name": "Data Center Feed recap",
+          "url": "https://datacenterfeed.com/article/aaon-basx-data-center-cooling-sales-restatement-material-weakness-november-2026"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261123-02. Clock time was not recorded, so sentAt is null."
+    },
+    {
+      "id": "evening-2026-11-23-huang",
+      "date": "2026-11-23",
+      "sentAt": "2026-11-23T21:20:00+01:00",
+      "timezone": "Europe/Paris",
+      "type": "evening",
+      "title": "Nvidia's board reinstated Jensen Huang; the AI complex bounced hard",
+      "layers": [
+        "2a",
+        "2d",
+        "1b"
+      ],
+      "primaryLayer": "2a",
+      "verdict": "watch",
+      "bullets": [
+        "The Nvidia board unanimously restored Jensen Huang as president, CEO, and director, effective immediately, citing US government input that the return posed no national-security risk. An independent investigation continues, and a new export-control committee is being formed. [S]",
+        "Nvidia rose 31.8 percent versus Friday's close, with the S&P up 4.9 percent and large gains across foundry, tools, and electrical-equipment names. [C]",
+        "Key-person risk therefore eases, but it does not close: the SEC inquiry, a 10-Q due 4 Dec, and early-December congressional dates are unchanged.",
+        "This bounce is not a new-money call, and it is not a reason for panic selling either. Dell's print, already previewed, was due the next session."
+      ],
+      "counterView": "Nomura's McElligott, quoted in the day's market coverage, called the bounce mechanical short-covering rather than an all-clear on the financing and legal overhangs.",
+      "sources": [
+        {
+          "name": "Nvidia board statement",
+          "url": "https://nvidianews.nvidia.com/news/nvidia-board-reinstates-jensen-huang-as-president-ceo-and-board-director"
+        },
+        {
+          "name": "Yahoo Finance live wrap",
+          "url": "https://finance.yahoo.com/markets/live/stock-market-today-monday-november-23-dow-sp-500-nasdaq-surge-after-nvidia-reinstates-jensen-huang-182039397.html"
+        }
+      ],
+      "provenance": "alerts-log.json evening-alert 2026-11-23T21:20+01:00 Europe/Paris; journal.md evening-check note. Personal trigger prices were omitted."
+    },
+    {
+      "id": "scout-2026-11-24-transformers",
+      "sourceId": "A-20261124-01",
+      "date": "2026-11-24",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "Korean large-transformer exports are strong; small gear is not",
+      "layers": [
+        "1b"
+      ],
+      "primaryLayer": "1b",
+      "verdict": "strengthens",
+      "bullets": [
+        "Korean exports of large transformers were already above the prior full year after the first ten months of 2026, with the United States taking most of the total, and were up sharply year on year. [S]",
+        "Exports of small distribution transformers were down sharply, undercut by Southeast Asian competition.",
+        "Grid tightness is in high-voltage equipment, not in every electrical product. That supports a narrower 1b shortage read."
+      ],
+      "counterView": "Export data lag financing and permit changes. A broad electrical-equipment name is also not the same thing as a large-transformer pure play.",
+      "sources": [
+        {
+          "name": "Korea Economic Daily",
+          "url": "https://www.hankyung.com/article/2026112224611"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261124-01. Clock time was not recorded, so sentAt is null. The existing public preview marked this link unconfirmed after a refused fetch; this file does not restate a link-check status."
+    }
+  ]
+}
