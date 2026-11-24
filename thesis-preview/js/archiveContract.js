@@ -1,12 +1,16 @@
 /**
- * Contract checks for a future private importer.
- * Importing a message must not publish it. This module has no publish function
- * and no network calls. The preview does not run an importer.
+ * Contract checks for the house-view archive.
+ * Importing a private message must not publish it. This module has no publish
+ * function and no network calls.
+ * It also validates the sanitized public v2 bundle in content/archive.json.
  */
 
 const SENT_AT = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+-]\d{2}:\d{2})$/;
 const DATE_ONLY = /^\d{4}-\d{2}-\d{2}$/;
-const TYPES = new Set(["brief", "scout", "alert"]);
+const PRIVATE_TYPES = new Set(["brief", "scout", "alert"]);
+const PUBLIC_TYPES = new Set(["brief", "scout", "alert", "evening", "thinkers", "thesis-change"]);
+const PUBLIC_VERDICTS = new Set(["strengthens", "weakens", "watch", "neutral"]);
+const PUBLIC_HEATS = new Set(["tightening", "splitting", "watch", "weakening", "empty"]);
 const SOURCE_CHECKS = new Set(["responded", "unconfirmed", "unavailable"]);
 
 export function validateIncomingMessage(message) {
@@ -23,7 +27,7 @@ export function validateIncomingMessage(message) {
   } else if (typeof message.sentAt !== "string" || DATE_ONLY.test(message.sentAt) || !SENT_AT.test(message.sentAt)) {
     errors.push("sentAt");
   }
-  if (!TYPES.has(message.type)) errors.push("type");
+  if (!PRIVATE_TYPES.has(message.type)) errors.push("type");
   if (!Array.isArray(message.tags) || message.tags.some((tag) => typeof tag !== "string")) {
     errors.push("tags");
   }
@@ -64,6 +68,71 @@ export function validateHouseViewVersion(version) {
   if (typeof version.summary !== "string" || !version.summary.trim()) errors.push("summary");
   if (version.supersedes != null && (!Number.isInteger(version.supersedes) || version.supersedes < 1)) {
     errors.push("supersedes");
+  }
+  return { ok: errors.length === 0, errors };
+}
+
+export function validatePublicMessage(message) {
+  const errors = [];
+  if (!message || typeof message !== "object") return { ok: false, errors: ["message"] };
+  if (typeof message.id !== "string" || !message.id.trim()) errors.push("id");
+  if (typeof message.date !== "string" || !DATE_ONLY.test(message.date)) errors.push("date");
+  if (message.sentAt === null) {
+    // Unknown clock time remains null.
+  } else if (typeof message.sentAt !== "string" || DATE_ONLY.test(message.sentAt) || !SENT_AT.test(message.sentAt)) {
+    errors.push("sentAt");
+  }
+  if (!PUBLIC_TYPES.has(message.type)) errors.push("type");
+  if (typeof message.title !== "string" || !message.title.trim()) errors.push("title");
+  if (!Array.isArray(message.layers) || !message.layers.length) errors.push("layers");
+  if (typeof message.primaryLayer !== "string" || !message.primaryLayer.trim()) errors.push("primaryLayer");
+  if (!PUBLIC_VERDICTS.has(message.verdict)) errors.push("verdict");
+  if (!Array.isArray(message.bullets) || message.bullets.length < 1 || message.bullets.some((b) => typeof b !== "string" || !b.trim())) {
+    errors.push("bullets");
+  }
+  if (typeof message.counterView !== "string" || !message.counterView.trim()) errors.push("counterView");
+  if (!Array.isArray(message.sources)) errors.push("sources");
+  else {
+    for (const source of message.sources) {
+      if (!source || typeof source.name !== "string" || !source.name.trim() || typeof source.url !== "string" || !source.url.trim()) {
+        errors.push("sources");
+      }
+    }
+  }
+  if (typeof message.provenance !== "string" || !message.provenance.trim()) errors.push("provenance");
+  return { ok: errors.length === 0, errors: [...new Set(errors)] };
+}
+
+export function validatePublicArchive(archive) {
+  const errors = [];
+  if (!archive || typeof archive !== "object") return { ok: false, errors: ["archive"] };
+  if (archive.schemaVersion !== 1) errors.push("schemaVersion");
+  if (!archive.meta || typeof archive.meta.title !== "string") errors.push("meta");
+  if (!archive.houseThesis || !Array.isArray(archive.houseThesis.paragraphs) || !archive.houseThesis.paragraphs.length) {
+    errors.push("houseThesis");
+  } else if (!Array.isArray(archive.houseThesis.versions) || archive.houseThesis.versions.some((v) => !validateHouseViewVersion(v).ok)) {
+    errors.push("houseThesis.versions");
+  }
+  if (!archive.counterView || typeof archive.counterView.text !== "string") errors.push("counterView");
+  if (!Array.isArray(archive.houseRules) || !archive.houseRules.length) errors.push("houseRules");
+  if (!Array.isArray(archive.layers) || archive.layers.length !== 5) errors.push("layers");
+  else {
+    for (const layer of archive.layers) {
+      if (!PUBLIC_HEATS.has(layer.heat)) errors.push(`layer.${layer.id}.heat`);
+      for (const sub of layer.subs || []) {
+        if (!PUBLIC_HEATS.has(sub.heat)) errors.push(`sub.${sub.id}.heat`);
+      }
+    }
+  }
+  if (!archive.theses || !Array.isArray(archive.theses.strengthened) || !Array.isArray(archive.theses.qualifiedOrEased) || !Array.isArray(archive.theses.open)) {
+    errors.push("theses");
+  }
+  if (!Array.isArray(archive.messages) || !archive.messages.length) errors.push("messages");
+  else {
+    for (const msg of archive.messages) {
+      const check = validatePublicMessage(msg);
+      if (!check.ok) errors.push(`message.${msg.id || "unknown"}:${check.errors.join(",")}`);
+    }
   }
   return { ok: errors.length === 0, errors };
 }
