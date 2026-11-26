@@ -12,6 +12,7 @@ import {
 } from "../js/filter.js";
 import {
   extractDomain,
+  formatCoverageRange,
   formatDate,
   formatDayHeading,
   formatSentTime,
@@ -22,10 +23,13 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const rawArchive = JSON.parse(fs.readFileSync(path.join(root, "content", "archive.json"), "utf8"));
 const model = createArchiveModel(rawArchive);
 
-test("archive contains 26 real items across 17-24 Nov 2026 with honest timestamps", () => {
-  assert.equal(model.messages.length, 26);
-  assert.equal(model.meta.coverage.from, "2026-11-17");
-  assert.equal(model.meta.coverage.to, "2026-11-24");
+test("archive coverage and type counts stay consistent with messages, with honest timestamps", () => {
+  const dates = model.messages.map((m) => m.date).sort();
+  assert.ok(model.messages.length >= 26);
+  assert.equal(model.meta.coverage.from, dates[0]);
+  assert.equal(model.meta.coverage.to, dates.at(-1));
+  assert.equal(model.meta.messageCount, model.messages.length);
+  assert.match(model.meta.coverage.label, /Europe\/Paris/);
 
   const scouts = model.messages.filter((m) => m.type === "scout");
   const briefs = model.messages.filter((m) => m.type === "brief");
@@ -33,11 +37,15 @@ test("archive contains 26 real items across 17-24 Nov 2026 with honest timestamp
   const thinkers = model.messages.filter((m) => m.type === "thinkers");
   const shifts = model.messages.filter((m) => m.type === "thesis-change");
 
-  assert.equal(scouts.length, 15);
-  assert.equal(briefs.length, 3);
-  assert.equal(evenings.length, 4);
-  assert.equal(thinkers.length, 1);
-  assert.equal(shifts.length, 3);
+  assert.equal(scouts.length, model.meta.counts.scout);
+  assert.equal(briefs.length, model.meta.counts.brief);
+  assert.equal(evenings.length, model.meta.counts.evening);
+  assert.equal(thinkers.length, model.meta.counts.thinkers);
+  assert.equal(shifts.length, model.meta.counts["thesis-change"]);
+  assert.ok(briefs.length >= 3);
+  assert.ok(evenings.length >= 4);
+  assert.ok(thinkers.length >= 1);
+  assert.ok(shifts.length >= 3);
 
   for (const scout of scouts) {
     assert.equal(scout.sentAt, null);
@@ -54,6 +62,9 @@ test("archive contains 26 real items across 17-24 Nov 2026 with honest timestamp
 });
 
 test("dates, evidence markers, and domains format cleanly without inventing clock times", () => {
+  assert.equal(formatCoverageRange("2026-11-17", "2026-11-24"), "17–24 Nov 2026");
+  assert.equal(formatCoverageRange("2026-11-17", "2026-11-26", { short: true }), "17–26 Nov");
+  assert.equal(formatCoverageRange("2026-11-17", "2026-12-03"), "17 Nov–3 Dec 2026");
   assert.equal(formatDate("2026-11-24"), "24 Nov 2026");
   assert.equal(formatDayHeading("2026-11-24"), "Tuesday, 24 Nov 2026");
   assert.equal(formatSentTime(null), "");
@@ -107,15 +118,16 @@ test("overview weekly changes and scoreboard match archive versions and theses",
   assert.deepEqual(counts, [4, 3, 7]);
 });
 
-test("feed filters by type, layer, sublayer, stance, and text and groups into 8 days", () => {
-  assert.equal(filterMessages(model.messages, { type: "brief" }).length, 3);
-  assert.equal(filterMessages(model.messages, { type: "evening" }).length, 4);
-  assert.equal(filterMessages(model.messages, { verdict: "strengthens" }).length, 4);
-  assert.equal(filterMessages(model.messages, { verdict: "weakens" }).length, 2);
+test("feed filters by type, layer, sublayer, stance, and text and groups by day", () => {
+  const uniqueDates = [...new Set(model.messages.map((m) => m.date))].sort();
+  assert.ok(filterMessages(model.messages, { type: "brief" }).length >= 3);
+  assert.ok(filterMessages(model.messages, { type: "evening" }).length >= 4);
+  assert.ok(filterMessages(model.messages, { verdict: "strengthens" }).length >= 4);
+  assert.ok(filterMessages(model.messages, { verdict: "weakens" }).length >= 2);
 
   const l1b = filterMessages(model.messages, { layer: "1b" });
   const l1 = filterMessages(model.messages, { layer: "1" });
-  assert.equal(l1b.length, 2);
+  assert.ok(l1b.length >= 2);
   assert.ok(l1.length > l1b.length);
 
   const search = filterMessages(model.messages, { text: "ERCOT" });
@@ -123,14 +135,14 @@ test("feed filters by type, layer, sublayer, stance, and text and groups into 8 
   assert.equal(search[0].id, "scout-2026-11-17-ercot");
 
   const sorted = sortMessages(model.messages);
-  assert.equal(sorted[0].date, "2026-11-24");
-  assert.equal(sorted.at(-1).date, "2026-11-17");
+  assert.equal(sorted[0].date, uniqueDates.at(-1));
+  assert.equal(sorted.at(-1).date, uniqueDates[0]);
 
   const dayGroups = groupMessagesByDay(model.messages);
-  assert.equal(dayGroups.length, 8);
-  assert.equal(dayGroups[0].date, "2026-11-24");
+  assert.equal(dayGroups.length, uniqueDates.length);
+  assert.equal(dayGroups[0].date, uniqueDates.at(-1));
 
-  const timeline = buildTimelineDays("2026-11-17", "2026-11-24", model.messages);
-  assert.equal(timeline.length, 8);
-  assert.equal(timeline.reduce((acc, d) => acc + d.messages.length, 0), 26);
+  const timeline = buildTimelineDays(model.meta.coverage.from, model.meta.coverage.to, model.messages);
+  assert.ok(timeline.length >= uniqueDates.length);
+  assert.equal(timeline.reduce((acc, d) => acc + d.messages.length, 0), model.messages.length);
 });

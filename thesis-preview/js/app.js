@@ -10,6 +10,7 @@ import {
 } from "./filter.js";
 import {
   extractDomain,
+  formatCoverageRange,
   formatDate,
   formatDayHeading,
   formatSavedAt,
@@ -42,6 +43,15 @@ const defaultFilters = {
 };
 
 let model = null;
+
+function coverageLabel(options = {}) {
+  return formatCoverageRange(model?.meta?.coverage?.from, model?.meta?.coverage?.to, options);
+}
+
+function sentItemCount() {
+  return model?.messages?.length || 0;
+}
+
 let loadError = "";
 let currentView = "overview";
 let selectedTileId = null;
@@ -422,7 +432,7 @@ function buildHeader() {
         h("div", { class: "brand-text" }, [
           h("div", { class: "brand-title-row" }, [
             h("h1", { class: "site-title", text: model.meta.title }),
-            h("span", { class: "coverage-inline", text: "17–24 Nov 2026" }),
+            h("span", { class: "coverage-inline", text: coverageLabel() }),
           ]),
         ]),
       ]),
@@ -496,7 +506,7 @@ function buildMain() {
 function buildFooter() {
   return h("footer", { class: "container site-footer" }, [
     h("p", {
-      text: "Sanitized public house-view desk covering 17–24 Nov 2026 (Europe/Paris). Tickers are macro mechanism examples — never holdings, weights, or recommendations.",
+      text: `Sanitized public house-view desk covering ${coverageLabel()} (Europe/Paris). Tickers are macro mechanism examples — never holdings, weights, or recommendations.`,
     }),
     h("p", {
       text: "Browser notes stay in localStorage on this device only and are never transmitted.",
@@ -561,7 +571,7 @@ function buildThesisCard() {
       ]),
       h("span", {
         class: "scope-note",
-        text: "Covers 17–24 Nov 2026 · 26 sent items",
+        text: `Covers ${coverageLabel()} · ${sentItemCount()} sent items`,
       }),
     ]),
   ]);
@@ -572,7 +582,7 @@ function buildTimelineStripCard() {
   return h("section", { class: "surface-card timeline-strip-card", "aria-label": "Weekly signal timeline" }, [
     h("div", {}, [
       h("div", { class: "kicker-row" }, [
-        h("p", { class: "kicker", text: "17–24 Nov Pulse · 26 Items" }),
+        h("p", { class: "kicker", text: `${coverageLabel({ short: true })} Pulse · ${sentItemCount()} Items` }),
         h("button", {
           type: "button",
           class: "link-btn",
@@ -962,7 +972,7 @@ function buildFeedToolbar(shownCount) {
     h("div", { class: "feed-mobile-bar" }, [
       h("span", {
         class: "feed-mobile-summary",
-        text: `${shownCount} of ${model.messages.length} items · 17–24 Nov`,
+        text: `${shownCount} of ${model.messages.length} items · ${coverageLabel({ short: true })}`,
       }),
       h("button", {
         type: "button",
@@ -1020,7 +1030,7 @@ function buildFeedToolbar(shownCount) {
       }))),
       h("div", { class: "filter-status-row" }, [
         h("span", {
-          text: `Showing ${shownCount} of ${model.messages.length} sent items (17–24 Nov 2026, Europe/Paris)`,
+          text: `Showing ${shownCount} of ${model.messages.length} sent items (${coverageLabel()}, Europe/Paris)`,
         }),
         hasActiveFilters()
           ? h("button", {

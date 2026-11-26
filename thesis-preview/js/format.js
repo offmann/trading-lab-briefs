@@ -104,3 +104,43 @@ export function extractDomain(url) {
     return "";
   }
 }
+
+/**
+ * Formats a coverage window from archive dates. Used by the UI so labels
+ * stay in sync when messages are appended. Uses an en dash.
+ * short: "17–26 Nov"  full: "17–26 Nov 2026"
+ * Cross-month or cross-year ranges include the extra month/year as needed.
+ */
+export function formatCoverageRange(from, to, options = {}) {
+  const short = Boolean(options && options.short);
+  const start = parseIsoDate(from);
+  const end = parseIsoDate(to) || start;
+  if (!start) return "";
+  const startMonth = MONTHS[start.month];
+  const endMonth = MONTHS[end.month];
+  if (!startMonth || !endMonth) return [from, to].filter(Boolean).join("–");
+  const sameDay = start.year === end.year && start.month === end.month && start.day === end.day;
+  if (sameDay) {
+    return short ? `${start.day} ${startMonth}` : `${start.day} ${startMonth} ${start.year}`;
+  }
+  if (start.year === end.year && start.month === end.month) {
+    const range = `${start.day}–${end.day} ${startMonth}`;
+    return short ? range : `${range} ${start.year}`;
+  }
+  if (start.year === end.year) {
+    const range = `${start.day} ${startMonth}–${end.day} ${endMonth}`;
+    return short ? range : `${range} ${start.year}`;
+  }
+  return `${start.day} ${startMonth} ${start.year}–${end.day} ${endMonth} ${end.year}`;
+}
+
+function parseIsoDate(isoDate) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(isoDate || "");
+  if (!match) return null;
+  return {
+    year: Number(match[1]),
+    month: Number(match[2]) - 1,
+    day: Number(match[3]),
+  };
+}
+
