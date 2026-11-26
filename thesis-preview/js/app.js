@@ -13,7 +13,7 @@ import {
   formatCoverageRange,
   formatDate,
   formatDayHeading,
-  formatSavedAt,
+  formatNoteTime,
   formatSentTime,
   formatShortDate,
   formatWeekdayShort,
@@ -21,9 +21,9 @@ import {
 } from "./format.js";
 import { icon } from "./icons.js";
 import {
-  LOCAL_NOTICE,
   NOTE_ERRORS,
-  createLocalNotesAdapter,
+  REMOTE_NOTICE,
+  createRemoteNotesAdapter,
   groupNotes,
 } from "./notes.js";
 
@@ -33,7 +33,7 @@ const VIEWS = [
   ["rules", "Rules"],
 ];
 
-const notesAdapter = createLocalNotesAdapter(window.localStorage);
+const notesAdapter = createRemoteNotesAdapter(window.localStorage);
 
 const defaultFilters = {
   text: "",
@@ -65,6 +65,8 @@ let composeTarget = null;
 let lastOpener = null;
 let draft = "";
 let formError = "";
+let keyDraft = "";
+let notesBusy = false;
 let statusMessage = "";
 let notesState = { ok: true, notes: [] };
 let focusAfterRender = null;
@@ -336,7 +338,7 @@ function quietNoteButton(target, openerId, label = "Note") {
     type: "button",
     class: "quiet-note-btn",
     id: openerId,
-    title: "Save a private note on this browser only",
+    title: "Save a private note",
     onClick: (event) => {
       event.stopPropagation();
       openNotesDrawer(target, openerId);
@@ -462,8 +464,8 @@ function buildHeader() {
           class: "notes-trigger",
           id: "open-notes",
           "aria-label": noteCount
-            ? `Notes, ${noteCount} saved on this browser only`
-            : "Notes, Saved on this browser only",
+            ? `Notes, ${noteCount} saved`
+            : "Notes",
           onClick: () => openNotesDrawer({ id: "general", title: "General note" }, "open-notes"),
         }, [
           icon("note"),
@@ -509,7 +511,7 @@ function buildFooter() {
       text: `Sanitized public house-view desk covering ${coverageLabel()} (Europe/Paris). Tickers are macro mechanism examples — never holdings, weights, or recommendations.`,
     }),
     h("p", {
-      text: "Browser notes stay in localStorage on this device only and are never transmitted.",
+      text: "Private notes are stored in a protected Cloudflare database and are not part of the public pages.",
     }),
   ]);
 }
@@ -1282,12 +1284,25 @@ function buildRules() {
 }
 
 /* ============================
-   LOCAL-ONLY NOTES DRAWER
+   PRIVATE NOTES DRAWER
    ============================ */
+
+function notesError(code) {
+  return NOTE_ERRORS[code] || NOTE_ERRORS.storage;
+}
 
 function buildNotesDrawer() {
   const target = composeTarget || { id: "general", title: "General note" };
   const groups = notesState.ok ? groupNotes(notesState.notes) : [];
+  const needsKey = notesState.error === "need-key" || notesState.error === "unauthorized" || !notesAdapter.hasKey();
+  const offline = notesState.error === "offline";
+  const canCompose = notesState.ok && !needsKey && !offline && !notesBusy;
+
+  const noticeText = offline
+    ? NOTE_ERRORS.offline
+    : needsKey
+      ? NOTE_ERRORS[notesState.error] || NOTE_ERRORS["need-key"]
+      : REMOTE_NOTICE;
 
   return h("aside", {
     class: "drawer",
@@ -1307,13 +1322,14 @@ function buildNotesDrawer() {
           onClick: closeNotesDrawer,
         }, [icon("close")]),
       ]),
-      h("p", { class: "notice-box" }, [
-        LOCAL_NOTICE,
-        h("span", {
-          text: "Saved means stored in localStorage on this browser. It is never sent to a server or advisor.",
-        }),
+      h("p", { class: `notice-box${offline ? " is-offline" : ""}` }, [
+        noticeText,
+        needsKey
+          ? h("span", { text: "The notes key stays in this browser after you enter it once. It is not written into the public pages." })
+          : h("span", { text: "Saved means stored for you. It does not mean the note has been reviewed." }),
       ]),
-      h("form", { onSubmit: onSaveNote }, [
+      needsKey ? buildNotesKeyForm() : null,
+      !needsKey ? h("form", { onSubmit: onSaveNote }, [
         h("p", { class: "about-target" }, [
           "Linked to: ",
           h("strong", { text: target.title }),
@@ -1324,8 +1340,9 @@ function buildNotesDrawer() {
           id: "note-body",
           maxlength: "2000",
           autocomplete: "off",
-          placeholder: "Jot a thought for your next review…",
+          placeholder: offline ? "Notes are offline. Your draft stays here until you can save." : "Jot a thought for your next review…",
           value: draft,
+          disabled: !canCompose && !offline ? true : false,
           onInput: (event) => {
             draft = event.target.value;
             const counter = document.getElementById("note-count");
@@ -1336,13 +1353,13 @@ function buildNotesDrawer() {
           h("span", { id: "note-count", text: `${draft.length} / 2000` }),
         ]),
         formError ? h("p", { class: "form-error", role: "alert", text: formError }) : null,
-        !notesState.ok ? h("p", { class: "form-error", role: "alert", text: NOTE_ERRORS.corrupt }) : null,
         h("div", { class: "composer-actions" }, [
           h("button", {
             type: "submit",
             class: "primary-btn",
             id: "note-save",
-            text: "Save on this browser",
+            disabled: !canCompose,
+            text: notesBusy ? "Saving…" : "Save note",
           }),
           draft
             ? h("button", {
@@ -1358,66 +1375,173 @@ function buildNotesDrawer() {
             })
             : null,
         ]),
-      ]),
+      ]) : null,
     ]),
     h("div", { class: "inbox", id: "inbox" }, [
-      groups.length ? null : h("p", { class: "subtle-meta", text: "No notes saved in this browser yet." }),
+      groups.length ? null : h("p", { class: "subtle-meta", text: needsKey ? "Unlock the notes store to see saved notes." : "No notes yet." }),
       ...groups.map((group) => h("section", { class: "note-group" }, [
         h("h3", { text: group.targetTitle }),
         h("span", { class: "target-id", text: group.targetId }),
         ...group.notes.map((note) => h("article", { class: "saved-note" }, [
-          h("div", { class: "kicker-row" }, [
-            h("span", {
-              class: "badge stance-neutral",
-              title: "Stored in this browser only.",
-              text: "Saved locally",
+          h("div", { class: "note-toolbar" }, [
+            h("div", { class: "kicker-row" }, [
+              h("span", {
+                class: "badge stance-neutral",
+                title: "Stored in the private notes database.",
+                text: "Saved",
+              }),
+              h("span", { class: "subtle-meta", text: formatNoteTime(note.createdAt) }),
+            ]),
+            h("button", {
+              type: "button",
+              class: "ghost-btn note-delete",
+              "aria-label": "Remove note",
+              text: "Remove",
+              onClick: () => onDeleteNote(note.id),
             }),
-            h("span", { class: "subtle-meta", text: formatSavedAt(note.createdAt) }),
           ]),
           h("p", { text: note.body }),
         ])),
       ])),
-      notesState.notes.length
+      notesAdapter.hasKey()
         ? h("button", {
           type: "button",
           class: "ghost-btn",
-          id: "clear-notes",
-          text: "Remove notes from this browser",
-          onClick: onClearNotes,
+          id: "forget-notes-key",
+          text: "Forget notes key on this browser",
+          onClick: onForgetNotesKey,
         })
         : null,
     ]),
   ]);
 }
 
+function buildNotesKeyForm() {
+  return h("form", { class: "notes-key-form", onSubmit: onSaveNotesKey }, [
+    h("label", { class: "kicker", for: "notes-key", text: "Notes key" }),
+    h("input", {
+      id: "notes-key",
+      type: "text",
+      autocomplete: "off",
+      spellcheck: "false",
+      placeholder: "Paste the notes key once",
+      value: keyDraft,
+      onInput: (event) => {
+        keyDraft = event.target.value;
+      },
+    }),
+    formError ? h("p", { class: "form-error", role: "alert", text: formError }) : null,
+    h("div", { class: "composer-actions" }, [
+      h("button", {
+        type: "submit",
+        class: "primary-btn",
+        id: "notes-key-save",
+        disabled: notesBusy,
+        text: notesBusy ? "Checking…" : "Unlock notes",
+      }),
+    ]),
+  ]);
+}
+
+async function onSaveNotesKey(event) {
+  event.preventDefault();
+  const result = notesAdapter.setKey(keyDraft);
+  if (!result.ok) {
+    formError = notesError(result.error);
+    focusAfterRender = "notes-key";
+    render();
+    return;
+  }
+  notesBusy = true;
+  formError = "";
+  render();
+  const listed = await refreshNotes({ migrate: true });
+  notesBusy = false;
+  if (!listed.ok) {
+    formError = notesError(listed.error);
+    if (listed.error === "unauthorized") notesAdapter.clearKey();
+    focusAfterRender = "notes-key";
+    render();
+    return;
+  }
+  keyDraft = "";
+  statusMessage = "Notes unlocked on this browser.";
+  focusAfterRender = "note-body";
+  render();
+}
+
+async function onForgetNotesKey() {
+  if (!window.confirm("Forget the notes key on this browser? Notes stay in the private store.")) return;
+  notesAdapter.clearKey();
+  keyDraft = "";
+  notesState = { ok: false, notes: [], error: "need-key" };
+  statusMessage = "Forgot the notes key on this browser.";
+  render();
+}
+
 async function onSaveNote(event) {
   event.preventDefault();
   const target = composeTarget || { id: "general", title: "General note" };
+  notesBusy = true;
+  formError = "";
+  render();
   const result = await notesAdapter.add({
     body: draft,
     targetId: target.id,
     targetTitle: target.title,
   });
+  notesBusy = false;
   if (!result.ok) {
-    formError = NOTE_ERRORS[result.error] || NOTE_ERRORS.storage;
+    formError = notesError(result.error);
+    notesState = await safeListNotes();
     focusAfterRender = "note-body";
     render();
     return;
   }
   draft = "";
   formError = "";
-  statusMessage = "Saved on this browser only — not sent to your advisor.";
-  notesState = await notesAdapter.list();
+  statusMessage = "Note saved to your private store.";
+  notesState = await safeListNotes();
   focusAfterRender = "note-body";
   render();
 }
 
-async function onClearNotes() {
-  if (!window.confirm("Remove notes from this browser? They were never sent to your advisor.")) return;
-  await notesAdapter.clear();
-  statusMessage = "Removed local notes from this browser.";
-  notesState = await notesAdapter.list();
+async function onDeleteNote(id) {
+  if (!window.confirm("Remove this note from the private store?")) return;
+  notesBusy = true;
   render();
+  const result = await notesAdapter.remove(id);
+  notesBusy = false;
+  if (!result.ok) {
+    formError = notesError(result.error);
+    notesState = await safeListNotes();
+    render();
+    return;
+  }
+  statusMessage = "Note removed.";
+  notesState = await safeListNotes();
+  render();
+}
+
+async function safeListNotes() {
+  try {
+    return await notesAdapter.list();
+  } catch {
+    return { ok: false, notes: [], error: "offline" };
+  }
+}
+
+async function refreshNotes({ migrate } = {}) {
+  const listed = await safeListNotes();
+  notesState = listed;
+  if (migrate && listed.ok) {
+    const migrated = await notesAdapter.migrateLocal();
+    if (migrated.ok && migrated.migrated > 0) {
+      notesState = await safeListNotes();
+      statusMessage = `Moved ${migrated.migrated} note${migrated.migrated === 1 ? "" : "s"} from this browser into the private store.`;
+    }
+  }
+  return notesState;
 }
 
 function onGlobalKeydown(event) {
@@ -1464,11 +1588,7 @@ function onGlobalKeydown(event) {
 async function boot() {
   document.addEventListener("keydown", onGlobalKeydown, true);
 
-  try {
-    notesState = await notesAdapter.list();
-  } catch {
-    notesState = { ok: false, notes: [], error: "corrupt" };
-  }
+  await refreshNotes({ migrate: true });
 
   try {
     model = await loadArchive();

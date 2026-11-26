@@ -14,6 +14,7 @@ import {
   extractDomain,
   formatCoverageRange,
   formatDate,
+  formatNoteTime,
   formatDayHeading,
   formatSentTime,
   parseBulletText,
@@ -66,6 +67,10 @@ test("dates, evidence markers, and domains format cleanly without inventing cloc
   assert.equal(formatCoverageRange("2026-11-17", "2026-11-26", { short: true }), "17–26 Nov");
   assert.equal(formatCoverageRange("2026-11-17", "2026-12-03"), "17 Nov–3 Dec 2026");
   assert.equal(formatDate("2026-11-24"), "24 Nov 2026");
+  const noteTime = formatNoteTime("2026-11-26T08:41:50.000Z");
+  assert.match(noteTime, /26 Nov 2026/);
+  assert.match(noteTime, /09:41/);
+  assert.match(noteTime, /CET|GMT\+1/);
   assert.equal(formatDayHeading("2026-11-24"), "Tuesday, 24 Nov 2026");
   assert.equal(formatSentTime(null), "");
   assert.equal(formatSentTime("2026-11-23T21:20:00+01:00"), "21:20 CET");

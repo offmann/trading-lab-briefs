@@ -71,6 +71,21 @@ export function formatSavedAt(isoTimestamp) {
   }).format(date);
 }
 
+/** Always labels the note's created time in Europe/Paris, never the viewer's zone. */
+export function formatNoteTime(isoTimestamp) {
+  const date = new Date(isoTimestamp);
+  if (Number.isNaN(date.getTime())) return "";
+  return new Intl.DateTimeFormat("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Europe/Paris",
+    timeZoneName: "short",
+  }).format(date);
+}
+
 const EVIDENCE_TAG_LABELS = {
   S: "Sourced",
   C: "Computed",

@@ -105,8 +105,10 @@ test("JS modules never use unsafe HTML injection, date-range pickers, or the old
   }
 
   const app = fs.readFileSync(path.join(jsDir, "app.js"), "utf8");
+  const notes = fs.readFileSync(path.join(jsDir, "notes.js"), "utf8");
   assert.match(app, /textContent/);
-  assert.match(app, /Saved on this browser only/);
+  assert.match(notes, /private notes store/);
+  assert.match(app, /REMOTE_NOTICE/);
   assert.equal((app.match(/role: "tab"/g) || []).length, 1);
 
   const html = fs.readFileSync(path.join(root, "index.html"), "utf8");

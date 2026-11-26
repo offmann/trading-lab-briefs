@@ -2297,7 +2297,7 @@ button.layer-tag:hover {
   gap: 0.4rem;
 }
 
-/* Browser-Local Notes Drawer */
+/* Private notes drawer */
 .drawer {
   position: fixed;
   inset: 0;
@@ -2443,4 +2443,38 @@ button.layer-tag:hover {
   *, *::before, *::after {
     transition: none !important;
   }
+}
+
+.notice-box.is-offline {
+  background: var(--weakens-bg, #fef2f2);
+  border-color: var(--weakens-border, #fecaca);
+  border-left-color: #b91c1c;
+}
+
+.notes-key-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+}
+
+.notes-key-form input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.55rem 0.7rem;
+  font: inherit;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.note-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.note-delete {
+  flex: none;
 }
