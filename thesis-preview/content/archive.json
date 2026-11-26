@@ -3,7 +3,7 @@
   "meta": {
     "title": "House view",
     "timezone": "Europe/Paris",
-    "generatedAt": "2026-11-26T09:56:54+01:00",
+    "generatedAt": "2026-11-26T10:55:25+01:00",
     "coverage": {
       "from": "2026-11-17",
       "to": "2026-11-26",
@@ -13,12 +13,12 @@
     "privacy": "Public copy only. No allocations, amounts, fills, or personal trigger prices. Tickers are macro examples of a mechanism. They are not holdings, allocations, or recommendations. Watch lines are qualitative. Market figures are written without a dollar sign or a GW/MW abbreviation so they stay inside the public-site privacy tests.",
     "counts": {
       "scout": 19,
-      "brief": 3,
+      "brief": 4,
       "thesis-change": 3,
       "evening": 4,
       "thinkers": 1
     },
-    "messageCount": 30
+    "messageCount": 31
   },
   "houseThesis": {
     "id": "overview.thesis",
@@ -1367,6 +1367,61 @@
         }
       ],
       "provenance": "alpha-log.json A-20261125-01 and the 25 Nov scout as sent. Clock time was not recorded, so sentAt is null."
+    },
+    {
+      "id": "brief-2026-11-26",
+      "date": "2026-11-26",
+      "sentAt": "2026-11-26T11:05:00+01:00",
+      "timezone": "Europe/Paris",
+      "type": "brief",
+      "title": "Compute rents rise while token prices fall, and the server makers still see more orders",
+      "layers": [
+        "2a",
+        "2d",
+        "2b",
+        "4"
+      ],
+      "primaryLayer": "2a",
+      "verdict": "strengthens",
+      "bullets": [
+        "Dell beat on every line it was judged on. AI-server orders held near sixty billion dollars for a second quarter, its AI backlog rose about 39 percent in a quarter [C], and it raised its full-year AI-server outlook. Management sees memory shortages lasting into 2027. [S]",
+        "JPMorgan's November tracker: paid token volume on OpenRouter rose 79 percent in a month, but the average price per token fell 39 percent, so spending grew only 8 percent. Neocloud rents for A100, H100 and B200 chips all rose. [S]",
+        "Read: the toll is being collected under the models. Compute owners get paid first, while model makers see their prices squeezed. Anthropic, the main model-layer test case, closed below its IPO price this week. [S]",
+        "The US Section 301 proposal on Taiwan (up to 15 percent) lists chips, chipmaking tools and computers as exempt. The recent foundry selloff is a sector move, not a tariff hit. [S]",
+        "S&P put Nvidia's AA rating on watch for a possible one-notch cut over governance. It matters mainly because Nvidia guarantees some neocloud financing. US markets are closed today for Thanksgiving. [S]"
+      ],
+      "counterView": "OpenRouter traffic skews to developers and cheaper open models and leaves out direct enterprise API use, so it may understate model-layer pricing power. Dell's backlog carries no delivery dates or customer split.",
+      "sources": [
+        {
+          "name": "Dell Q3 FY27 results",
+          "url": "https://investors.delltechnologies.com/news-events/press-releases/detail/1665/dell-technologies-delivers-third-quarter-fiscal-2027-financial-results"
+        },
+        {
+          "name": "Dell earnings call transcript",
+          "url": "https://www.fool.com/earnings/call-transcripts/2026/11/24/dell-dell-q3-2027-earnings-call-transcript/"
+        },
+        {
+          "name": "JPMorgan Data Center Watch via UnHideA",
+          "url": "https://unhidea.com/en/articles/research-49fabf1268eb47c68c7fca9593d0cc3f-en"
+        },
+        {
+          "name": "Silicon Data H100 index",
+          "url": "https://www.silicondata.com/products/silicon-index/h100"
+        },
+        {
+          "name": "CNBC on Anthropic below IPO price",
+          "url": "https://www.cnbc.com/2026/11/24/anthropic-stock-ipo-price.html"
+        },
+        {
+          "name": "USTR Section 301 determinations",
+          "url": "https://ustr.gov/about/policy-offices/press-office/press-releases/2026/november/ustr-makes-determinations-and-proposes-actions-14-section-301-investigations-relating-structural"
+        },
+        {
+          "name": "S&P Global on Nvidia",
+          "url": "https://www.spglobal.com/ratings/en/regulatory/article/-/view/sourceId/101720856"
+        }
+      ],
+      "provenance": "briefs/2026-11-26.md; alerts-log prepared_at 2026-11-26T11:05+01:00 Europe/Paris."
     },
     {
       "id": "scout-2026-11-26-dram",
