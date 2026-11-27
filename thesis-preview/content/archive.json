@@ -3,22 +3,22 @@
   "meta": {
     "title": "House view",
     "timezone": "Europe/Paris",
-    "generatedAt": "2026-11-26T10:55:25+01:00",
+    "generatedAt": "2026-11-27T09:20:46+01:00",
     "coverage": {
       "from": "2026-11-17",
-      "to": "2026-11-26",
-      "label": "17–26 Nov 2026, Europe/Paris",
+      "to": "2026-11-27",
+      "label": "17–27 Nov 2026, Europe/Paris",
       "note": "Sanitized public copy of messages that were actually sent in this window. It is not the complete historical archive. Silent off-day briefs and silent evening checks are omitted. Scout items have a date but no recorded clock time, so sentAt is null and is not invented."
     },
     "privacy": "Public copy only. No allocations, amounts, fills, or personal trigger prices. Tickers are macro examples of a mechanism. They are not holdings, allocations, or recommendations. Watch lines are qualitative. Market figures are written without a dollar sign or a GW/MW abbreviation so they stay inside the public-site privacy tests.",
     "counts": {
-      "scout": 19,
+      "scout": 20,
       "brief": 4,
       "thesis-change": 3,
       "evening": 4,
       "thinkers": 1
     },
-    "messageCount": 31
+    "messageCount": 32
   },
   "houseThesis": {
     "id": "overview.thesis",
@@ -1497,6 +1497,40 @@
         }
       ],
       "provenance": "alpha-log.json A-20261126-02 and the 26 Nov scout as sent. Clock time was not recorded, so sentAt is null."
+    },
+    {
+      "id": "scout-2026-11-27-fcbga-tools",
+      "sourceId": "A-20261127-01",
+      "date": "2026-11-27",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "AI chip substrates: the tools to build more are now the bottleneck",
+      "layers": [
+        "2d",
+        "2a"
+      ],
+      "primaryLayer": "2d",
+      "verdict": "strengthens",
+      "bullets": [
+        "Some FC-BGA substrate tools now take about 30 months to deliver, up from about 6 [S, ETNews 26 Nov 2026].",
+        "Cause: Japanese precision motors, servos and controllers, now about 6 months to source [S]. Substrate makers pay in advance to jump the queue [S].",
+        "Why it's missed: the debate is about substrate materials. This shows the expansion itself is gated by tools [inference].",
+        "So what: new substrate plants (one Korean maker targets Sept 2028, Vietnam June 2030 [S]) can't arrive fast. Packaging likely caps AI-chip volume into 2028 [inference].",
+        "Watch: Japanese motion-component capacity adds, and whether substrate prices or contract terms firm up in 2027."
+      ],
+      "counterView": "One trade-press report on 'certain' tools. Advance payments and letters of intent can be double-ordering that unwinds fast if AI capex slows.",
+      "sources": [
+        {
+          "name": "ETNews (26 Nov)",
+          "url": "https://en.etnews.com/20261126200009"
+        },
+        {
+          "name": "TrendForce (26 Nov)",
+          "url": "https://www.trendforce.com/news/2026/11/26/news-fc-bga-equipment-lead-times-reportedly-jump-fivefold-to-30-months-amid-surging-ai-substrate-demand/"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261127-01. Clock time was not recorded, so sentAt is null."
     }
   ]
 }
