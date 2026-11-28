@@ -3,7 +3,7 @@
   "meta": {
     "title": "House view",
     "timezone": "Europe/Paris",
-    "generatedAt": "2026-11-28T09:21:52+01:00",
+    "generatedAt": "2026-11-28T10:59:59+01:00",
     "coverage": {
       "from": "2026-11-17",
       "to": "2026-11-28",
@@ -13,12 +13,12 @@
     "privacy": "Public copy only. No allocations, amounts, fills, or personal trigger prices. Tickers are macro examples of a mechanism. They are not holdings, allocations, or recommendations. Watch lines are qualitative. Market figures are written without a dollar sign or a GW/MW abbreviation so they stay inside the public-site privacy tests.",
     "counts": {
       "scout": 21,
-      "brief": 4,
+      "brief": 5,
       "thesis-change": 3,
       "evening": 4,
       "thinkers": 1
     },
-    "messageCount": 33
+    "messageCount": 34
   },
   "houseThesis": {
     "id": "overview.thesis",
@@ -1531,6 +1531,61 @@
         }
       ],
       "provenance": "alpha-log.json A-20261127-01. Clock time was not recorded, so sentAt is null."
+    },
+    {
+      "id": "brief-2026-11-28",
+      "date": "2026-11-28",
+      "sentAt": "2026-11-28T11:40:00+01:00",
+      "timezone": "Europe/Paris",
+      "type": "brief",
+      "title": "GPU rents are rising partly on tight credit, and connected power stays the scarcest input",
+      "layers": [
+        "2a",
+        "3b",
+        "1a",
+        "3a"
+      ],
+      "primaryLayer": "2a",
+      "verdict": "watch",
+      "bullets": [
+        "Silicon Data (26 Nov): the B200 rent index rose 28 percent since late May, but its 24-month discount to spot widened from 7.9 to 18.1 percent. That curve shape fits a credit squeeze, with buyers shut out of term deals renting on demand. [S]",
+        "GPU lenders now lend 50 to 60 percent of chip value, down from about 80 percent in the summer, per a lender on Odd Lots. [S]",
+        "SpaceX reportedly cut small-cluster Blackwell rents by 20 to 35 percent, and Anthropic did not renew a cluster of about 50,000 H200s. Polymarket's H100 curve implies rents about 32 percent lower by December 2028. [S]",
+        "SemiAnalysis' agent benchmark: Google TPU and Amazon Trainium deliver 1.2 to 2.5 times the performance per dollar of Nvidia GPUs, mostly from lower modeled chip cost. [S]",
+        "ClusterBid: only 28 percent of 85.4 gigawatts of planned AI data-center capacity is funded, permitted and contracted, and US grid-connection waits doubled to about 4.8 years. The PJM board confirmed the 9 December capacity auction will run under its existing cap. [S]"
+      ],
+      "counterView": "A price is a price: H100 rents still rose at every contract length and about 6 percent over 30 days, and a credit squeeze also limits new GPU supply, which helps owners of chips already installed. On the same benchmark, Nvidia GB300 in FP4 beat TPU in FP8 on cost.",
+      "sources": [
+        {
+          "name": "Silicon Data: rental curves and the credit squeeze",
+          "url": "https://www.silicondata.com/blog/gpu-rental-curves-credit-squeeze-b200-h100"
+        },
+        {
+          "name": "TIKR on GPU loan-to-value",
+          "url": "https://www.tikr.com/blog/bad-news-for-coreweave-and-iren-gpu-lenders-now-want-50-to-60-percent-loan-to-value-down-from-80"
+        },
+        {
+          "name": "Dataconomy on SpaceX GPU price cuts",
+          "url": "https://dataconomy.com/2026/11/26/spacex-cuts-blackwell-gpu-spot-prices-as-anthropic-exits/"
+        },
+        {
+          "name": "Polymarket GPU curve (Polycopy)",
+          "url": "https://polycopy.app/polymarket-gpu-prices"
+        },
+        {
+          "name": "MODEL on InferenceX results",
+          "url": "https://readmodelmag.com/stories/trainium-tpu-inferencex-nvidia"
+        },
+        {
+          "name": "ClusterBid pipeline",
+          "url": "https://clusterbid.com/blog/ai-data-center-construction-pipeline-2026-2028-planned-capacity-region"
+        },
+        {
+          "name": "PJM board letter 25 Nov",
+          "url": "https://www.pjm.com/-/media/DotCom/about-pjm/who-we-are/public-disclosures/2026/20261125-board-response-to-the-consumer-advocates-letter-urging-postponement-of-upcoming-bra.pdf"
+        }
+      ],
+      "provenance": "briefs/brief-2026-11-28.md; alerts-log prepared_at 2026-11-28T11:40+01:00 Europe/Paris."
     },
     {
       "id": "scout-2026-11-28-ssd-gpu-memory",
