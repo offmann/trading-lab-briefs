@@ -17,10 +17,23 @@ function filesIn(dir) {
   return out;
 }
 
+function collectKeys(value, out = new Set()) {
+  if (!value || typeof value !== "object") return out;
+  if (Array.isArray(value)) {
+    for (const item of value) collectKeys(item, out);
+    return out;
+  }
+  for (const [k, v] of Object.entries(value)) {
+    out.add(k);
+    collectKeys(v, out);
+  }
+  return out;
+}
+
 const files = filesIn(root);
 const sources = files.filter((file) => !file.endsWith(`${path.sep}tests${path.sep}privacy.test.mjs`));
 
-test("the preview bundle has no notes content, secrets, or portfolio figures", () => {
+test("the preview bundle and archive.json have no notes content, secrets, or portfolio figures", () => {
   const banned = [
     /RISK_PROFILE/,
     /Revolut/i,
@@ -45,20 +58,62 @@ test("the preview bundle has no notes content, secrets, or portfolio figures", (
   }
 });
 
-test("research data does not invent sentAt values", () => {
-  const data = fs.readFileSync(path.join(root, "js", "data.js"), "utf8");
-  assert.doesNotMatch(data, /sentAt/);
-  assert.doesNotMatch(data, /T\d{2}:\d{2}:\d{2}/);
+test("archive.json contains no holdings, allocation, trigger-price, or personal keys and never invents scout times", () => {
+  const archivePath = path.join(root, "content", "archive.json");
+  const archive = JSON.parse(fs.readFileSync(archivePath, "utf8"));
+  const keys = collectKeys(archive);
+
+  const forbiddenKeys = [
+    "holdings",
+    "position",
+    "positions",
+    "shares",
+    "quantity",
+    "allocation",
+    "allocations",
+    "weight",
+    "weights",
+    "costBasis",
+    "fillPrice",
+    "triggerPrice",
+    "accountBalance",
+    "ownerId",
+    "email",
+    "phone",
+  ];
+  for (const key of forbiddenKeys) {
+    assert.equal(keys.has(key), false, `archive.json must not contain key "${key}"`);
+  }
+
+  for (const msg of archive.messages) {
+    if (msg.type === "scout") {
+      assert.equal(msg.sentAt, null, `${msg.id} must keep sentAt null when clock time was not recorded`);
+    } else {
+      assert.match(msg.sentAt, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})$/);
+    }
+  }
 });
 
-test("notes render as text and the page is not a trading screen", () => {
-  const app = fs.readFileSync(path.join(root, "js", "app.js"), "utf8");
-  assert.doesNotMatch(app, /innerHTML|insertAdjacentHTML|document\.write|eval\(/);
+test("JS modules never use unsafe HTML injection, date-range pickers, or the old limited-sample banner", () => {
+  const jsDir = path.join(root, "js");
+  for (const entry of fs.readdirSync(jsDir)) {
+    if (!entry.endsWith(".js")) continue;
+    const code = fs.readFileSync(path.join(jsDir, entry), "utf8");
+    assert.doesNotMatch(code, /innerHTML|insertAdjacentHTML|document\.write|eval\(/);
+    assert.doesNotMatch(code, /Limited sample of research notes/i);
+    assert.doesNotMatch(code, /type:\s*"date"/);
+  }
+
+  const app = fs.readFileSync(path.join(jsDir, "app.js"), "utf8");
+  const notes = fs.readFileSync(path.join(jsDir, "notes.js"), "utf8");
   assert.match(app, /textContent/);
-  assert.match(app, /Saved on this browser only/);
+  assert.match(notes, /private notes store/);
+  assert.match(app, /REMOTE_NOTICE/);
   assert.equal((app.match(/role: "tab"/g) || []).length, 1);
+
   const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
   assert.match(html, /noindex/);
+  assert.doesNotMatch(html, /type="date"/);
 });
 
 test("the future contract stays honest about review, access, and non-publication", () => {

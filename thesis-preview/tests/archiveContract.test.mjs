@@ -1,10 +1,17 @@
 import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 import {
   appendCorrection,
   validateHouseViewVersion,
   validateIncomingMessage,
+  validatePublicArchive,
+  validatePublicMessage,
 } from "../js/archiveContract.js";
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 const valid = {
   id: "msg-1",
@@ -48,6 +55,18 @@ test("house view versions are separate from message history", () => {
     effectiveOn: "24 Nov 2026",
     summary: "Nope",
   }).ok, false);
+});
+
+test("sanitized public archive.json passes full public schema validation", () => {
+  const archive = JSON.parse(fs.readFileSync(path.join(root, "content", "archive.json"), "utf8"));
+  const result = validatePublicArchive(archive);
+  assert.equal(result.ok, true, result.errors.join(", "));
+  const badSentAt = validatePublicMessage({
+    ...archive.messages[0],
+    sentAt: "2026-11-17T09:00:00",
+  });
+  assert.equal(badSentAt.ok, false);
+  assert.ok(badSentAt.errors.includes("sentAt"));
 });
 
 test("the contract module does not publish", async () => {

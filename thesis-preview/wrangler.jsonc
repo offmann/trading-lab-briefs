@@ -1,0 +1,20 @@
+{
+  "name": "house-view",
+  // Compatibility date is the deploy day. No account_id or secrets in this file;
+  // set CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_API_TOKEN in the environment.
+  "main": "src/worker.js",
+  "compatibility_date": "2026-11-26",
+  "assets": {
+    // Populate public/ with index.html, css/, js/, and content/archive.json before deploy.
+    "directory": "./public",
+    "binding": "ASSETS",
+    // Only /api/* runs the Worker first. The public static site stays asset-served.
+    "run_worker_first": ["/api/*"]
+  },
+  "kv_namespaces": [
+    {
+      "binding": "NOTES",
+      "id": "755d20c651c248aaadd05af56b04c223"
+    }
+  ]
+}

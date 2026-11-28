@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   createLocalNotesAdapter,
-  createProtectedNotesAdapter,
+  createRemoteNotesAdapter,
   groupNotes,
   memoryStorage,
   NOTE_ERRORS,
@@ -80,10 +80,20 @@ test("empty, oversized, and corrupt notes are refused without sending", async ()
   assert.equal((await broken.add({ body: "nope", targetId: "general", targetTitle: "General note" })).error, "corrupt");
 });
 
-test("the protected adapter is not a stand-in for login", async () => {
-  const adapter = createProtectedNotesAdapter();
-  await assert.rejects(() => adapter.list(), /not configured/);
-  await assert.rejects(() => adapter.add({ body: "x" }), /browser only/);
+test("the remote adapter does not call the API until a notes key is stored", async () => {
+  let called = 0;
+  const adapter = createRemoteNotesAdapter(memoryStorage(), {
+    fetch: async () => {
+      called += 1;
+      return new Response("{}", { status: 200 });
+    },
+  });
+  const listed = await adapter.list();
+  assert.equal(listed.error, "need-key");
+  assert.equal(called, 0);
+  const added = await adapter.add({ body: "x", targetId: "general", targetTitle: "General note" });
+  assert.equal(added.error, "need-key");
+  assert.equal(called, 0);
 });
 
 test("note text is stored as text, including markup", async () => {

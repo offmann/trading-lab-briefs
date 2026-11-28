@@ -3,22 +3,22 @@
   "meta": {
     "title": "House view",
     "timezone": "Europe/Paris",
-    "generatedAt": "2026-11-24T10:55:00+01:00",
+    "generatedAt": "2026-11-28T10:59:59+01:00",
     "coverage": {
       "from": "2026-11-17",
-      "to": "2026-11-24",
-      "label": "17-24 Nov 2026, Europe/Paris",
-      "note": "Sanitized public copy of messages that were actually sent in this week. It is not the complete historical archive. Silent off-day briefs and silent evening checks are omitted. Scout items have a date but no recorded clock time, so sentAt is null and is not invented."
+      "to": "2026-11-28",
+      "label": "17–28 Nov 2026, Europe/Paris",
+      "note": "Sanitized public copy of messages that were actually sent in this window. It is not the complete historical archive. Silent off-day briefs and silent evening checks are omitted. Scout items have a date but no recorded clock time, so sentAt is null and is not invented."
     },
     "privacy": "Public copy only. No allocations, amounts, fills, or personal trigger prices. Tickers are macro examples of a mechanism. They are not holdings, allocations, or recommendations. Watch lines are qualitative. Market figures are written without a dollar sign or a GW/MW abbreviation so they stay inside the public-site privacy tests.",
     "counts": {
-      "scout": 15,
-      "brief": 3,
+      "scout": 21,
+      "brief": 5,
       "thesis-change": 3,
       "evening": 4,
       "thinkers": 1
     },
-    "messageCount": 26
+    "messageCount": 34
   },
   "houseThesis": {
     "id": "overview.thesis",
@@ -511,6 +511,33 @@
       "provenance": "thesis.md house-view note and changelog, 2026-11-18, aligned to the 11:20 Paris brief."
     },
     {
+      "id": "scout-2026-11-18-anthropic-power",
+      "sourceId": "A-20261118-02",
+      "date": "2026-11-18",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "Anthropic took over a multi-year generator order book",
+      "layers": [
+        "1a"
+      ],
+      "primaryLayer": "1a",
+      "verdict": "strengthens",
+      "bullets": [
+        "Anthropic took over OnePWR's roughly two-year-old Caterpillar generator orders, a 3.4 billion dollar package for about 1.7 gigawatts including engineering and construction. [S]",
+        "The deal is an early sign that reserved power slots can be re-absorbed by better-funded buyers after other reservations slip or are cancelled.",
+        "Model labs are buying physical capacity directly, which supports the idea that value is moving down toward power and plant."
+      ],
+      "counterView": "A single reassigned order book does not prove that every reserved turbine slot will find a new buyer, especially if financing for second-tier developers stays tight.",
+      "sources": [
+        {
+          "name": "Tom's Hardware, data-centers section (Anthropic-OnePWR generator order, 9 Nov)",
+          "url": "https://www.tomshardware.com/tech-industry/data-centers"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261118-02. Clock time was not recorded, so sentAt is null."
+    },
+    {
       "id": "scout-2026-11-18-memory-commitments",
       "sourceId": "A-20261118-01",
       "date": "2026-11-18",
@@ -541,33 +568,6 @@
         }
       ],
       "provenance": "alpha-log.json A-20261118-01. Clock time was not recorded, so sentAt is null."
-    },
-    {
-      "id": "scout-2026-11-18-anthropic-power",
-      "sourceId": "A-20261118-02",
-      "date": "2026-11-18",
-      "sentAt": null,
-      "timezone": "Europe/Paris",
-      "type": "scout",
-      "title": "Anthropic took over a multi-year generator order book",
-      "layers": [
-        "1a"
-      ],
-      "primaryLayer": "1a",
-      "verdict": "strengthens",
-      "bullets": [
-        "Anthropic took over OnePWR's roughly two-year-old Caterpillar generator orders, a 3.4 billion dollar package for about 1.7 gigawatts including engineering and construction. [S]",
-        "The deal is an early sign that reserved power slots can be re-absorbed by better-funded buyers after other reservations slip or are cancelled.",
-        "Model labs are buying physical capacity directly, which supports the idea that value is moving down toward power and plant."
-      ],
-      "counterView": "A single reassigned order book does not prove that every reserved turbine slot will find a new buyer, especially if financing for second-tier developers stays tight.",
-      "sources": [
-        {
-          "name": "Tom's Hardware, data-centers section (Anthropic-OnePWR generator order, 9 Nov)",
-          "url": "https://www.tomshardware.com/tech-industry/data-centers"
-        }
-      ],
-      "provenance": "alpha-log.json A-20261118-02. Clock time was not recorded, so sentAt is null."
     },
     {
       "id": "scout-2026-11-19-china-compute",
@@ -784,37 +784,6 @@
       "provenance": "thesis.md house-view note and changelog, 2026-11-20, aligned to the 11:20 Paris brief."
     },
     {
-      "id": "scout-2026-11-20-illumina",
-      "sourceId": "A-20261120-01",
-      "date": "2026-11-20",
-      "sentAt": null,
-      "timezone": "Europe/Paris",
-      "type": "scout",
-      "title": "Illumina's data atlas, not its model, won a virtual-cell challenge",
-      "layers": [
-        "5"
-      ],
-      "primaryLayer": "5",
-      "verdict": "watch",
-      "bullets": [
-        "Illumina BioInsight won Arc's 2026 Virtual Cell Challenge, ahead of FlowState and Xaira, using its Billion Cell Atlas and an open-sourced CellularAI stack. [S]",
-        "The interesting edge is proprietary perturbation data, not a unique model architecture.",
-        "No Atlas revenue was disclosed, so this is optionality, not a proven data toll. It stays a research observation in the apps layer."
-      ],
-      "counterView": "Arc itself noted that winners leaned on reference transfer from public knockdowns, and a leading score of this kind is not the same thing as accuracy in the lab or in a product.",
-      "sources": [
-        {
-          "name": "Arc Institute wrap-up",
-          "url": "https://arcinstitute.org/news/virtual-cell-challenge-2026-wrap-up"
-        },
-        {
-          "name": "Illumina investor release",
-          "url": "https://investor.illumina.com/news-releases/news-release-details/illumina-wins-virtual-cell-challenge-powered-billion-cell-atlas"
-        }
-      ],
-      "provenance": "alpha-log.json A-20261120-01. Clock time was not recorded, so sentAt is null."
-    },
-    {
       "id": "scout-2026-11-20-biontech",
       "sourceId": "A-20261120-02",
       "date": "2026-11-20",
@@ -846,6 +815,37 @@
       "provenance": "alpha-log.json A-20261120-02. Clock time was not recorded, so sentAt is null."
     },
     {
+      "id": "scout-2026-11-20-illumina",
+      "sourceId": "A-20261120-01",
+      "date": "2026-11-20",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "Illumina's data atlas, not its model, won a virtual-cell challenge",
+      "layers": [
+        "5"
+      ],
+      "primaryLayer": "5",
+      "verdict": "watch",
+      "bullets": [
+        "Illumina BioInsight won Arc's 2026 Virtual Cell Challenge, ahead of FlowState and Xaira, using its Billion Cell Atlas and an open-sourced CellularAI stack. [S]",
+        "The interesting edge is proprietary perturbation data, not a unique model architecture.",
+        "No Atlas revenue was disclosed, so this is optionality, not a proven data toll. It stays a research observation in the apps layer."
+      ],
+      "counterView": "Arc itself noted that winners leaned on reference transfer from public knockdowns, and a leading score of this kind is not the same thing as accuracy in the lab or in a product.",
+      "sources": [
+        {
+          "name": "Arc Institute wrap-up",
+          "url": "https://arcinstitute.org/news/virtual-cell-challenge-2026-wrap-up"
+        },
+        {
+          "name": "Illumina investor release",
+          "url": "https://investor.illumina.com/news-releases/news-release-details/illumina-wins-virtual-cell-challenge-powered-billion-cell-atlas"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261120-01. Clock time was not recorded, so sentAt is null."
+    },
+    {
       "id": "evening-2026-11-20-selloff",
       "date": "2026-11-20",
       "sentAt": "2026-11-20T21:25:00+01:00",
@@ -875,6 +875,41 @@
         }
       ],
       "provenance": "alerts-log.json evening-check-alert 2026-11-20T21:25+01:00 Europe/Paris; journal.md evening-check note. Personal trading details from that afternoon were omitted."
+    },
+    {
+      "id": "scout-2026-11-21-recursion",
+      "sourceId": "A-20261121-02",
+      "date": "2026-11-21",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "Recursion aligned with the FDA on a registrational trial for a repurposed drug",
+      "layers": [
+        "5"
+      ],
+      "primaryLayer": "5",
+      "verdict": "watch",
+      "bullets": [
+        "Recursion said the FDA aligned on a registrational Phase 3 design for REC-4881, a shelved Takeda MEK inhibitor repurposed for familial adenomatous polyposis. [S]",
+        "The early study was small: median polyp burden fell, and most patients were still below baseline after a period off drug.",
+        "The first proof, if it arrives, is indication-finding on existing molecules, not de-novo design. This is an early application-layer signal, not platform validation."
+      ],
+      "counterView": "A 26-patient Phase 2 is a weak base for a 200-patient Phase 3, and the trial would not start until the second half of 2027. One repurposing win would still not prove a platform.",
+      "sources": [
+        {
+          "name": "Recursion FDA-alignment release",
+          "url": "https://ir.recursion.com/news-releases/news-release-details/recursion-announces-alignment-fda-registrational-phase-3-trial"
+        },
+        {
+          "name": "Recursion REC-4881 page",
+          "url": "https://www.recursion.com/news/rec-4881"
+        },
+        {
+          "name": "SEC exhibit",
+          "url": "https://www.sec.gov/Archives/edgar/data/1601830/000160183026000144/exhibit993-cgapr.htm"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261121-02. Clock time was not recorded, so sentAt is null."
     },
     {
       "id": "scout-2026-11-21-rubin",
@@ -916,41 +951,6 @@
         }
       ],
       "provenance": "alpha-log.json A-20261121-01. Clock time was not recorded, so sentAt is null."
-    },
-    {
-      "id": "scout-2026-11-21-recursion",
-      "sourceId": "A-20261121-02",
-      "date": "2026-11-21",
-      "sentAt": null,
-      "timezone": "Europe/Paris",
-      "type": "scout",
-      "title": "Recursion aligned with the FDA on a registrational trial for a repurposed drug",
-      "layers": [
-        "5"
-      ],
-      "primaryLayer": "5",
-      "verdict": "watch",
-      "bullets": [
-        "Recursion said the FDA aligned on a registrational Phase 3 design for REC-4881, a shelved Takeda MEK inhibitor repurposed for familial adenomatous polyposis. [S]",
-        "The early study was small: median polyp burden fell, and most patients were still below baseline after a period off drug.",
-        "The first proof, if it arrives, is indication-finding on existing molecules, not de-novo design. This is an early application-layer signal, not platform validation."
-      ],
-      "counterView": "A 26-patient Phase 2 is a weak base for a 200-patient Phase 3, and the trial would not start until the second half of 2027. One repurposing win would still not prove a platform.",
-      "sources": [
-        {
-          "name": "Recursion FDA-alignment release",
-          "url": "https://ir.recursion.com/news-releases/news-release-details/recursion-announces-alignment-fda-registrational-phase-3-trial"
-        },
-        {
-          "name": "Recursion REC-4881 page",
-          "url": "https://www.recursion.com/news/rec-4881"
-        },
-        {
-          "name": "SEC exhibit",
-          "url": "https://www.sec.gov/Archives/edgar/data/1601830/000160183026000144/exhibit993-cgapr.htm"
-        }
-      ],
-      "provenance": "alpha-log.json A-20261121-02. Clock time was not recorded, so sentAt is null."
     },
     {
       "id": "evening-2026-11-21-sec-btc",
@@ -1166,6 +1166,38 @@
       "provenance": "thesis.md last-updated stamp 2026-11-23 08:45 Europe/Paris and section 5 changelog. sentAt uses that recorded update time, not an invented clock."
     },
     {
+      "id": "scout-2026-11-23-aaon",
+      "sourceId": "A-20261123-02",
+      "date": "2026-11-23",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "AAON cooling sales rose fast, but the backlog looks less scarce",
+      "layers": [
+        "1c"
+      ],
+      "primaryLayer": "1c",
+      "verdict": "weakens",
+      "bullets": [
+        "AAON's third-quarter filing showed BASX and liquid-cooling sales up several times over the prior year. [S]",
+        "The BASX backlog was only slightly higher than at year-end and was reported lower than in June, which management tied to faster conversion and lumpy awards.",
+        "The company also restated the first half and disclosed a material weakness, so the print is not a clean industry thermometer.",
+        "If cooling capacity is catching up with orders, the 1c plant gap is less urgent than power, grid, and permits. That is one company, not a sector call."
+      ],
+      "counterView": "Lumpy awards can shrink a backlog without easing industry-wide lead times. One supplier's conversion speed cannot establish a cooling-market trend.",
+      "sources": [
+        {
+          "name": "AAON Q3 10-Q",
+          "url": "https://www.sec.gov/Archives/edgar/data/824142/000082414226000088/aaon-20260930.htm"
+        },
+        {
+          "name": "Data Center Feed recap",
+          "url": "https://datacenterfeed.com/article/aaon-basx-data-center-cooling-sales-restatement-material-weakness-november-2026"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261123-02. Clock time was not recorded, so sentAt is null."
+    },
+    {
       "id": "scout-2026-11-23-cpo",
       "sourceId": "A-20261123-01",
       "date": "2026-11-23",
@@ -1197,38 +1229,6 @@
         }
       ],
       "provenance": "alpha-log.json A-20261123-01. Clock time was not recorded, so sentAt is null."
-    },
-    {
-      "id": "scout-2026-11-23-aaon",
-      "sourceId": "A-20261123-02",
-      "date": "2026-11-23",
-      "sentAt": null,
-      "timezone": "Europe/Paris",
-      "type": "scout",
-      "title": "AAON cooling sales rose fast, but the backlog looks less scarce",
-      "layers": [
-        "1c"
-      ],
-      "primaryLayer": "1c",
-      "verdict": "weakens",
-      "bullets": [
-        "AAON's third-quarter filing showed BASX and liquid-cooling sales up several times over the prior year. [S]",
-        "The BASX backlog was only slightly higher than at year-end and was reported lower than in June, which management tied to faster conversion and lumpy awards.",
-        "The company also restated the first half and disclosed a material weakness, so the print is not a clean industry thermometer.",
-        "If cooling capacity is catching up with orders, the 1c plant gap is less urgent than power, grid, and permits. That is one company, not a sector call."
-      ],
-      "counterView": "Lumpy awards can shrink a backlog without easing industry-wide lead times. One supplier's conversion speed cannot establish a cooling-market trend.",
-      "sources": [
-        {
-          "name": "AAON Q3 10-Q",
-          "url": "https://www.sec.gov/Archives/edgar/data/824142/000082414226000088/aaon-20260930.htm"
-        },
-        {
-          "name": "Data Center Feed recap",
-          "url": "https://datacenterfeed.com/article/aaon-basx-data-center-cooling-sales-restatement-material-weakness-november-2026"
-        }
-      ],
-      "provenance": "alpha-log.json A-20261123-02. Clock time was not recorded, so sentAt is null."
     },
     {
       "id": "evening-2026-11-23-huang",
@@ -1289,6 +1289,341 @@
         }
       ],
       "provenance": "alpha-log.json A-20261124-01. Clock time was not recorded, so sentAt is null. The existing public preview marked this link unconfirmed after a refused fetch; this file does not restate a link-check status."
+    },
+    {
+      "id": "scout-2026-11-25-ceg-uprates",
+      "sourceId": "A-20261125-02",
+      "date": "2026-11-25",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "CEG's Google and Amazon uprate megawatts still need a licence, and the first filing is due within weeks",
+      "layers": [
+        "1a"
+      ],
+      "primaryLayer": "1a",
+      "verdict": "watch",
+      "bullets": [
+        "The uprates behind the Google deal (about 890 megawatts, first in 2028) and the Amazon deal (190 megawatts, 2030 to 2032) each need an NRC licence amendment. None had been filed as of 9 Nov. [S]",
+        "The NRC's list of expected filings shows Constellation's first extended power uprate application planned for the fourth quarter of 2026. [S]",
+        "This is a dated check on the view that permission is the scarce input. If the filing lands by 31 Dec, that pillar firms up.",
+        "A slip into 2027 would push back when the 2028 megawatts arrive."
+      ],
+      "counterView": "Uprates are routine for the NRC, and a quarter's slip barely changes the long-dated value.",
+      "sources": [
+        {
+          "name": "Voltgrid",
+          "url": "https://voltgridnews.com/story/constellation-nuclear-uprates-for-amazon-and-google-still-need-nrc"
+        },
+        {
+          "name": "NRC expected applications",
+          "url": "https://www.nrc.gov/reactors/operating/licensing/power-uprates/status-power-apps/expected-applications"
+        },
+        {
+          "name": "CEG 8-K",
+          "url": "https://www.sec.gov/Archives/edgar/data/1868275/000186827526000116/ceg-20261109991.htm"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261125-02 and the 25 Nov scout as sent. Clock time was not recorded, so sentAt is null."
+    },
+    {
+      "id": "scout-2026-11-25-t-glass",
+      "sourceId": "A-20261125-01",
+      "date": "2026-11-25",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "The chip-package glass-cloth shortage is the kind money copies, not a lasting toll",
+      "layers": [
+        "2d",
+        "2a"
+      ],
+      "primaryLayer": "2d",
+      "verdict": "watch",
+      "bullets": [
+        "Ibiden, Nvidia's substrate maker, now has 4 approved suppliers of T-glass cloth, up from 2. Nittobo's new Fukushima line starts output in January to March 2027. [S]",
+        "Nittobo plans no more T-glass price hikes, so from here the squeeze is about who gets supply, not price. [S]",
+        "New substrate capacity comes late. Unimicron ramps from the second quarter of 2027 to full around mid-2028; Ibiden Ono ramps from the first quarter of 2028. [S]",
+        "Packaging still limits how many 2a chips can ship through 2027, which supports TSMC packaging pricing. The cloth itself fails the toll-versus-shortage test.",
+        "The thing to watch is whether the rival cloth suppliers pass qualification on time in the first half of 2027."
+      ],
+      "counterView": "If qualification slips or chip demand keeps climbing, the shortage runs past 2028.",
+      "sources": [
+        {
+          "name": "chokepoints.ai",
+          "url": "https://www.chokepoints.ai/deepdives/nittobo"
+        },
+        {
+          "name": "DigiTimes on Nittobo",
+          "url": "https://www.digitimes.com/news/a20261106VL215/nittobo-production-investment-materials-expansion.html"
+        },
+        {
+          "name": "TrendForce",
+          "url": "https://www.trendforce.com/news/2026/08/06/news-nittobo-raises-fy2027-net-profit-forecast-by-jpy-3b-no-further-t-glass-price-hikes-planned/"
+        },
+        {
+          "name": "NVIDIA supply-chain PR",
+          "url": "https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-and-Supply-Chain-Partners-Expand-Capacity-to-Accelerate-AI-Infrastructure-Buildout/default.aspx"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261125-01 and the 25 Nov scout as sent. Clock time was not recorded, so sentAt is null."
+    },
+    {
+      "id": "brief-2026-11-26",
+      "date": "2026-11-26",
+      "sentAt": "2026-11-26T11:05:00+01:00",
+      "timezone": "Europe/Paris",
+      "type": "brief",
+      "title": "Compute rents rise while token prices fall, and the server makers still see more orders",
+      "layers": [
+        "2a",
+        "2d",
+        "2b",
+        "4"
+      ],
+      "primaryLayer": "2a",
+      "verdict": "strengthens",
+      "bullets": [
+        "Dell beat on every line it was judged on. AI-server orders held near sixty billion dollars for a second quarter, its AI backlog rose about 39 percent in a quarter [C], and it raised its full-year AI-server outlook. Management sees memory shortages lasting into 2027. [S]",
+        "JPMorgan's November tracker: paid token volume on OpenRouter rose 79 percent in a month, but the average price per token fell 39 percent, so spending grew only 8 percent. Neocloud rents for A100, H100 and B200 chips all rose. [S]",
+        "Read: the toll is being collected under the models. Compute owners get paid first, while model makers see their prices squeezed. Anthropic, the main model-layer test case, closed below its IPO price this week. [S]",
+        "The US Section 301 proposal on Taiwan (up to 15 percent) lists chips, chipmaking tools and computers as exempt. The recent foundry selloff is a sector move, not a tariff hit. [S]",
+        "S&P put Nvidia's AA rating on watch for a possible one-notch cut over governance. It matters mainly because Nvidia guarantees some neocloud financing. US markets are closed today for Thanksgiving. [S]"
+      ],
+      "counterView": "OpenRouter traffic skews to developers and cheaper open models and leaves out direct enterprise API use, so it may understate model-layer pricing power. Dell's backlog carries no delivery dates or customer split.",
+      "sources": [
+        {
+          "name": "Dell Q3 FY27 results",
+          "url": "https://investors.delltechnologies.com/news-events/press-releases/detail/1665/dell-technologies-delivers-third-quarter-fiscal-2027-financial-results"
+        },
+        {
+          "name": "Dell earnings call transcript",
+          "url": "https://www.fool.com/earnings/call-transcripts/2026/11/24/dell-dell-q3-2027-earnings-call-transcript/"
+        },
+        {
+          "name": "JPMorgan Data Center Watch via UnHideA",
+          "url": "https://unhidea.com/en/articles/research-49fabf1268eb47c68c7fca9593d0cc3f-en"
+        },
+        {
+          "name": "Silicon Data H100 index",
+          "url": "https://www.silicondata.com/products/silicon-index/h100"
+        },
+        {
+          "name": "CNBC on Anthropic below IPO price",
+          "url": "https://www.cnbc.com/2026/11/24/anthropic-stock-ipo-price.html"
+        },
+        {
+          "name": "USTR Section 301 determinations",
+          "url": "https://ustr.gov/about/policy-offices/press-office/press-releases/2026/november/ustr-makes-determinations-and-proposes-actions-14-section-301-investigations-relating-structural"
+        },
+        {
+          "name": "S&P Global on Nvidia",
+          "url": "https://www.spglobal.com/ratings/en/regulatory/article/-/view/sourceId/101720856"
+        }
+      ],
+      "provenance": "briefs/2026-11-26.md; alerts-log prepared_at 2026-11-26T11:05+01:00 Europe/Paris."
+    },
+    {
+      "id": "scout-2026-11-26-dram",
+      "sourceId": "A-20261126-01",
+      "date": "2026-11-26",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "Ordinary DRAM's price squeeze now has a forecast end date: 2028",
+      "layers": [
+        "2b"
+      ],
+      "primaryLayer": "2b",
+      "verdict": "watch",
+      "bullets": [
+        "TrendForce cut its 2027 DRAM forecast to 1.15 trillion dollars of revenue, up 69 percent year on year. [S]",
+        "Quarterly price rises shrink from 5 to 10 percent in the first quarter to 0 to 5 percent in the third and fourth quarters of 2027. The base case is now flat in the second half of 2027, then a decline in 2028. [S]",
+        "The cause given is policy, power limits, and Nvidia scaling back circular financing, not only China cutting orders. [S]",
+        "This says 2b is not where lasting pricing power is building. Memory costs for Nvidia and AMD should ease from late 2027, and memory-equipment spending is a 2028 risk for equipment names.",
+        "Things to watch: Micron's December guidance and Samsung and SK hynix capital-spending plans for 2027."
+      ],
+      "counterView": "HBM is a separate market that is still tight, and HBM4 roughly doubles in 2027. TrendForce also revises often.",
+      "sources": [
+        {
+          "name": "TrendForce press",
+          "url": "https://www.trendforce.com/presscenter/news/20261125-13321.html"
+        },
+        {
+          "name": "TrendForce report",
+          "url": "https://www.trendforce.com/research/download/RP261126CM"
+        },
+        {
+          "name": "Ramcharts",
+          "url": "https://ramcharts.com/news/trendforce-dram-prices-wont-fall-2027/"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261126-01 and the 26 Nov scout as sent. Clock time was not recorded, so sentAt is null."
+    },
+    {
+      "id": "scout-2026-11-26-export-kyc",
+      "sourceId": "A-20261126-02",
+      "date": "2026-11-26",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "Export customer-screening checks are slowing AI-server shipments",
+      "layers": [
+        "2a",
+        "3b"
+      ],
+      "primaryLayer": "2a",
+      "verdict": "watch",
+      "bullets": [
+        "A BIS rule in force since 19 Nov makes exporters check the data-center customer before shipping, and re-screen open and in-transit orders. [S]",
+        "DigiTimes (26 Nov) reports AI-server shipments are already being delayed while these checks and licences clear. [S]",
+        "This is a timing risk for Nvidia and AMD deliveries in the quarter to January, not lost demand. US hyperscalers should clear faster than neoclouds and third-country landlords.",
+        "First BIS reports are due 1 Dec. Grace for in-transit shipments ends 21 Dec. Existing data centers get until 17 Feb 2027. [S]",
+        "Things to watch: Taiwan server makers' December sales (early January) and Nvidia's 10-Q on 4 Dec."
+      ],
+      "counterView": "Big, known buyers can clear this paperwork in weeks, and any delay could just push shipments into the next quarter.",
+      "sources": [
+        {
+          "name": "DigiTimes",
+          "url": "https://www.digitimes.com/news/a20261126PD214/supply-chain-gpu-data-center-gtc-data.html"
+        },
+        {
+          "name": "Mayer Brown",
+          "url": "https://www.mayerbrown.com/en/insights/publications/2026/11/bis-extends-chip-controls-to-remote-access-and-tightens-license-requirements"
+        },
+        {
+          "name": "Federal Register",
+          "url": "https://www.federalregister.gov/documents/2026/11/19/2026-23529/addressing-remote-access-to-advanced-semiconductors"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261126-02 and the 26 Nov scout as sent. Clock time was not recorded, so sentAt is null."
+    },
+    {
+      "id": "scout-2026-11-27-fcbga-tools",
+      "sourceId": "A-20261127-01",
+      "date": "2026-11-27",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "AI chip substrates: the tools to build more are now the bottleneck",
+      "layers": [
+        "2d",
+        "2a"
+      ],
+      "primaryLayer": "2d",
+      "verdict": "strengthens",
+      "bullets": [
+        "Some FC-BGA substrate tools now take about 30 months to deliver, up from about 6 [S, ETNews 26 Nov 2026].",
+        "Cause: Japanese precision motors, servos and controllers, now about 6 months to source [S]. Substrate makers pay in advance to jump the queue [S].",
+        "Why it's missed: the debate is about substrate materials. This shows the expansion itself is gated by tools [inference].",
+        "So what: new substrate plants (one Korean maker targets Sept 2028, Vietnam June 2030 [S]) can't arrive fast. Packaging likely caps AI-chip volume into 2028 [inference].",
+        "Watch: Japanese motion-component capacity adds, and whether substrate prices or contract terms firm up in 2027."
+      ],
+      "counterView": "One trade-press report on 'certain' tools. Advance payments and letters of intent can be double-ordering that unwinds fast if AI capex slows.",
+      "sources": [
+        {
+          "name": "ETNews (26 Nov)",
+          "url": "https://en.etnews.com/20261126200009"
+        },
+        {
+          "name": "TrendForce (26 Nov)",
+          "url": "https://www.trendforce.com/news/2026/11/26/news-fc-bga-equipment-lead-times-reportedly-jump-fivefold-to-30-months-amid-surging-ai-substrate-demand/"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261127-01. Clock time was not recorded, so sentAt is null."
+    },
+    {
+      "id": "brief-2026-11-28",
+      "date": "2026-11-28",
+      "sentAt": "2026-11-28T11:40:00+01:00",
+      "timezone": "Europe/Paris",
+      "type": "brief",
+      "title": "GPU rents are rising partly on tight credit, and connected power stays the scarcest input",
+      "layers": [
+        "2a",
+        "3b",
+        "1a",
+        "3a"
+      ],
+      "primaryLayer": "2a",
+      "verdict": "watch",
+      "bullets": [
+        "Silicon Data (26 Nov): the B200 rent index rose 28 percent since late May, but its 24-month discount to spot widened from 7.9 to 18.1 percent. That curve shape fits a credit squeeze, with buyers shut out of term deals renting on demand. [S]",
+        "GPU lenders now lend 50 to 60 percent of chip value, down from about 80 percent in the summer, per a lender on Odd Lots. [S]",
+        "SpaceX reportedly cut small-cluster Blackwell rents by 20 to 35 percent, and Anthropic did not renew a cluster of about 50,000 H200s. Polymarket's H100 curve implies rents about 32 percent lower by December 2028. [S]",
+        "SemiAnalysis' agent benchmark: Google TPU and Amazon Trainium deliver 1.2 to 2.5 times the performance per dollar of Nvidia GPUs, mostly from lower modeled chip cost. [S]",
+        "ClusterBid: only 28 percent of 85.4 gigawatts of planned AI data-center capacity is funded, permitted and contracted, and US grid-connection waits doubled to about 4.8 years. The PJM board confirmed the 9 December capacity auction will run under its existing cap. [S]"
+      ],
+      "counterView": "A price is a price: H100 rents still rose at every contract length and about 6 percent over 30 days, and a credit squeeze also limits new GPU supply, which helps owners of chips already installed. On the same benchmark, Nvidia GB300 in FP4 beat TPU in FP8 on cost.",
+      "sources": [
+        {
+          "name": "Silicon Data: rental curves and the credit squeeze",
+          "url": "https://www.silicondata.com/blog/gpu-rental-curves-credit-squeeze-b200-h100"
+        },
+        {
+          "name": "TIKR on GPU loan-to-value",
+          "url": "https://www.tikr.com/blog/bad-news-for-coreweave-and-iren-gpu-lenders-now-want-50-to-60-percent-loan-to-value-down-from-80"
+        },
+        {
+          "name": "Dataconomy on SpaceX GPU price cuts",
+          "url": "https://dataconomy.com/2026/11/26/spacex-cuts-blackwell-gpu-spot-prices-as-anthropic-exits/"
+        },
+        {
+          "name": "Polymarket GPU curve (Polycopy)",
+          "url": "https://polycopy.app/polymarket-gpu-prices"
+        },
+        {
+          "name": "MODEL on InferenceX results",
+          "url": "https://readmodelmag.com/stories/trainium-tpu-inferencex-nvidia"
+        },
+        {
+          "name": "ClusterBid pipeline",
+          "url": "https://clusterbid.com/blog/ai-data-center-construction-pipeline-2026-2028-planned-capacity-region"
+        },
+        {
+          "name": "PJM board letter 25 Nov",
+          "url": "https://www.pjm.com/-/media/DotCom/about-pjm/who-we-are/public-disclosures/2026/20261125-board-response-to-the-consumer-advocates-letter-urging-postponement-of-upcoming-bra.pdf"
+        }
+      ],
+      "provenance": "briefs/brief-2026-11-28.md; alerts-log prepared_at 2026-11-28T11:40+01:00 Europe/Paris."
+    },
+    {
+      "id": "scout-2026-11-28-ssd-gpu-memory",
+      "sourceId": "A-20261128-01",
+      "date": "2026-11-28",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "AI memory overflow: fast flash and host DRAM pick up the spill, CXL gets less",
+      "layers": [
+        "2b",
+        "2a"
+      ],
+      "primaryLayer": "2b",
+      "verdict": "watch",
+      "bullets": [
+        "Kioxia and NVIDIA started rack-scale tests: one GB200 NVL72 rack with 144 SSDs, about 1.1 PB, letting GPUs read flash in 512-byte chunks [S, Nikkei via TrendForce 27 Nov 2026].",
+        "Kioxia's GPU-direct GP2 SSD does over 18M random reads per second; samples by end-2027, 100M targeted for 2028 [S]. Still a proof of concept, with no latency data yet [S].",
+        "DigiTimes (26 Nov): KV cache pushed out of HBM goes to host DRAM first; CXL memory is only a niche tier [S].",
+        "Why it's missed: the memory debate is HBM vs a NAND glut. Agentic long-context work cuts tokens per chip 40-80% (TrendForce) [S], which pushes data into cheaper memory tiers [inference].",
+        "So what: flash may get a new AI job (2028+), not just a weaker cycle. HBM stays the binding constraint [inference]. Watch: latency results, GP2 customers, other flash makers' GPU-direct SSDs."
+      ],
+      "counterView": "One proof of concept with no performance data. A 2027 sample date means no effect on next year's flash oversupply, and flash may only suit vector search, not live model memory.",
+      "sources": [
+        {
+          "name": "TrendForce / Nikkei (27 Nov)",
+          "url": "https://www.trendforce.com/news/2026/11/27/news-kioxia-nvidia-begin-1-1-pb-ssd-based-gpu-memory-expansion-tests-to-address-hbm-capacity-limits/"
+        },
+        {
+          "name": "DigiTimes Insight (26 Nov)",
+          "url": "https://www.digitimes.com/news/a20261126PD215/cxl-memory-dram-data-demand-growth.html"
+        },
+        {
+          "name": "TrendForce (27 Nov)",
+          "url": "https://insights.trendforce.com/p/same-compute-5x-the-tokens"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261128-01. Clock time was not recorded, so sentAt is null."
     }
   ]
 }

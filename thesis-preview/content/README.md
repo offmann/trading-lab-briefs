@@ -1,6 +1,6 @@
 # House-view archive (public, sanitized)
 
-This folder is the content file for the v2 house-view site. It is a public, privacy-safe copy of messages sent in the week of 17-24 Nov 2026 (Europe/Paris). It is not the complete historical archive.
+This folder is the content file for the v2 house-view site. It is a public, privacy-safe copy of messages that were actually sent. The coverage window lives in `meta.coverage` and is derived from the messages in the file (Europe/Paris). It is not the complete historical archive.
 
 Silent off-day briefs and silent evening checks are omitted. Personal allocations, amounts, fills, and trigger prices were stripped or rewritten as qualitative watch lines. Tickers are macro examples of a mechanism. They are not holdings, allocations, or recommendations.
 
@@ -32,7 +32,7 @@ The file is shaped so it can live inside `thesis-preview/` without failing the e
 | `sourceId` | Optional internal log id (for scouts, the `A-YYYYMMDD-NN` key). |
 | `date` | `YYYY-MM-DD` in Europe/Paris. |
 | `sentAt` | ISO-8601 with a timezone offset when the send or preparation time is known. `null` when only the date is known. Do not invent a clock time. |
-| `timezone` | Always `Europe/Paris` for this week. |
+| `timezone` | Always `Europe/Paris`. |
 | `type` | `brief` · `scout` · `alert` · `evening` · `thinkers` · `thesis-change`. |
 | `title` | One-line, content-first headline. |
 | `layers` | Sublayer or layer ids (`1a`…`5`). |
