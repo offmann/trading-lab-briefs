@@ -3,22 +3,22 @@
   "meta": {
     "title": "House view",
     "timezone": "Europe/Paris",
-    "generatedAt": "2026-11-27T09:20:46+01:00",
+    "generatedAt": "2026-11-28T09:21:52+01:00",
     "coverage": {
       "from": "2026-11-17",
-      "to": "2026-11-27",
-      "label": "17–27 Nov 2026, Europe/Paris",
+      "to": "2026-11-28",
+      "label": "17–28 Nov 2026, Europe/Paris",
       "note": "Sanitized public copy of messages that were actually sent in this window. It is not the complete historical archive. Silent off-day briefs and silent evening checks are omitted. Scout items have a date but no recorded clock time, so sentAt is null and is not invented."
     },
     "privacy": "Public copy only. No allocations, amounts, fills, or personal trigger prices. Tickers are macro examples of a mechanism. They are not holdings, allocations, or recommendations. Watch lines are qualitative. Market figures are written without a dollar sign or a GW/MW abbreviation so they stay inside the public-site privacy tests.",
     "counts": {
-      "scout": 20,
+      "scout": 21,
       "brief": 4,
       "thesis-change": 3,
       "evening": 4,
       "thinkers": 1
     },
-    "messageCount": 32
+    "messageCount": 33
   },
   "houseThesis": {
     "id": "overview.thesis",
@@ -1531,6 +1531,44 @@
         }
       ],
       "provenance": "alpha-log.json A-20261127-01. Clock time was not recorded, so sentAt is null."
+    },
+    {
+      "id": "scout-2026-11-28-ssd-gpu-memory",
+      "sourceId": "A-20261128-01",
+      "date": "2026-11-28",
+      "sentAt": null,
+      "timezone": "Europe/Paris",
+      "type": "scout",
+      "title": "AI memory overflow: fast flash and host DRAM pick up the spill, CXL gets less",
+      "layers": [
+        "2b",
+        "2a"
+      ],
+      "primaryLayer": "2b",
+      "verdict": "watch",
+      "bullets": [
+        "Kioxia and NVIDIA started rack-scale tests: one GB200 NVL72 rack with 144 SSDs, about 1.1 PB, letting GPUs read flash in 512-byte chunks [S, Nikkei via TrendForce 27 Nov 2026].",
+        "Kioxia's GPU-direct GP2 SSD does over 18M random reads per second; samples by end-2027, 100M targeted for 2028 [S]. Still a proof of concept, with no latency data yet [S].",
+        "DigiTimes (26 Nov): KV cache pushed out of HBM goes to host DRAM first; CXL memory is only a niche tier [S].",
+        "Why it's missed: the memory debate is HBM vs a NAND glut. Agentic long-context work cuts tokens per chip 40-80% (TrendForce) [S], which pushes data into cheaper memory tiers [inference].",
+        "So what: flash may get a new AI job (2028+), not just a weaker cycle. HBM stays the binding constraint [inference]. Watch: latency results, GP2 customers, other flash makers' GPU-direct SSDs."
+      ],
+      "counterView": "One proof of concept with no performance data. A 2027 sample date means no effect on next year's flash oversupply, and flash may only suit vector search, not live model memory.",
+      "sources": [
+        {
+          "name": "TrendForce / Nikkei (27 Nov)",
+          "url": "https://www.trendforce.com/news/2026/11/27/news-kioxia-nvidia-begin-1-1-pb-ssd-based-gpu-memory-expansion-tests-to-address-hbm-capacity-limits/"
+        },
+        {
+          "name": "DigiTimes Insight (26 Nov)",
+          "url": "https://www.digitimes.com/news/a20261126PD215/cxl-memory-dram-data-demand-growth.html"
+        },
+        {
+          "name": "TrendForce (27 Nov)",
+          "url": "https://insights.trendforce.com/p/same-compute-5x-the-tokens"
+        }
+      ],
+      "provenance": "alpha-log.json A-20261128-01. Clock time was not recorded, so sentAt is null."
     }
   ]
 }
